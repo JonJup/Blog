@@ -70,20 +70,21 @@ samples = 1000
 transient = 500 * thin
 verbose = 500 * thin
 
-for (i in seq_along(thin)) {
-        model[[i]] = sampleMcmc(
-                m_full,
-                thin = thin[i],
-                samples = samples,
-                transient = transient,
-                nChains = nChains,
-                verbose = verbose,
-                initPar = "fixed effects"
-
-        )
-}
+# for (i in seq_along(thin)) {
+#         model[[i]] = sampleMcmc(
+#                 m_full,
+#                 thin = thin[i],
+#                 samples = samples,
+#                 transient = transient,
+#                 nChains = nChains,
+#                 verbose = verbose,
+#                 initPar = "fixed effects"
+# 
+#         )
+# }
 
 ```
+test
 ```{r load mcmc result, echo=F}
 model=list()
 model[[1]]=readRDS(file.path(model.path, "hmsc_cm_models5.RDS"))
@@ -99,9 +100,11 @@ for (i in seq_along(model)) {
 }
 plot(mpost[[1]]$Beta)
 ```
+placeholder
 ```{r mcmc-plots2, fig.align="center"}
 plot(mpost[[2]]$Beta)
 ```
+placeholder
 ```{r mcmc-plots3, fig.align="center"}
 plot(mpost[[3]]$Beta)
 ```
