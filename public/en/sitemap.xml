@@ -18,6 +18,7 @@
   </url>
   
   <url>
+
     <loc>https://jonjup.netlify.app/tags/hmsc/</loc>
     <lastmod>2020-10-26T00:00:00+00:00</lastmod>
   </url>
@@ -28,16 +29,10 @@
   </url>
   
   <url>
-    <loc>https://jonjup.netlify.app/post/</loc>
-    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+
     <loc>https://jonjup.netlify.app/tags/r/</loc>
-    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+
+
     <loc>https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/</loc>
     <lastmod>2020-10-26T00:00:00+00:00</lastmod>
   </url>
@@ -49,15 +44,11 @@
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/tags/"
+
                 />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
+
                 href="https://jonjup.netlify.app/tags/"
-                />
-  </url>
-  
-  <url>
+
     <loc>https://jonjup.netlify.app/about/</loc>
     <lastmod>2014-04-09T00:00:00+00:00</lastmod>
   </url>
@@ -68,25 +59,32 @@
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/categories/"
+
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
+
                 href="https://jonjup.netlify.app/categories/"
+
                 />
   </url>
   
   <url>
+
     <loc>https://jonjup.netlify.app/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/series/"
+
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
+
                 href="https://jonjup.netlify.app/series/"
+
                 />
   </url>
   
