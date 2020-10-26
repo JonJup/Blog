@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MOD3 on Amaltheia</title>
+    <link>https://jonjup.netlify.app/tags/mod3/</link>
+    <description>Recent content in MOD3 on Amaltheia</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 26 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jonjup.netlify.app/tags/mod3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Species Distribution Modeling with HMSC </title>
+      <link>https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/</link>
+      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/</guid>
+      <description>#TODO where did I get the Data from? Intro text
+To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)</description>
+    </item>
+    
+  </channel>
+</rss>
