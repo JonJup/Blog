@@ -99,9 +99,29 @@ for (i in seq_along(model)) {
 }
 plot(mpost[[1]]$Beta)
 ```
-```{r mcmc-plots2}
+```{r mcmc-plots2, fig.align="center"}
 plot(mpost[[2]]$Beta)
 ```
-```{r mcmc-plots3}
+```{r mcmc-plots3, fig.align="center"}
 plot(mpost[[3]]$Beta)
 ```
+
+Based on these plots we can see that using a thinning of 100 is necessary for satisfactory MCMC convergence. In addition to these visual checks we can also look at the potential scale reduction factor (aka Gelman statistic) and the effective samples size. 
+```{r effective sample size show}
+ess.beta = effectiveSize(mpost3$Beta)
+```
+```{r effective sample size dont show, echo=F}
+temp = data.frame (ess=ess.beta)
+vc_names_ess = names(ess.beta)
+vc_names_ess %<>% 
+  stringr::str_remove("^B\\[") %>% 
+  stringr::str_remove(", Corvus monedula\\]")
+rownames(temp) = vc_names_ess
+temp %>% 
+  kable(format="html") %>% 
+  kable_minimal %>% 
+  scroll_box(height = "200px", width = "800px")
+rm(ess.beta, temp, vc_names_ess)
+```
+
+
