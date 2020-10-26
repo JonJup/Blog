@@ -1,5 +1,5 @@
 baseURL = "https://jonjup.netlify.app/"
-title   = "Hello Friend NG"
+title   = "Amaltheia"
 languageCode = "en-us"
 theme = "hugo-theme-hello-friend-ng"
 
@@ -37,7 +37,7 @@ disableHugoGeneratorInject = false
   posts = "/posts/:year/:month/:title/"
 
 [author]
-  name = "Jane Doe"
+  name = "Jonathan Jupke"
 
 [blackfriday]
   hrefTargetBlank = true
@@ -125,23 +125,19 @@ disableHugoGeneratorInject = false
   # Social icons
   [[params.social]]
     name = "twitter"
-    url  = "https://twitter.com/"
+    url  = "https://twitter.com/jonjup"
 
   [[params.social]]
     name = "email"
-    url  = "mailto:nobody@example.com"
+    url  = "mailto:jupke@uni-landau.de"
 
   [[params.social]]
     name = "github"
-    url  = "https://github.com/"
-
-  [[params.social]]
-    name = "linkedin"
-    url  = "https://www.linkedin.com/"
+    url  = "https://github.com/JonJup"
 
   [[params.social]]
     name = "stackoverflow"
-    url  = "https://www.stackoverflow.com/"
+    url  = "https://stackexchange.com/users/10246919/jonjup?tab=accounts"
 
 [languages]
   [languages.en]
