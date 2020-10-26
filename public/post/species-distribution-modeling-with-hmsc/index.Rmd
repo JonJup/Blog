@@ -62,7 +62,7 @@ m_full = Hmsc(Y=Y,
               ranLevels=list(route=rL))
 ```
 Run MCMC 
-```{r run MCMC}
+```{r run MCMC, eval = FALSE}
 nChains = 2
 thin = c(5, 10, 100)
 nParallel = max(round(parallel::detectCores() / 2), nChains)
@@ -70,21 +70,38 @@ samples = 1000
 transient = 500 * thin
 verbose = 500 * thin
 
-# for (i in seq_along(thin)) {
-#         model[[i]] = sampleMcmc(
-#                 m_full,
-#                 thin = thin[i],
-#                 samples = samples,
-#                 transient = transient,
-#                 nChains = nChains,
-#                 verbose = verbose,
-#                 initPar = "fixed effects"
-#                 
-#         )
-# }
+for (i in seq_along(thin)) {
+        model[[i]] = sampleMcmc(
+                m_full,
+                thin = thin[i],
+                samples = samples,
+                transient = transient,
+                nChains = nChains,
+                verbose = verbose,
+                initPar = "fixed effects"
+
+        )
+}
 
 ```
 ```{r load mcmc result, echo=F}
-models_100=readRDS(file.path(model.path, "hmsc_cm_models100.RDS"))
+model=list()
+model[[1]]=readRDS(file.path(model.path, "hmsc_cm_models5.RDS"))
+model[[2]]=readRDS(file.path(model.path, "hmsc_cm_models10.RDS"))
+model[[3]]=readRDS(file.path(model.path, "hmsc_cm_models100.RDS"))
 ```
 
+```{r mcmc-plots1, fig.align="center"}
+for (i in seq_along(model)) {
+        mpost[[i]] = convertToCodaObject(model[[i]],
+                                         spNamesNumbers = c(T, F),
+                                         covNamesNumbers = c(T, F))
+}
+plot(mpost[[1]]$Beta)
+```
+```{r mcmc-plots2}
+plot(mpost[[2]]$Beta)
+```
+```{r mcmc-plots3}
+plot(mpost[[3]]$Beta)
+```

@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="Jonathan Jupke ">
-<meta name="description" content="#TODO where did I get the Data from? Intro text
+<meta name="description" content="#TODO where did I get the Data from? #TODO add link to multispecies exampleIntro text
 To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
-pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)" />
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here)." />
 <meta name="keywords" content=", R, HMSC, MOD3" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -44,12 +44,12 @@ pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)" />
 
 
 <meta itemprop="name" content="Species Distribution Modeling with HMSC ">
-<meta itemprop="description" content="#TODO where did I get the Data from? Intro text
+<meta itemprop="description" content="#TODO where did I get the Data from? #TODO add link to multispecies exampleIntro text
 To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
-pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)">
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here).">
 <meta itemprop="datePublished" content="2020-10-26T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-10-26T00:00:00+00:00" />
-<meta itemprop="wordCount" content="41">
+<meta itemprop="wordCount" content="270">
 <meta itemprop="image" content="https://jonjup.netlify.app/"/>
 
 
@@ -60,16 +60,16 @@ pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)">
 <meta name="twitter:image" content="https://jonjup.netlify.app/"/>
 
 <meta name="twitter:title" content="Species Distribution Modeling with HMSC "/>
-<meta name="twitter:description" content="#TODO where did I get the Data from? Intro text
+<meta name="twitter:description" content="#TODO where did I get the Data from? #TODO add link to multispecies exampleIntro text
 To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
-pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)"/>
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here)."/>
 
 
 
     <meta property="og:title" content="Species Distribution Modeling with HMSC " />
-<meta property="og:description" content="#TODO where did I get the Data from? Intro text
+<meta property="og:description" content="#TODO where did I get the Data from? #TODO add link to multispecies exampleIntro text
 To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
-pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)" />
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/" />
 <meta property="og:image" content="https://jonjup.netlify.app/"/>
@@ -114,7 +114,7 @@ pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)" />
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://jonjup.netlify.app/about/">About</a></li><li><a href="https://jonjup.netlify.app/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://jonjup.netlify.app/about/">About</a></li><li><a href="https://jonjup.netlify.app/post/">Posts</a></li>
     </ul>
 </nav>
 
@@ -159,10 +159,56 @@ pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)" />
 <script src="index_files/anchor-sections/anchor-sections.js"></script>
 
 
-<pre class="r"><code>#TODO where did I get the Data from? </code></pre>
+<pre class="r"><code>#TODO where did I get the Data from? 
+#TODO add link to multispecies example</code></pre>
 <p>Intro text</p>
 <p>To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.</p>
 <pre class="r"><code>pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)</code></pre>
+<p>We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here). In this example we will focus on a single species, the Western Jackdaw (<em>Corvus monedula</em>). You can find an example with a joint species distribution model, that makes use of all features of HMSC, here.
+We also look at just one year (2014) while the data set contains the year 2006 to 2014.</p>
+<pre class="r"><code>data = fread(file.path(data.directory, &quot;data.csv&quot;))
+data = data[Year == 2014]
+data %&lt;&gt;% droplevels()
+
+XData = as.data.frame(data[, c(&quot;Habitat&quot;, &quot;AprMay&quot;)])
+names(XData) = c(&quot;hab&quot;, &quot;clim&quot;)
+
+Y = as.matrix(data$Corvus_monedula)
+colnames(Y) = &quot;Corvus monedula&quot;
+
+xy = as.matrix(data[, c(&quot;x&quot;, &quot;y&quot;)])
+studyDesign = data.frame(route = factor(data$Route))
+rownames(xy) = studyDesign[, 1]
+rL = HmscRandomLevel(sData = xy)
+
+XFormula =  ~ hab + poly(clim, degree = 2, raw = TRUE)</code></pre>
+<p>Fit the model</p>
+<pre class="r"><code>m_full = Hmsc(Y=Y,
+              XData=XData,
+              XFormula=XFormula,
+              distr = &quot;lognormal poisson&quot;,
+              studyDesign = studyDesign,
+              ranLevels=list(route=rL))</code></pre>
+<p>Run MCMC</p>
+<pre class="r"><code>nChains = 2
+thin = c(5, 10, 100)
+nParallel = max(round(parallel::detectCores() / 2), nChains)
+samples = 1000
+transient = 500 * thin
+verbose = 500 * thin
+
+# for (i in seq_along(thin)) {
+#         model[[i]] = sampleMcmc(
+#                 m_full,
+#                 thin = thin[i],
+#                 samples = samples,
+#                 transient = transient,
+#                 nChains = nChains,
+#                 verbose = verbose,
+#                 initPar = &quot;fixed effects&quot;
+#                 
+#         )
+# }</code></pre>
 
             </div>
         </article>

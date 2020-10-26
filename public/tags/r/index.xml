@@ -14,9 +14,9 @@
       <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/</guid>
-      <description>#TODO where did I get the Data from? Intro text
+      <description>#TODO where did I get the Data from? #TODO add link to multispecies exampleIntro text
 To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required.
-pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)</description>
+pacman::p_load(abind, data.table, ggplot2, here, Hmsc, magrittr)We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here).</description>
     </item>
     
   </channel>

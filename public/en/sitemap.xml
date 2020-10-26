@@ -3,17 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-<<<<<<< HEAD
-    <loc>https://jonjup.netlify.app/about/</loc>
-    <lastmod>2014-04-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jonjup.netlify.app/</loc>
-=======
     <loc>https://jonjup.netlify.app/</loc>
     <lastmod>2020-10-26T00:00:00+00:00</lastmod>
->>>>>>> 53f510906ed061dfb68001ed7272d6daadda125f
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -27,28 +18,6 @@
   </url>
   
   <url>
-<<<<<<< HEAD
-    <loc>https://jonjup.netlify.app/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://jonjup.netlify.app/fr/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://jonjup.netlify.app/categories/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://jonjup.netlify.app/series/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://jonjup.netlify.app/fr/series/"
-=======
-
     <loc>https://jonjup.netlify.app/tags/hmsc/</loc>
     <lastmod>2020-10-26T00:00:00+00:00</lastmod>
   </url>
@@ -59,10 +28,16 @@
   </url>
   
   <url>
-
+    <loc>https://jonjup.netlify.app/post/</loc>
+    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jonjup.netlify.app/tags/r/</loc>
-
-
+    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jonjup.netlify.app/post/species-distribution-modeling-with-hmsc/</loc>
     <lastmod>2020-10-26T00:00:00+00:00</lastmod>
   </url>
@@ -74,11 +49,20 @@
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/tags/"
-
                 />
-
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
                 href="https://jonjup.netlify.app/tags/"
-
+                />
+  </url>
+  
+  <url>
+    <loc>https://jonjup.netlify.app/post/test-post/</loc>
+    <lastmod>2020-10-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jonjup.netlify.app/about/</loc>
     <lastmod>2014-04-09T00:00:00+00:00</lastmod>
   </url>
@@ -89,49 +73,25 @@
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/categories/"
-
->>>>>>> 53f510906ed061dfb68001ed7272d6daadda125f
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-<<<<<<< HEAD
-                href="https://jonjup.netlify.app/series/"
-=======
-
                 href="https://jonjup.netlify.app/categories/"
-
->>>>>>> 53f510906ed061dfb68001ed7272d6daadda125f
                 />
   </url>
   
   <url>
-<<<<<<< HEAD
-    <loc>https://jonjup.netlify.app/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://jonjup.netlify.app/fr/tags/"
-=======
-
     <loc>https://jonjup.netlify.app/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
                 href="https://jonjup.netlify.app/fr/series/"
-
->>>>>>> 53f510906ed061dfb68001ed7272d6daadda125f
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-<<<<<<< HEAD
-                href="https://jonjup.netlify.app/tags/"
-=======
-
                 href="https://jonjup.netlify.app/series/"
-
->>>>>>> 53f510906ed061dfb68001ed7272d6daadda125f
                 />
   </url>
   
