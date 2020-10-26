@@ -125,7 +125,7 @@ disableHugoGeneratorInject = false
   # Social icons
   [[params.social]]
     name = "twitter"
-    url  = "https://twitter.com/jonjup"
+    url  = "https://twitter.com/Jon_Jup"
 
   [[params.social]]
     name = "email"
