@@ -10,29 +10,35 @@ comments: no
 images: ~
 ---
 
+<style type="text/css">
+  body{
+  font-size: 8pt;
+}
+</style>
+
 This documents contains literature that was either cited in the MOD3 Lecture or that I think is helpful to deepen your understanding of the discussed methods. The references are arranged in thematic groups following the same structure as the lecture. References within each group are ordered alphabetically. As some references are pertinent to multiple topics you will find repetitions. In the very end there is an additional section pointing you towards methods or papers that were not discussed but are noteworthy and interesting nonetheless.   
 
-# What’s new in multivariate analysis?
+## What’s new in multivariate analysis?
 
-Brittain, J. E. *et al.* (2020). Ecological correlates of riverine diatom and macroinvertebrate alpha and beta diversity across Arctic Fennoscandia. Freshwater Biology, (January 2019), 1–15  
+Brittain, J. E. *et al.* (2020). Ecological correlates of riverine diatom and macroinvertebrate alpha and beta diversity across Arctic Fennoscandia. **Freshwater Biology**, (January 2019), 1–15  
 
-Carlos-Júnior, L. A. *et al.* (2020). Generalized Linear Models outperform commonly used canonical analysis in estimating spatial structure of presence/absence data. Peer J, 8   
+Carlos-Júnior, L. A. *et al.* (2020). Generalized Linear Models outperform commonly used canonical analysis in estimating spatial structure of presence/absence data. **Peer J**, 8   
 
-Hui, F. K. C. *et al.* (2015). Model-based approaches to unconstrained ordination. Methods in Ecology and Evolution, 6(4), 399–411.   
+Hui, F. K. C. *et al.* (2015). Model-based approaches to unconstrained ordination. **Methods in Ecology and Evolution**, 6(4), 399–411.   
 
-Jupke, J. F., & Schäfer, R. B. (2020). Should ecologists prefer model‐ over distance‐based multivariate methods? Ecology and Evolution  
+Jupke, J. F. & Schäfer, R. B. (2020). Should ecologists prefer model‐ over distance‐based multivariate methods? **Ecology and Evolution**  
 
-Paul, W. (2020). Ecological Informatics Covariate-adjusted species response curves derived from long-term macroinvertebrate monitoring data using classical and contemporary model-based ordination methods. Ecological Informatics, 60, 101159.  
+Paul, W. (2020). Covariate-adjusted species response curves derived from long-term macroinvertebrate monitoring data using classical and contemporary model-based ordination methods. **Ecological Informatics**, 60, 101159.  
 
-Roberts, D. W. (2017). Distance, dissimilarity, and mean-variance ratios in ordination. Methods in Ecology and Evolution.   
+Roberts, D. W. (2017). Distance, dissimilarity, and mean-variance ratios in ordination. **Methods in Ecology and Evolution**.   
 
 Roberts, D. W. (2019). Comparison of distance-based and model-based ordinations. Journal of Ecology.   
 
-Szöcs, E. *et al.* (2015). Analysing chemical-induced changes in macroinvertebrate communities in aquatic mesocosm experiments: a comparison of methods. Ecotoxicology, 24(4), 760–769.   
+Szöcs, E. *et al.* (2015). Analysing chemical-induced changes in macroinvertebrate communities in aquatic mesocosm experiments: a comparison of methods. **Ecotoxicology**, 24(4), 760–769.   
 
-Warton, D. I. *et al.* (2012). Distance-based multivariate analyses confound location and dispersion effects. Methods in Ecology and Evolution, 3(1), 89–101.    
+Warton, D. I. *et al.* (2012). Distance-based multivariate analyses confound location and dispersion effects. **Methods in Ecology and Evolution**, 3(1), 89–101.    
 
-Warton, D. I. *et al.* (2015). Model-based thinking for community ecology. Plant Ecology, 216(5), 669–682.   
+Warton, D. I. *et al.* (2015). Model-based thinking for community ecology. **Plant Ecology**, 216(5), 669–682.   
 
 Warton, D. I., & Hui, F. K. C. (2017). The central role of mean-variance relationships in the analysis of multivariate abundance data: a response to Roberts (2017). Methods in Ecology and Evolution, 8(11), 1408–1414.   
 
@@ -41,7 +47,7 @@ Yamaura, Y. *et al.* (2019). Analyzing community structure subject to incomplete
 Yee, T. W. (2004). A New Technique for Maximum-Likelihood Canonical Gaussian Ordination. Ecological Monographs, 74(4), 685–701.  
 
 
-# mvabund}
+## mvabund
 
 Bates D. *et al.* (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48.   
 
@@ -61,7 +67,7 @@ Warton, D. I. (2008b). Raw data graphing: An informative but under-utilized tool
 
 Warton D.I. (2011). Regularized sandwich estimators for analysis of high dimensional data using generalized estimating equations. Biometrics, 67(1), 116-123.  
 
-  # Constrained Quadratic Ordination}
+## Constrained Quadratic Ordination
 
 Baselga, A. & Araújo, M. B. (2009). Individualistic vs community modelling of species distributions under climate change. Ecography, 32(1), 55–65.   
 
@@ -103,7 +109,7 @@ Yee, T. W. (2015). Vector generalized linear and additive models: with an implem
 
 Zuur, A. *et al.* (2007). Analyzing ecological data. Springer.  
 
-# Latent Variable Models
+## Latent Variable Models
 
 Blanchet, F. G. *et al.* (2020). Co-occurrence is not evidence of ecological interactions. Ecology Letters, 23(7), 1050–1063.
 
@@ -143,7 +149,7 @@ Walker, S. C. & Jackson, D. A. (2011). Random-effects ordination: Describing and
 
 Warton, D. I. *et al.* (2015). So Many Variables: Joint Modeling in Community Ecology. Trends in Ecology & Evolution, 30(12), 766–779. 
 
-# HMSC
+## HMSC
 
 Baselga, A. & Araújo, M. B. (2010). Do community-level models describe community variation effectively? Journal of Biogeography, 37(10), 1842–1850.  
 
@@ -189,7 +195,7 @@ Zurell, D. *et al.* (2019). Testing species assemblage predictions from stacked 
 
 Zurell, D. *et al.* (2020). A standard protocol for reporting species distribution models. Ecography, 1–17.  
 
-# Copulas
+## Copulas
 
 Anderson, M. J. *et al.* (2019). A pathway for multivariate analysis of ecological communities using copulas. Ecology and Evolution, (September 2018), 1–19.  
 
@@ -211,7 +217,7 @@ Sklar, A. (1959). Fonctions de répartition à n dimensions et leurs marges. Pub
 
 Terui, A. *et al.* (2019). Metapopulation stability in branching river networks. PNAS, 116(3), 1067–1068.  
 
-  # Not covered - but interesting}
+## Not covered - but interesting
 
 Clark, N. J. *et al.* (2018). Unravelling changing interspecific interactions across environmental gradients using Markov random fields. Ecology, 99(6), 1277–1283  
 
