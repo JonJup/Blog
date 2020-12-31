@@ -1,0 +1,171 @@
+---
+title: Analyzing the antTrait data with boral
+author: Jonathan Jupke
+date: '2020-12-31'
+slug: analyzing-the-anttrait-data-with-boral
+categories: []
+tags:
+  - MOD3
+  - mvabund
+  - R
+  - boral
+comments: no
+images: ~
+---
+
+
+load packages 
+
+```{r}
+pacman::p_load(boral,
+               corrplot,
+               mvabund,
+               readxl,
+               rjags,
+               UncertainOrd)
+```
+
+
+load and prepare data 
+
+```{r}
+data(antTraits)
+
+Y <- antTraits$abund
+# scale environmental variables 
+X <- scale(antTraits$env)
+ 
+traits = antTraits$traits
+```
+
+Now we can fit the first models 
+
+```{r eval=F}
+fit_unconstrained_po <- boral(y = Y, 
+                              family = "poisson", 
+                              lv.control = list(num.lv = 2), 
+                              row.eff = "fixed", 
+                              save.model = T)
+```
+
+```{r echo=F}
+fit_unconstrained_po = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_unconstrained_poisson.RDS")
+```
+
+```{r}
+summary(fit_unconstrained_po)
+```
+
+```{r}
+plot(fit_unconstrained_po)
+```
+
+Strong fan, go ahead and fit nb model 
+
+```{r eval=F}
+fit_unconstrained_nb <- boral(y = Y, 
+                              family = "negative.binomial", 
+                              lv.control = list(num.lv = 2), 
+                              row.eff = "fixed", 
+                              save.model = T)
+```
+
+```{r echo=F}
+fit_unconstrained_nb = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_unconstrained_negbinom.RDS")
+```
+
+```{r}
+plot(fit_unconstrained_nb)
+```
+
+```{r}
+lvsplot(fit_unconstrained_nb)
+```
+
+lets fit some uncertainty plots.  
+
+```{r}
+## uncertainty plots 
+samples <- get.mcmcsamples(fit_unconstrained_nb)
+s1c <- grepl(x = colnames(samples), pattern = "lvs+.+\\d,1")
+s2c <- grepl(x = colnames(samples), pattern = "lvs+.+\\d,2")
+samples1 <- samples[, s1c]
+samples2 <- samples[, s2c]
+
+options(warn = -1)
+
+CredibleViz(
+  coord1 = samples1,
+  coord2 = samples2,
+  type = "scatter",
+  items = c(4, 21)
+)
+```
+
+```{r eval = F}
+fit_constrained_nb <-
+  boral(
+    y = Y,
+    X = X,
+    family = "negative.binomial",
+    lv.control = list(num.lv = 2),
+    save.model = TRUE
+  )
+```
+
+```{r echo=F}
+fit_constrained_nb = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_constrained_negbinom.RDS")
+```
+
+```{r}
+envcors <- get.enviro.cor(fit_constrained_nb)
+rescors <- get.residual.cor(fit_constrained_nb) 
+par(mfrow = c(1,1))
+corrplot(
+        envcors$sig.cor,
+        type = "lower",
+        diag = FALSE,
+        title =  "Correlations due to covariates", 
+        mar = c(3,0.5,2,1), tl.srt = 45) 
+corrplot(
+        rescors$sig.cor,
+        type = "lower",
+        diag = FALSE,
+        title =  "Residual correlations",
+        mar = c(3, 0.5, 2, 1),
+        tl.srt = 45
+)
+par(mfrow=c(1,1))
+lvsplot(fit_constrained_nb)
+```
+
+```{r eval = F}
+# Non-numeric variables have to be removed
+traits2 = traits[,-c(3,4)]
+
+example_which_traits <- vector("list",ncol(X)+1)
+for(i in 1:length(example_which_traits)) 
+        example_which_traits[[i]] <- 1:ncol(traits2)
+
+fit_constrained_nb_trait <-
+  boral(
+    y = Y,
+    X = X,
+    traits = traits2,
+    which.traits = example_which_traits,
+    family = "negative.binomial",
+    lv.control = list(num.lv = 2),
+    save.model = TRUE
+  )
+```
+
+```{r echo=F}
+fit_constrained_nb_trait = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_constrained_negbinom_trait.RDS")
+```
+
+```{r}
+corrplot(fit_constrained_nb_trait$geweke.diag$geweke.diag$traits.coefs,
+         is.corr = FALSE)
+
+```
+
