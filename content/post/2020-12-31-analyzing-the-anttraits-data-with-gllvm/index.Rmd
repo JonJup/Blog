@@ -1,0 +1,142 @@
+---
+title: Analyzing the antTraits data with gllvm
+author: Jonathan Jupke
+date: '2020-12-31'
+slug: analyzing-the-anttraits-data-with-gllvm
+categories: []
+tags:
+  - R
+  - MOD3
+comments: no
+images: ~
+---
+
+load libraries
+```{r}
+pacman::p_load(gllvm, corrplot,gclus)
+```
+
+load data 
+```{r}
+data("antTraits")
+y = as.matrix(antTraits$abund)
+X = scale(as.matrix(antTraits$env))
+TR <- antTraits$traits
+```
+
+fit poisson model
+```{r eval = F}
+fit_uo_po <- gllvm(y, family = poisson())
+```
+```{r echo = F}
+fit_uo_po = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_uo_po.RDS"
+)
+fit_uo_nb = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_uo_nb.RDS"
+)
+fit_co_nb2 = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_co_nb_2.RDS"
+)
+fit_co_nb3 = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_co_nb_3.RDS"
+)
+fit_4th = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_trait_co_nb_r2.RDS"
+)
+fit_4th2 = readRDS(
+        "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_traits_not_co_nb_2.RDS"
+)
+```
+```{r}
+plot(fit_uo_po)
+```
+
+
+fit nb model 
+```{r eval = F}
+fit_uo_nb <- gllvm(y, family = "negative.binomial")
+```
+
+```{r}
+plot (fit_uo_nb)
+```
+
+```{r}
+summary(fit_uo_nb)
+```
+
+```{r}
+ordiplot(fit_uo_nb,
+         biplot = TRUE,
+         ind.spp = 15,
+         xlim = c(-3,3) ,
+         ylim = c(-2, 1.6))
+```
+
+
+Ok, now lets use the trait data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike's Information Criterion (AIC). 
+```{r eval = F}
+fit_co_nb2 <- gllvm(y, X, num.lv = 2,
+                    formula = ~ Bare.ground + Shrub.cover +
+                            Volume.lying.CWD,
+                    family = "negative.binomial")
+fit_co_nb3 <- gllvm(y, X, num.lv = 3,
+                    formula = ~ Bare.ground + Shrub.cover +
+                            Volume.lying.CWD,
+                    family = "negative.binomial")
+```
+
+```{r}
+AIC(fit_co_nb2, fit_co_nb3)
+```
+
+```{r}
+ordiplot(fit_co_nb2,
+         biplot = TRUE,
+         ind.spp = 15,
+         xlim = c(-3,3) ,
+         ylim = c(-2, 1.6))
+```
+
+Fit a model with traits. 
+
+```{r eval=F}
+
+fit_4th <- gllvm(
+        y = y,
+        X = X,
+        TR = TR,
+        family = "negative.binomial",
+        num.lv = 2,
+        formula = y ~
+                (Bare.ground + Shrub.cover + Volume.lying.CWD) +
+                (Bare.ground + Shrub.cover + Volume.lying.CWD):(Pilosity + Polymorphism + Webers.length))
+```
+
+nice trait plot 
+
+```{r}
+fourth <- fit_4th$fourth.corner
+colort <- colorRampPalette(c("blue", "white", "red"))
+a <- max( abs(fourth) )
+plot.4th <- lattice::levelplot((as.matrix(fourth)), xlab = "Environmental Variables",
+                               ylab = "Species traits", col.regions = colort(100), cex.lab =1.3,
+                               at = seq(-a, a, length = 100), scales = list(x = list(rot = 45)))
+plot.4th
+```
+
+We can evaluate whether traits matter in this context or not by comparing the model with traits with one that does not inlcude traits using an ANOVA. Unfortunately we can not use the model we fit previously but have to fit a new one. 
+
+```{r eval = F}
+fit_4th2 <- gllvm(y, X, TR, family = "negative.binomial", 
+                  num.lv = 2, formula = y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD))
+```
+
+
+```{r}
+trait_anoa = anova(fit_4th, fit_4th2)
+trait_anoa
+```
+
+
