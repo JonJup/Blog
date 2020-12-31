@@ -1,0 +1,467 @@
+---
+title: 'Analyzing the antTraits data with CQO and CAO '
+author: Jonathan Jupke
+date: '2020-12-31'
+slug: analyzing-the-anttraits-data-with-cqo-and-cao
+categories: []
+tags:
+  - CQO
+  - CAO
+  - R
+  - antTraits
+  - MOD3
+comments: no
+images: ~
+---
+
+
+
+<div id="to-do" class="section level1">
+<h1>TO DO</h1>
+<p>add references to Yee 2015</p>
+<p>load libraries and custom made cqo_residual_plot function (hope to put this into misc package at some point)</p>
+<pre class="r"><code>pacman::p_load(data.table, dplyr, ggplot2, purrr, VGAM, mvabund)
+source(&quot;../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/002_r_scripts/cqo/cqo_residual_plot.R&quot;)</code></pre>
+<p>load data</p>
+<pre class="r"><code>data(&quot;antTraits&quot;)
+
+bio = antTraits$abund
+env = antTraits$env
+env = scale(env)</code></pre>
+<p>In Yee (2015, p.241), Thomas Yee suggests to keep S &lt;= 10, n &lt;=500 and p &lt;=5. We will stick to this.
+We have 41 species so I pick the 10 most abundant ones.</p>
+<pre class="r"><code>colSums(bio) %&gt;% 
+        sort(decreasing=T) %&gt;% 
+        names %&gt;% 
+        .[11:10]</code></pre>
+<pre><code>## [1] &quot;Monomorium.rothsteini&quot; &quot;Nylanderia.sp..A&quot;</code></pre>
+<pre class="r"><code>comb = cbind(bio,env)</code></pre>
+<p>We start with a CAO to evaluate unimodality.</p>
+<p>A non-linear degree of freedom (df1.nl) of 1.5 approximates CQO. By setting df1.nl to 2 we apply a liberal inclusion criterion. I set a seed to ensure replicability.</p>
+<pre class="r"><code>set.seed = 1
+cao_p = cao(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Pheidole.sp..A,
+    Rhytidoponera.metallica.sp..A,
+    Pheidole.sp..E,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.leae,
+    Iridomyrmex.mjobergi,
+    Heteroponera.sp..A,
+    Nylanderia.sp..A
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 1,
+  df1.nl = 2,
+  Bestof = 30 
+)</code></pre>
+<p>With the second line below we evaluate if a global minimum was reached. If the number that is returned there is below 3 we should rerun the CAO and possibly increase the <em>Bestof</em> argument. Here 8 from 30 models have the same deviance which means that we are likley to have found a global minimum.</p>
+<pre class="r"><code>cao_p_summary = summary(cao_p)
+sum(
+  round(cao_p_summary@misc$deviance.Bestof,0) 
+  == 
+  round(min(cao_p_summary@misc$deviance.Bestof), 0)
+  )</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>par(mfrow=c(3,4))
+plot(
+  cao_p,
+  lcol = &quot;blue&quot;,
+  lwd = 2,
+  ylim = c(-5, 5),
+  xlab = &quot;&quot;,
+  ylab = &quot;&quot;
+)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Most species do not respond unimodally so we replace them with new ones.</p>
+<pre class="r"><code>cao_p = cao(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Notoncus.ectatommoides,
+    Tapinoma.sp..A,
+    Rhytidoponera.sp..B,
+    Iridomyrmex.suchieri,
+    Melophorus.sp..F,
+    Aphaenogaster.longiceps
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 1,
+  df1.nl = 2,
+  Bestof = 30
+)</code></pre>
+<pre class="r"><code>cao_p_summary = summary(cao_p)
+sum(round(cao_p_summary@misc$deviance.Bestof,0) == round(min(cao_p_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 13</code></pre>
+<pre class="r"><code>par(mfrow=c(3,4))
+plot(cao_p, lcol = &quot;blue&quot;, lwd = 2, ylim = c(-5, 5), xlab = &quot;&quot;, ylab = &quot;&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Some species still look bad (e.g. ). Let’s go through the motions one more time.</p>
+<pre class="r"><code>cao_p = cao(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Iridomyrmex.suchieri,
+    Aphaenogaster.longiceps,
+    Iridomyrmex.purpureus,
+    Camponotus.claripes,
+    Tetramorium.sp..A,
+    Meranoplus.sp..A,
+    Monomorium.sydneyense
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 1,
+  df1.nl = 2,
+  Bestof = 30
+)</code></pre>
+<pre class="r"><code>cao_p_summary = summary(cao_p)
+sum(round(cao_p_summary@misc$deviance.Bestof,0) == round(min(cao_p_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>par(mfrow=c(3,4))
+plot(cao_p, lcol = &quot;blue&quot;, lwd = 2, ylim = c(-5, 5), xlab = &quot;&quot;, ylab = &quot;&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Now we can fit a CQO with Poisson response and one latent variable. This first model estimates tolerances separately for each species (<em>eq.toler</em> = FALSE)</p>
+<pre class="r"><code>cqo_p_ut = cqo(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Aphaenogaster.longiceps,
+    Iridomyrmex.purpureus,
+    Tetramorium.sp..A,
+    Meranoplus.sp..A
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 1,
+  Bestof = 20,
+  eq.toler = F
+)</code></pre>
+<pre class="r"><code>cqo_p_summary = summary(cqo_p_ut)
+sum(round(cqo_p_summary@misc$deviance.Bestof,0) == round(min(cqo_p_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>Tol(cqo_p_ut)[1, 1, ]</code></pre>
+<pre><code>##   Iridomyrmex.rufoniger   Iridomyrmex.bicknelli  Camponotus.consobrinus 
+##              1.00000000              0.81359556             40.65318348 
+##   Monomorium.rothsteini Aphaenogaster.longiceps   Iridomyrmex.purpureus 
+##              0.08655521              0.21666903              0.19432859 
+##       Tetramorium.sp..A        Meranoplus.sp..A 
+##              0.26455682              0.25144384</code></pre>
+<pre class="r"><code>is.bell(cqo_p_ut)</code></pre>
+<pre><code>##   Iridomyrmex.rufoniger   Iridomyrmex.bicknelli  Camponotus.consobrinus 
+##                    TRUE                    TRUE                    TRUE 
+##   Monomorium.rothsteini Aphaenogaster.longiceps   Iridomyrmex.purpureus 
+##                    TRUE                    TRUE                    TRUE 
+##       Tetramorium.sp..A        Meranoplus.sp..A 
+##                    TRUE                    TRUE</code></pre>
+<pre class="r"><code>cqo2_p_ut = cqo(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Aphaenogaster.longiceps,
+    Iridomyrmex.purpureus,
+    Tetramorium.sp..A,
+    Meranoplus.sp..A
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 2,
+  Bestof = 30,
+  eq.toler = F
+)</code></pre>
+<pre class="r"><code>cqo2_p_ut_summary = summary(cqo2_p_ut)
+sum(round(cqo2_p_ut_summary@misc$deviance.Bestof,0) == round(min(cqo2_p_ut_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>Tol(cqo2_p_ut)</code></pre>
+<pre><code>## , , Iridomyrmex.rufoniger
+## 
+##            latvar1     latvar2
+## latvar1 -0.1009519  0.40112376
+## latvar2  0.4011238 -0.09096052
+## 
+## , , Iridomyrmex.bicknelli
+## 
+##               latvar1       latvar2
+## latvar1  1.000000e+00 -3.903128e-18
+## latvar2 -3.903128e-18  1.000000e+00
+## 
+## , , Camponotus.consobrinus
+## 
+##             latvar1     latvar2
+## latvar1  0.02435967 -0.11746943
+## latvar2 -0.11746943 -0.02014631
+## 
+## , , Monomorium.rothsteini
+## 
+##             latvar1     latvar2
+## latvar1 -0.01677764  0.03389069
+## latvar2  0.03389069 -0.01157505
+## 
+## , , Aphaenogaster.longiceps
+## 
+##               latvar1       latvar2
+## latvar1 -1.437623e-04 -7.334284e-05
+## latvar2 -7.334284e-05 -7.890077e-06
+## 
+## , , Iridomyrmex.purpureus
+## 
+##             latvar1     latvar2
+## latvar1  0.19501854 -0.02294902
+## latvar2 -0.02294902  0.03158279
+## 
+## , , Tetramorium.sp..A
+## 
+##             latvar1      latvar2
+## latvar1 -0.02255709  0.055565441
+## latvar2  0.05556544 -0.005945925
+## 
+## , , Meranoplus.sp..A
+## 
+##              latvar1      latvar2
+## latvar1 -0.007312088  0.020562856
+## latvar2  0.020562856 -0.002739326</code></pre>
+<pre class="r"><code>is.bell(cqo2_p_ut)</code></pre>
+<pre><code>##   Iridomyrmex.rufoniger   Iridomyrmex.bicknelli  Camponotus.consobrinus 
+##                   FALSE                    TRUE                   FALSE 
+##   Monomorium.rothsteini Aphaenogaster.longiceps   Iridomyrmex.purpureus 
+##                   FALSE                   FALSE                    TRUE 
+##       Tetramorium.sp..A        Meranoplus.sp..A 
+##                   FALSE                   FALSE</code></pre>
+<pre class="r"><code>AIC(cqo_p_ut)</code></pre>
+<pre><code>## [1] 1258.209</code></pre>
+<pre class="r"><code>AIC(cqo2_p_ut)</code></pre>
+<pre><code>## [1] 1049.755</code></pre>
+<pre class="r"><code>cqo_resid_plot(list(cqo_p_ut,
+                    cqo2_p_ut))</code></pre>
+<pre><code>## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge
+
+## Warning in lv[j] &lt;- t(C) %*% env[j, -1]: Anzahl der zu ersetzenden Elemente ist
+## kein Vielfaches der Ersetzungslänge</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>cqo_nb_ut = cqo(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Aphaenogaster.longiceps,
+    Iridomyrmex.purpureus,
+    Tetramorium.sp..A,
+    Meranoplus.sp..A
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = negbinomial,
+  data = comb,
+  Rank = 1,
+  Bestof = 40,
+  eq.toler = F
+)</code></pre>
+<pre class="r"><code>cqo_nb_ut_summary = summary(cqo_nb_ut)
+sum(round(cqo_nb_ut_summary@misc$deviance.Bestof,0) == round(min(cqo_nb_ut_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>Tol(cqo_nb_ut_summary)</code></pre>
+<pre><code>## , , Iridomyrmex.rufoniger
+## 
+##        latvar
+## latvar      1
+## 
+## , , Iridomyrmex.bicknelli
+## 
+##          latvar
+## latvar 1.420673
+## 
+## , , Camponotus.consobrinus
+## 
+##          latvar
+## latvar 4.131982
+## 
+## , , Monomorium.rothsteini
+## 
+##            latvar
+## latvar 0.03673759
+## 
+## , , Aphaenogaster.longiceps
+## 
+##           latvar
+## latvar 0.1628993
+## 
+## , , Iridomyrmex.purpureus
+## 
+##           latvar
+## latvar 0.1208868
+## 
+## , , Tetramorium.sp..A
+## 
+##           latvar
+## latvar 0.1838917
+## 
+## , , Meranoplus.sp..A
+## 
+##            latvar
+## latvar 0.07948586</code></pre>
+<pre class="r"><code>is.bell(cqo_nb_ut_summary)</code></pre>
+<pre><code>##   Iridomyrmex.rufoniger   Iridomyrmex.bicknelli  Camponotus.consobrinus 
+##                    TRUE                    TRUE                    TRUE 
+##   Monomorium.rothsteini Aphaenogaster.longiceps   Iridomyrmex.purpureus 
+##                    TRUE                    TRUE                    TRUE 
+##       Tetramorium.sp..A        Meranoplus.sp..A 
+##                    TRUE                    TRUE</code></pre>
+<pre class="r"><code>cqo_resid_plot(list(cqo_nb_ut, cqo_p_ut))</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code># lets look at the plots 
+par(mfrow=c(1,1))
+lvplot(cqo_p_ut, label = T)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<pre class="r"><code>#persp(cqo_p_ut, label = T)
+lvplot(cqo2_p_ut, label = T)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<pre class="r"><code>#persp(cqo2_p_ut, label = T)</code></pre>
+<pre class="r"><code>cqo2_p_et = cqo(
+  formula = cbind(
+    Iridomyrmex.rufoniger,
+    Iridomyrmex.bicknelli,
+    Camponotus.consobrinus,
+    Monomorium.rothsteini,
+    Aphaenogaster.longiceps,
+    Iridomyrmex.purpureus,
+    Tetramorium.sp..A,
+    Meranoplus.sp..A
+  ) ~
+    Bare.ground + Canopy.cover + Shrub.cover + Volume.lying.CWD + Feral.mammal.dung,
+  family = poissonff,
+  data = comb,
+  Rank = 2,
+  Bestof = 50,
+  eq.toler = T
+)</code></pre>
+<pre class="r"><code>cqo2_p_et = readRDS(file.path(dir_cqo, &quot;cqo2_p_et.RDS&quot;))</code></pre>
+<pre class="r"><code>cqo2_p_et_summary = summary(cqo2_p_et)
+sum(round(cqo2_p_et_summary@misc$deviance.Bestof,0) == round(min(cqo2_p_et_summary@misc$deviance.Bestof), 0))</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code># trivial 
+is.bell(cqo2_p_et)</code></pre>
+<pre><code>##   Iridomyrmex.rufoniger   Iridomyrmex.bicknelli  Camponotus.consobrinus 
+##                    TRUE                    TRUE                    TRUE 
+##   Monomorium.rothsteini Aphaenogaster.longiceps   Iridomyrmex.purpureus 
+##                    TRUE                    TRUE                    TRUE 
+##       Tetramorium.sp..A        Meranoplus.sp..A 
+##                    TRUE                    TRUE</code></pre>
+<pre class="r"><code>cqo_resid_plot(list(cqo2_p_et, cqo2_p_ut))</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>lvplot(cqo2_p_et, label = T)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<pre class="r"><code>persp(cqo2_p_et, label = T)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
+<pre class="r"><code>concoef(cqo2_p_et)</code></pre>
+<pre><code>##                       latvar1     latvar2
+## Bare.ground        0.03748291  0.19687420
+## Canopy.cover      -0.80843571 -0.02490658
+## Shrub.cover        0.58346746  0.09902859
+## Volume.lying.CWD   0.12377429  0.31882781
+## Feral.mammal.dung  0.06945617 -0.09754698</code></pre>
+</div>
