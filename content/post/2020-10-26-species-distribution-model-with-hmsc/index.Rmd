@@ -8,53 +8,68 @@ tags:
   - R
   - MOD3
   - HMSC
-toc: no
+bibliography: ref.bib
 images: ~
 ---
 
 ```{r}
-#TODO where did I get the Data from? 
 #TODO add link to multispecies example
 ```
 
+# Introduction
 
-Intro text 
+In this short example we will use the Hierarchical Modeling of species communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the Western jackdaw (*Corvus monedula*) in Finland. This is a univariate example of HMSC - if you are interested in a multi-species example see here. However I would suggest you start with the easier univariate case if you are not familiar with HMSC. This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see @ovaskainen2017make, @ovaskainen2020joint, or the [offical website](https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc). 
 
-To run this code you will need to install the pacman R package beforehand but this will take care of all the other packages required. 
+# Preparing the analysis
+
+To run this code you will need to install the *pacman* R package beforehand but this will take care of all the other packages required. 
 
 ```{r setup, echo=TRUE, message=FALSE}
 if(!require(pacman)) install.packages("pacman")
 p_load(abind, data.table, dplyr, ggplot2, here, kableExtra, Hmsc, magrittr)
 ```
 
+The data we use in this example can be downloaded from the [here](https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip).
+
 ```{r load data, echo=FALSE}
 data.directory="~/01_Uni/01_Lehre/05_MOD3-Lecture/001_raw_data/hmsc_birds/data"
 model.path="~/01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/hmsc_mcmc/corvusmonedula/"
 ```
 
-We use the Finnish bird data that are also often used by the creators of HMSC to demonstrate the package (e.g. here and here). In this example we will focus on a single species, the Western Jackdaw (*Corvus monedula*). You can find an example with a joint species distribution model, that makes use of all features of HMSC, here. 
-We also look at just one year (2014) while the data set contains the year 2006 to 2014. 
+We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in @ovaskainen2020joint and in @tikhonov2020joint). In addtion to only focussing on *C. monedula* we will also reduce the data to just one year (2014) while the data set contains the years 2006 to 2014. 
 
 ```{r carpet data, echo=T}
+# data.directory needs to be a string, pointing 
+# to where your data is
 data = fread(file.path(data.directory, "data.csv"))
+# subset to the year 2014 using data.table syntax
 data = data[Year == 2014]
+# drop unused factor levels 
+# - useful for factors levels missing from 2014
 data %<>% droplevels()
 
+# extract environmental covariates 
 XData = as.data.frame(data[, c("Habitat", "AprMay")])
 names(XData) = c("hab", "clim")
 
+# extract species data 
 Y = as.matrix(data$Corvus_monedula)
 colnames(Y) = "Corvus monedula"
 
+# extract spatial coordinates 
 xy = as.matrix(data[, c("x", "y")])
+# the study design matrix - here the name of the site
 studyDesign = data.frame(route = factor(data$Route))
 rownames(xy) = studyDesign[, 1]
+# create a spatial random level
 rL = HmscRandomLevel(sData = xy)
 
+# define the formula for the model: habitat (a factor) 
+# and the raw second order polynomial of climate
 XFormula =  ~ hab + poly(clim, degree = 2, raw = TRUE)
 ```
 In the next step we define the model using the Hmsc function. 
-EXPLAIN ARGUMENTS
+Most arguments here are self-explanatory. Two thing worth mentioning: *distr* is the distribution function and ranLevels needs to be a list, even if you only have one random level. 
 ```{r define hmsc model}
 m_full = Hmsc(Y=Y,
               XData=XData,
@@ -63,12 +78,17 @@ m_full = Hmsc(Y=Y,
               studyDesign = studyDesign,
               ranLevels=list(route=rL))
 ```
-Ok now lets have a look at the object we created by defining the model. From the environment pane we can already see that it is has the class Hmsc. If we type in the object name a string is returned giving the number of sampling units, species, environmental covariates, traits and random levels. If we were to use str() to have a closer look at the structure of the object we would see that it is actually a list of, in this case, 71 objects. 
+Ok, now lets have a look at the object we created by defining the model. From the environment pane we can already see that it is has the class Hmsc. If we type in the object name a string is returned giving the number of sampling units, species, environmental covariates, traits and random levels. If we were to use str() to have a closer look at the structure of the object we would see that it is actually a list of, in this case, 71 objects. If you are not familiar with Bayesian models this step might be unfamiliar to you. We did not actually fit the model yet we only defined its structure. In the usual calls to lm(), glm(), or lme() this happens in one step. 
 ```{r open hmsc object }
 m_full
 ```
 
-Next comes the truly time consuming step: fitting the model with Markov Chain Monte Carlo. 
+Next comes the truly time consuming step: fitting the model with Markov Chain Monte Carlo. We need to set the number of chains (*nChains*), the thinning (*thin*), the number of cpu cores to use (*nParallel*), the number of samples (*samples*), the length of the burn-in or transient (*transient*) and the interval at which we want to function to report its progress (*verbose*). 
+
+In this example we use three different values for *thin* (5,10 and 100) to show how the fit changes. The models are fit in a loop and stored in a list. Both steps are not necessary if you only fit a model with one value for each parameter.
+A low thin means the model is fit quicker since fewer samples have to be taken. However, the fit might be worse as autocorrelation within chains increases, as you can see in the effective sampling size.   
+
+When you usually fit such models you would start with low numbers and then steadily increase them until the model fit is satisfactory (high effective sampling size, low potential scale reduction factor, converged chains, )
 
 ```{r run MCMC, eval = FALSE}
 nChains = 2
@@ -101,6 +121,8 @@ model[[2]]=readRDS(file.path(model.path, "hmsc_cm_models10.RDS"))[[1]]
 model[[3]]=readRDS(file.path(model.path, "hmsc_cm_models100.RDS"))[[1]]
 ```
 
+After fitting the models we need to convert the into objects that the Coda R-package [@Plummer2006] can work with. 
+Again this is only within a loop because we have multiple models. The converted models can be used to plot trace plots as well as density estimates for each parameter. Below we can see these plots for the $\beta$ parameters of the intercept, and the first two levels of habitat for all three thinning parameters. 
 ```{r mcmc-plots1}
 mpost=list()
 for (i in seq_along(model)) {
@@ -119,7 +141,7 @@ plot(mpost[[2]]$Beta[,1:3])
 plot(mpost[[3]]$Beta[,1:3])
 ```
 
-Based on these plots we can clearly see that using a thinning of 100 is necessary for satisfactory MCMC convergence. In addition to these visual checks we can also look at the potential scale reduction factor (aka Gelman statistic) and the effective samples size. 
+Based on these plots we can clearly see that using a thinning of 100 is necessary for satisfactory MCMC convergence. In addition to these visual checks, we can also look at the potential scale reduction factor (aka Gelman statistic) and the effective samples size. Otso Ovaskainen suggests in his lectures, that, as a rule of thumb, the latter should be below 1.1, or even 1.05. The effective sample size should be close to the actual sample size (in this case 1000). Most effective samples sizes in this example are quite low, for a publication you might want to increase the thinning again.   
 
 ```{r effective sample size show}
 ess.beta = effectiveSize(mpost[[3]]$Beta)
@@ -156,34 +178,48 @@ temp %>%
 rm(psrf.beta, temp, vc_names_psrf)
 ```
 
-Next we evaluate the model fit. HMSC has a custom function that computes several goodness-of-fit metrics
+Next we evaluate the model fit. HMSC has a pair of functions that computes several goodness-of-fit metrics: *computePredictedValues()* and *evaluateModelFit()*. Just to compare the three thinning values once more we again loop over all three models. 
 
 ```{r evaluate-model fit }
 MF = list()
-for (i in 1:3){
-        preds = computePredictedValues(model[[i]], expected = FALSE)
-        MF[[i]] = evaluateModelFit(hM = model[[i]], predY = preds)
+for (i in 1:3) {
+  preds = computePredictedValues(model[[i]], 
+                                 expected = FALSE)
+  MF[[i]] = evaluateModelFit(hM = model[[i]], 
+                             predY = preds)
 }
 metrics = names(MF[[1]])
-values = 
-  append(unlist(MF[[1]]), 
-         append(unlist(MF[[2]]), 
+values =
+  append(unlist(MF[[1]]),
+         append(unlist(MF[[2]]),
                 unlist(MF[[3]])))
-
-
 
 dt_MF = tibble(
   value = values,
-  metric = rep(metrics, 
+  metric = rep(metrics,
                times = 3),
-  thinning = factor(rep(c(5,10,100), each = length(MF[[1]])))
+  thinning = factor(rep(c(5, 10, 100),
+                        each = length(MF[[1]])))
 )
 
-dt_MF %>% 
-  ggplot(aes(x=metric, y=value,col=thinning)) + 
-  geom_point()
+dt_MF %>%
+  ggplot(aes(x = metric, y = value, col = thinning)) +
+  geom_point() 
 ```
-We can use variance partitioning to see how important sets how variables are in determining the abundance of *Corvus monedula*. First we group all covarites into one of two groups: habitat or climate. In our example the number of covariates is quite low and each group basically represents one variable. The group habitat represents the factor habitat with all its dummy-variable levels and the group climate second order polynomial of April temperatures. 
+
+Let's shortly go through these metrics one by one. RMSE is the Root Mean Square Error between predicted and observed values.
+$$RMSE = \sqrt{\dfrac{1}{n}\Sigma_{i=1}^n (y_{ij}-p_{ij})^2$$  
+where $y_{ij}$ is the observed value and $p_{ij}$ the value predicted by the model. So in a model with a RSME of 2 (like that with thinning 10) our average prediction is either too large or two small by 2.
+As we increase the thinning to 100 the RSME increases to approximately 4.6. 
+SR2 is a pseudo-$R^2$ that HMSC uses for Poisson-models. It is computed as the squared Spearman correlation between observed and predicted values, times the sign of the correlation. It ranges between 0 and 1. Here again we see that the model with a thinning of 10 has the best fit and the model with a thinning of 100 the worst.  
+Now we have the same to values again but with a C. in front of it (i.e. C.RMSE and C.SR2). The C. is short for counts so these values do not take into account whether our model can predict were the species occurs or not but only that it predicts the counts correctly given that the species occurs. Here again, the model with the best convergence in MCMC (i.e. thinning = 100) has the worst fit (i.e. lowest C.SR2 and highest C.RMSE). 
+Lastly, there are three more values with O in the beginning. As you might have figured out by now this stands for occurrence. So for these values abundances are censored to presence-absence indicators and we only evaluate whether the model can predict the species' occurrences accurately. The three metrics are RSME, TJURR2 and AUC.
+
+AUC is short for Area under Curve and was proposed by @pearce2000evaluating. Tjur R2 is a pseudo-$R^2$ value, like SR2 above, for binary data such as 0 or 1, presence or absence and was proposed by @tjur2009coefficients. We will not get into the details of their computation here but it is important to note that their scale differs. For AUC model that performs no better than random has a value of 0.5 and a perfect model has a value of 1. For Tjur $R^2$ a model that performs no better than random has a value of 0 while the perfect model also receives a 1. Thus you can expect Tjur $R^2$ to be lower than AUC. Using the AUC in species distribution models was recently criticized by @LauraJimenez2020.  
+The goodness of fit metrics do not differ strongly between the three models we compare.   
+
+
+We can use variance partitioning to see how important sets how variables are in determining the abundance of *C. monedula*. First we group all covariates into one of two groups: habitat or climate. In our example the number of covariates is quite low and each group basically represents one variable. The group habitat represents the factor habitat with all its dummy-variable levels and the group climate the second order polynomial of April temperatures. 
 Again we are interested in the results for all three models, to see whether the non-convergent models perform differently. 
 
 ```{r variance-partitioning}
@@ -191,13 +227,15 @@ groupnames = c("habitat", "climate")
 group = c(1,1,1,1,1,2,2)
 VP = list()
 for (i in 1:3){
-        VP[[i]] = computeVariancePartitioning(model[[i]],
-                                              group = group, 
-                                              groupnames = groupnames)
+        VP[[i]] = computeVariancePartitioning(
+          model[[i]],
+          group = group, 
+          groupnames = groupnames
+          )
 }
 dt_VP = tibble(
   variable = rep(c("habitat", "climate", "Random:route"), times=3),
-  value= c(c(VP[[1]]$vals), c(VP[[2]]$vals), c(VP[[3]]$vals)),
+  value    = c(c(VP[[1]]$vals), c(VP[[2]]$vals), c(VP[[3]]$vals)),
   thinning = factor(rep(c(5,10,100), each = 3))
 )
 
@@ -207,26 +245,27 @@ dt_VP %>%
 
 ```
 
+From the plot above we can clearly see, that this is not the case. All three models agree that climate explains more of the variation than habitat and habitat more than space.
 
-Lastly we will predict the portability of occurrence and the abundance of *Corvus monedula*. 
-First along hypothetical gradients of covariates and afterwards across a grid of Finnland.  
-```{r predict-graduient}
+Next, we will predict the probability of occurrence and the abundance of *C. monedula*. 
+First along hypothetical gradients of covariates and afterwards across a grid of Finland.  
+
+I will only show this with the third model (i.e. thinning = 100) but feel free to try this with the others. Additionally, we need to transform factors variable into factors within the model. We can construct our artificial gradient with the *constructGraident()* function. The function has three arguments hM is the model we would like to use for the prediction, focalVariable is the variable our artificial gradient is based on, and non.focalVariables describes how the other variables are handled. 
+While the first two arguments are self-explanatory, the third one requires some comments. 
+If there are more than one variable in the model than the response of the species could vary along all of them. We, however, want to predict the changes in abundance along one focal variable and thus we need to make assumptions about the others. This assumption can differ between non-focal variables. Three assumptions are available: 1: non-focal variable is equal to its overall most common value; 2: non-focal variable is equal to its overall most common value conditional on the focal variable; 3: fixes non-focal variable at a supplied value. In the code below, we test the first two options. 
+
+```{r predict-graduient, results='hide'}
 m = model[[3]]
+# Convert to factor
 m$XData$hab %<>% factor()
-Gradient = constructGradient(m, 
+
+Gradient = constructGradient(hM = m, 
                              focalVariable = "clim",
-                             non.focalVariables = list(hab = 1))
+                             non.focalVariables = list(hab = list(1)))
 
 predY = predict(m,
                 Gradient = Gradient, 
                 expected = TRUE)
-
-plotGradient(m,
-             Gradient, 
-             pred = predY, 
-             measure = "Y",
-             index = 1,
-             showData = TRUE)
 
 Gradient2 = constructGradient(m,
                               focalVariable = "clim",
@@ -234,6 +273,16 @@ Gradient2 = constructGradient(m,
 predY2 = predict(m, 
                 Gradient = Gradient2, 
                 expected = TRUE)
+
+```
+
+```{r}
+plotGradient(m,
+             Gradient, 
+             pred = predY, 
+             measure = "Y",
+             index = 1,
+             showData = TRUE)
 plotGradient(m, 
              Gradient2, 
              pred = predY2, 
@@ -241,15 +290,19 @@ plotGradient(m,
              index = 1,
              showData = TRUE)
 ```
-The prediction performance can be evaluated with cross-validation. 
+
+Lastly, we can evaluate the predictive performance with cross-validation. 
+HMSC-R has functions that make this very easy. The first is *createPartition()*. 
+This function takes a model (hM), the number of folds (nfolds) and as an optional argument a column which indicates a variable that is used to group observations. In this case all observations from the same route are in the same fold. This function creates an object we can supply to the partition argument of the *computePredictedValues()* function. 
+
 ```{r predictive performance, eval=F}
 # Create partitions (folds)
 partition = list()
 MF = list()
 for (i in 1:3){
-  partition = createPartition(model[[i]],
+  partition = createPartition(hM     = model[[i]],
                               nfolds = 2,
-                              column = "route")
+                              column= "route")
   preds = computePredictedValues(model[[i]],
                                  partition = partition)
   MF[[i]] = evaluateModelFit(hM = model[[i]], predY = preds)
@@ -260,7 +313,9 @@ for (i in 1:3){
 MF=readRDS("~/01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/hmsc_mcmc/corvusmonedula/predictive_performance.RDS")
 ```
 
-
+Armed with this data we can now plot a similar graph to that we plotted before. 
+As expected the fit is worse than before. 
+Especially for the occurrence measures, the measures show that the model is barely better guessing.  
 ```{r pred-perf-plot}
 
 dt_MF = data.table(
@@ -268,13 +323,12 @@ dt_MF = data.table(
   value= unlist(lapply(MF, unname)),
   thinning = factor(rep(c(5,10,100), each = 7))
 )
-dt_MF[!variable %in% c("RMSE", "C.RMSE"), value := value * 10]
+#dt_MF[!variable %in% c("RMSE", "C.RMSE"), value := value * 10]
 dt_MF %>% 
   ggplot(aes(x=variable, y=value,col=thinning)) + 
   geom_point()
 ```
-
-
+We also have a grid of values for sampling sites across Finland indicating the habitat type and the climate. Using this data we can predict the occurence probability and abundance of *C. monedula* across these sites. 
 
 ```{r hmsc-spatial-prediction-hidden, echo=F}
 m = model[[3]]
@@ -321,6 +375,9 @@ spC +
                        name ="Abundance")
 
 ```
+
+
+
 ```{r hmsc-spatial-prediction, eval=F}
 m = model[[3]]
 grid = read.csv(file.path(data.directory,
@@ -366,3 +423,5 @@ spC +
                        name ="Abundance")
 
 ```
+
+# References
