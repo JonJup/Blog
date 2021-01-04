@@ -13,8 +13,9 @@ comments: no
 images: ~
 ---
 
+In this post we will analyze the antTraits data with generalized linear latent variable models fit with the BORAL R package [@Hui2016]. Elsewhere on the blog you can find an analysis of the same data using [mvabund](https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/) and [gllvm](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/). 
 
-load packages 
+First of we will setup the analysis by loading the required libraries. If you haven't already done so, you will need to install the pacman R package before running this code.
 
 ```{r}
 pacman::p_load(boral,
@@ -25,8 +26,7 @@ pacman::p_load(boral,
                UncertainOrd)
 ```
 
-
-load and prepare data 
+The antTraits data set we will analyze here is included *mvabund* and *gllvm* so we can load it using the *data()* function.
 
 ```{r}
 data(antTraits)
@@ -35,29 +35,33 @@ Y <- antTraits$abund
 # scale environmental variables 
 X <- scale(antTraits$env)
  
-traits = antTraits$traits
+TR = antTraits$traits
 ```
 
-Now we can fit the first models 
+First we fit the one of simplest model conceivable with BORAL. It is fit with count data so we use a Poisson. From other analyses using mvabund and gllvm, we know that negative binomial distribution is likely better suited for these data. Nonetheless we will start out with a Poisson distribution to see if we also see a fan-shaped pattern in the residuals. The model is unconstrained so we do not need the environmental data (X) or the traits (TR) yet. Further we specify the number of latent variables (2) using the num.lv option in the lv.control argument. The row effect (row.eff) accounts for differences in total site abundance [@Hui2015a]. Another possibility is to fit a model with a random row effect drawn from a normal distribution with mean zero and unknown standard deviation. As n is rather small in this study we stick with the fixed row effects. Lastly, we set save.model to TRUE. This will enable us later to add uncertainty estimates. 
 
 ```{r eval=F}
-fit_unconstrained_po <- boral(y = Y, 
-                              family = "poisson", 
-                              lv.control = list(num.lv = 2), 
-                              row.eff = "fixed", 
-                              save.model = T)
+fit_uc_po = boral(
+  y = Y,
+  family = "poisson",
+  lv.control = list(num.lv = 2),
+  row.eff = "fixed",
+  save.model = T
+)
 ```
 
 ```{r echo=F}
-fit_unconstrained_po = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_unconstrained_poisson.RDS")
+fit_uc_po = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/boral/antTraits/boral_unconstrained_poisson.RDS")
+```
+
+Let's have a look at the summary of this model. First we get the call 
+
+```{r}
+summary(fit_uc_po)
 ```
 
 ```{r}
-summary(fit_unconstrained_po)
-```
-
-```{r}
-plot(fit_unconstrained_po)
+plot(fit_uc_po)
 ```
 
 Strong fan, go ahead and fit nb model 
@@ -169,3 +173,4 @@ corrplot(fit_constrained_nb_trait$geweke.diag$geweke.diag$traits.coefs,
 
 ```
 
+# References

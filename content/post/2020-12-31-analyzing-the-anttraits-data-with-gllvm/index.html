@@ -15,9 +15,13 @@ images: ~
 
 
 
-<p>In this post we will analyze the antTraits data with generalized linear latent variable models fit with the gllvm R package <span class="citation">(Niku et al. 2020)</span>. Elsewehre on the blog you can find an analysis of the same data using <a href="https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/">mvabund</a>.</p>
+<style>
+body {
+text-align: justify}
+</style>
+<p>In this post we will analyze the antTraits data with generalized linear latent variable models fit with the gllvm R package <span class="citation">(Niku et al. 2020)</span>. Elsewhere on the blog you can find an analysis of the same data using <a href="https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/">mvabund</a> and <a href="https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttrait-data-with-boral-and-gllvm/analyzing-the-anttrait-data-with-boral/">boral</a>.</p>
 <p>First of we will setup the analysis by loading the required libraries. If you haven’t already done so, you will need to install the pacman R package before running this code.</p>
-<pre class="r"><code>pacman::p_load(gllvm, corrplot,gclus)</code></pre>
+<pre class="r"><code>pacman::p_load(gllvm, corrplot, gclus, lattice)</code></pre>
 <p>The antTraits data set we will analyze today is included <em>mvabund</em> and <em>gllvm</em> so we can load it using the <em>data()</em> function.</p>
 <pre class="r"><code>data(&quot;antTraits&quot;)
 y = as.matrix(antTraits$abund)
@@ -28,180 +32,122 @@ TR = antTraits$traits</code></pre>
 <p>First we fit a unconstrained ordination model with a Poisson distribution. Unconstrained means that only look at one matrix (Y) without constaining it by any other matrix (X or TR). Thus all the <em>gllvm()</em> function needs is one data matrix (y) and a family argument.</p>
 <pre class="r"><code>fit_uo_po &lt;- gllvm(y = y, 
                    family = poisson())</code></pre>
-<pre class="r"><code>plot(fit_uo_po)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-4.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-5.png" width="672" /></p>
-<p>fit nb model</p>
-<pre class="r"><code>fit_uo_nb &lt;- gllvm(y, family = &quot;negative.binomial&quot;)</code></pre>
-<pre class="r"><code>plot (fit_uo_nb)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-7-3.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-7-4.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-7-5.png" width="672" /></p>
-<pre class="r"><code>summary(fit_uo_nb)</code></pre>
-<pre><code>## $`log-likelihood`
-## [1] -1895.086
-## 
-## $df
-## [1] 163
-## 
-## $AIC
-## [1] 4116.172
-## 
-## $AICc
-## [1] 3717.187
-## 
-## $BIC
-## [1] 4344.567
-## 
-## $Call
-## gllvm(y = y, family = &quot;negative.binomial&quot;)
-## 
-## $family
-## [1] &quot;negative.binomial&quot;
-## 
-## $Coefficients
-##                                 Intercept   theta.LV1   theta.LV2
-## Amblyopone.australis          -0.94472224  0.87866461  0.00000000
-## Aphaenogaster.longiceps       -3.28385749  0.09817324  2.77778662
-## Camponotus.cinereus.amperei   -2.26680979  0.83640612  0.50950090
-## Camponotus.claripes            0.51182481  0.38029062  0.42668565
-## Camponotus.consobrinus         1.21828143  0.74347204 -0.84572973
-## Camponotus.nigriceps          -0.60003971 -0.50803864  0.78923499
-## Camponotus.nigroaeneus        -0.54160739  0.49801417  0.38512413
-## Cardiocondyla.nuda.atalanta   -2.66546010 -2.22634256 -0.91754561
-## Crematogaster.sp..A           -2.31752715  1.84034508  1.52055289
-## Heteroponera.sp..A             1.23795136  0.17888068 -0.56080692
-## Iridomyrmex.bicknelli          1.28862829  0.17195250 -1.02098456
-## Iridomyrmex.dromus            -0.79797905  0.88549400 -0.09371095
-## Iridomyrmex.mjobergi           1.33277254 -0.45403893  0.05827255
-## Iridomyrmex.purpureus         -0.08827370  1.26869434  0.91901174
-## Iridomyrmex.rufoniger          2.36251715 -0.16206147 -0.78980746
-## Iridomyrmex.suchieri           0.45430811  0.36635218 -0.75085187
-## Iridomyrmex.suchieroides      -0.44336604 -0.46526205 -0.81593383
-## Melophorus.sp..E              -1.19132451  0.11983016 -0.42493280
-## Melophorus.sp..F               0.53179807 -0.55216469 -0.36110449
-## Melophorus.sp..H              -0.55577002 -0.82234259 -0.44514066
-## Meranoplus.sp..A              -0.40299130 -0.92665959 -1.00764605
-## Monomorium.leae                1.34386671  0.62871896  0.36474673
-## Monomorium.rothsteini          0.23977350 -0.92478833 -1.61101174
-## Monomorium.sydneyense         -0.45807393 -0.78052447 -0.77569097
-## Myrmecia.pilosula.complex     -1.12918108  0.13332297 -0.74904963
-## Notoncus.capitatus            -0.96986433  1.33366769  0.40175228
-## Notoncus.ectatommoides         0.73199193 -0.79992926 -0.20874256
-## Nylanderia.sp..A               0.74859558 -0.78384769 -0.98781593
-## Ochetellus.glaber             -2.03905637 -0.58250609 -1.99533884
-## Paraparatrechina.sp..B        -1.51696801 -1.41509967  0.86063120
-## Pheidole.sp..A                 2.31810249 -0.37585404 -0.19601046
-## Pheidole.sp..B                -1.09280476 -0.26392372  0.78760358
-## Pheidole.sp..E                 1.60309276  0.38963130 -0.20286827
-## Pheidole.sp..J                -1.77422110 -0.28826507  0.55297670
-## Polyrhachis.sp..A             -1.25611820  0.32377671 -0.07173255
-## Rhytidoponera.metallica.sp..A  2.02316158 -0.34635906 -0.28264530
-## Rhytidoponera.sp..B            0.34815873 -0.99845669 -0.62654004
-## Solenopsis.sp..A              -2.20035185 -0.52693085  0.22544175
-## Stigmacros.sp..A              -0.28962023  0.82645158  0.08309505
-## Tapinoma.sp..A                 0.75853739  0.35892514 -0.43550545
-## Tetramorium.sp..A              0.07482031 -0.81284895 -0.89902352
-## 
-## $`Dispersion parameters`
-##          Amblyopone.australis       Aphaenogaster.longiceps 
-##                     1.8561732                     2.5181612 
-##   Camponotus.cinereus.amperei           Camponotus.claripes 
-##                     1.3275749                     1.2668330 
-##        Camponotus.consobrinus          Camponotus.nigriceps 
-##                     0.5154136                     4.3802252 
-##        Camponotus.nigroaeneus   Cardiocondyla.nuda.atalanta 
-##                     2.0741585                     5.6588703 
-##           Crematogaster.sp..A            Heteroponera.sp..A 
-##                     4.4556047                     0.7440190 
-##         Iridomyrmex.bicknelli            Iridomyrmex.dromus 
-##                     0.4076304                     4.0075580 
-##          Iridomyrmex.mjobergi         Iridomyrmex.purpureus 
-##                     0.4278588                     4.6348022 
-##         Iridomyrmex.rufoniger          Iridomyrmex.suchieri 
-##                     0.1052393                     0.9062389 
-##      Iridomyrmex.suchieroides              Melophorus.sp..E 
-##                     0.5188760                     1.3448232 
-##              Melophorus.sp..F              Melophorus.sp..H 
-##                     0.4165983                     0.6376626 
-##              Meranoplus.sp..A               Monomorium.leae 
-##                     3.2271780                     1.0324196 
-##         Monomorium.rothsteini         Monomorium.sydneyense 
-##                     0.7247529                     1.6927243 
-##     Myrmecia.pilosula.complex            Notoncus.capitatus 
-##                     1.9726173                     5.7959486 
-##        Notoncus.ectatommoides              Nylanderia.sp..A 
-##                     0.5021538                     1.3174652 
-##             Ochetellus.glaber        Paraparatrechina.sp..B 
-##                     2.2946132                     8.4243249 
-##                Pheidole.sp..A                Pheidole.sp..B 
-##                     0.1043675                     2.0260871 
-##                Pheidole.sp..E                Pheidole.sp..J 
-##                     0.6636944                     3.8315905 
-##             Polyrhachis.sp..A Rhytidoponera.metallica.sp..A 
-##                     0.2707945                     0.1405333 
-##           Rhytidoponera.sp..B              Solenopsis.sp..A 
-##                     1.4754600                     0.8887523 
-##              Stigmacros.sp..A                Tapinoma.sp..A 
-##                     1.9588631                     0.8378991 
-##             Tetramorium.sp..A 
-##                     0.6007550 
-## 
-## attr(,&quot;class&quot;)
-## [1] &quot;summary.gllvm&quot;</code></pre>
-<pre class="r"><code>ordiplot(fit_uo_nb,
+<p>Using the generic <em>plot()</em> function we can have a look at the Dunn-Smyth residuals.
+The first plots shows fan shape. It is weaker than the one we have seen in the Poisson manyglm but still noticeable.
+The rest of the plots looks fine, with the exception of the QQ plot which indicates overdispersion. Note that these later plots are not shown here in the interest of space but you can plot them by changing or omitting the <em>which</em> argument.</p>
+<pre class="r"><code>plot(fit_uo_po, which = 1)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Let’s see if a negative binomial model looks better.</p>
+<pre class="r"><code>fit_uo_nb &lt;- gllvm(y = y,
+                   family = &quot;negative.binomial&quot;)</code></pre>
+<pre class="r"><code>plot (fit_uo_nb, which = c(1,2))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p>The fan shape in the first plot is gone and instead of an over- we now have an underdispersion. Maybe this is because we do not actually have overdispered data but rather zero-inflated (i.e. more zeros than expected but other than that mean-variance assumptions hold). To test this we can fit a zero-inflated Poisson (ZIP) model</p>
+<pre class="r"><code>fit_uo_zip &lt;- gllvm(y = y,
+                   family = &quot;ZIP&quot;)</code></pre>
+<pre class="r"><code>plot (fit_uo_zip, which = c(1,2))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p>This looks very good! Calling summary on the model object returns several interesting details. We get the log-likelihood of the model, its degrees of freedom, AIC, AICc, BIC, call and family.
+We also get the regression coefficients for every species as well as the zero inflation probability are also included. Not included are the latent variable values or site score (<span class="math inline">\(u_{ij}\)</span> in <span class="citation">(Niku et al. 2020)</span>)</p>
+<p>The AIC values confirm our interpretation of the residual plots.</p>
+<pre class="r"><code>summary(fit_uo_zip)$AIC &lt; summary(fit_uo_nb)$AIC &amp;
+summary(fit_uo_nb)$AIC &lt; summary(fit_uo_po)$AIC</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can plot an ordination diagram which shows the site scores of the sites which are represented by their number. If we set biplot to TRUE we can additionally display taxa. The number of taxa is determined in the ind.spp argument. If ind.spp is smaller than the number of species, species are added according how indicative they are, or in other words how strongly they react to the latent variables (i.e. how large their coefficients are). These names are added to the plot in a way that the limits of the plots do not take them into account so you might have to extend them with xlim and ylim to find all the taxa you requesed.</p>
+<pre class="r"><code>ordiplot(fit_uo_zip,
          biplot = TRUE,
-         ind.spp = 15,
-         xlim = c(-3,3) ,
-         ylim = c(-2, 1.6))</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+         ind.spp = 4,
+         xlim = c(-5,3)
+         )</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Ok, now lets use the trait data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike’s Information Criterion (AIC).</p>
-<pre class="r"><code>fit_co_nb2 &lt;- gllvm(y, X, num.lv = 2,
+<pre class="r"><code>fit_co_zip2 &lt;- gllvm(y, X, num.lv = 2,
                     formula = ~ Bare.ground + Shrub.cover +
-                            Volume.lying.CWD,
-                    family = &quot;negative.binomial&quot;)
-fit_co_nb3 &lt;- gllvm(y, X, num.lv = 3,
+                            Volume.lying.CWD + Canopy.cover + Feral.mammal.dung,
+                    family = &quot;ZIP&quot;)
+fit_co_zip3 &lt;- gllvm(y, X, num.lv = 3,
                     formula = ~ Bare.ground + Shrub.cover +
-                            Volume.lying.CWD,
-                    family = &quot;negative.binomial&quot;)</code></pre>
-<pre class="r"><code>AIC(fit_co_nb2, fit_co_nb3)</code></pre>
-<pre><code>##             df      AIC
-## fit_co_nb2 286 4189.651
-## fit_co_nb3 325 4237.936</code></pre>
-<pre class="r"><code>ordiplot(fit_co_nb2,
+                            Volume.lying.CWD + Canopy.cover + Feral.mammal.dung,
+                    family = &quot;ZIP&quot;)</code></pre>
+<pre class="r"><code>summary(fit_co_zip2)$AICc</code></pre>
+<pre><code>## [1] 3114.732</code></pre>
+<pre class="r"><code>summary(fit_co_zip3)$AICc</code></pre>
+<pre><code>## [1] 2995.654</code></pre>
+<p>Based on AIC (not shown) and AICc the model with three latent variables fits the data better.
+Hence we cannot display all the variation in a single plot and will instead use three seperate plots.</p>
+<pre class="r"><code>for(i in 1:3){
+  lvs = switch(i, c(1,2), c(1,3), c(2,3))
+  ordiplot(fit_co_zip3,
          biplot = TRUE,
-         ind.spp = 15,
-         xlim = c(-3,3) ,
-         ylim = c(-2, 1.6))</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Fit a model with traits.</p>
+         ind.spp = 4,
+         xlim = c(-5,5), 
+         which.lvs = lvs
+         )
+}</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-14-2.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-14-3.png" width="672" />
+Similarly to mvabund and BORAL we can disply coefplots</p>
+<pre class="r"><code>coefplot.gllvm(fit_co_zip3)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Lastly we can also fit models with traits. The traits are implemented though a fourth corner model. For more details see the <a href="https://cran.r-project.org/web/packages/gllvm/gllvm.pdf">gllvm Reference manual</a>
+Fitting the following model with three latent variables resulted in an error, so we continue with two.</p>
 <pre class="r"><code>fit_4th &lt;- gllvm(
         y = y,
         X = X,
         TR = TR,
-        family = &quot;negative.binomial&quot;,
+        family = &quot;ZIP&quot;,
         num.lv = 2,
         formula = y ~
-                (Bare.ground + Shrub.cover + Volume.lying.CWD) +
-                (Bare.ground + Shrub.cover + Volume.lying.CWD):(Pilosity + Polymorphism + Webers.length))</code></pre>
-<p>nice trait plot</p>
-<pre class="r"><code>fourth &lt;- fit_4th$fourth.corner
-colort &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))
-a &lt;- max( abs(fourth) )
-plot.4th &lt;- lattice::levelplot((as.matrix(fourth)), xlab = &quot;Environmental Variables&quot;,
+                (Bare.ground + Shrub.cover + Volume.lying.CWD + Canopy.cover + Feral.mammal.dung) +
+                (Bare.ground + Shrub.cover + Volume.lying.CWD + Canopy.cover + Feral.mammal.dung):
+          (Pilosity + Polymorphism + Webers.length))</code></pre>
+<p>As with other methods we can plot the results of the fourth corner model in a levelplot.</p>
+<pre class="r"><code>fit_4th$fourth.corner</code></pre>
+<pre><code>##                     Pilosity1   Pilosity2     Pilosity3 Polymorphism1
+## Bare.ground       -0.01171499  0.02722186  0.0245424925   0.380905402
+## Canopy.cover      -0.24088890 -0.20771766 -1.0386106283   0.665032965
+## Shrub.cover        0.43886366  0.54055450  0.6149570202  -0.005953297
+## Volume.lying.CWD  -0.07908846 -0.15048241 -0.0899778428   0.162290896
+## Feral.mammal.dung -0.15329305 -0.03296817 -0.0005479166  -0.069571330
+##                   Polymorphism2 Webers.length
+## Bare.ground          0.14577313  -0.006734829
+## Canopy.cover        -0.31239626  -0.452513600
+## Shrub.cover          0.18549706   0.128718274
+## Volume.lying.CWD     0.06080096   0.025923648
+## Feral.mammal.dung    0.29737997   0.089033341</code></pre>
+<pre class="r"><code>fourth = fit_4th$fourth.corner
+colort = colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))
+a      = max( abs(fourth) )
+plot.4th = levelplot((as.matrix(fourth)), xlab = &quot;Environmental Variables&quot;,
                                ylab = &quot;Species traits&quot;, col.regions = colort(100), cex.lab =1.3,
                                at = seq(-a, a, length = 100), scales = list(x = list(rot = 45)))
 plot.4th</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>We can evaluate whether traits matter in this context or not by comparing the model with traits with one that does not inlcude traits using an ANOVA. Unfortunately we can not use the model we fit previously but have to fit a new one.</p>
-<pre class="r"><code>fit_4th2 &lt;- gllvm(y, X, TR, family = &quot;negative.binomial&quot;, 
-                  num.lv = 2, formula = y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>These results differ from those obtained in the manyglm. Most interesting are the cases where the sign in front of the coefficient is different between both methods like for Pilosity and Canopy Cover or Volume of lying CWD.</p>
+<p>We can evaluate whether traits matter in this context or not by comparing the model with traits with one that does not include traits using an ANOVA. Unfortunately we can not use the model we fit previously but have to fit a new one.</p>
+<pre class="r"><code>fit_4th2 &lt;- gllvm(
+  y,
+  X,
+  TR,
+  family = &quot;ZIP&quot;,
+  num.lv = 2,
+  formula = y ~ (
+    Bare.ground + Shrub.cover + 
+    Volume.lying.CWD + Canopy.cover + 
+    Feral.mammal.dung
+  )
+)</code></pre>
 <pre class="r"><code>trait_anoa = anova(fit_4th, fit_4th2)</code></pre>
-<pre><code>## Model  1 :  y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD) 
-## Model  2 :  y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD) + (Bare.ground + Shrub.cover + Volume.lying.CWD):(Pilosity + Polymorphism + Webers.length)</code></pre>
-<pre class="r"><code>trait_anoa</code></pre>
-<pre><code>##   Resid.Df       D Df.diff   P.value
-## 1     1064  0.0000       0          
-## 2     1046 26.4091      18 0.0907652</code></pre>
+<pre><code>## Model  1 :  y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD + Canopy.cover + Feral.mammal.dung) 
+## Model  2 :  y ~ (Bare.ground + Shrub.cover + Volume.lying.CWD + Canopy.cover + Feral.mammal.dung) + (Bare.ground + Shrub.cover + Volume.lying.CWD + Canopy.cover + Feral.mammal.dung):(Pilosity + Polymorphism + Webers.length)</code></pre>
+<pre><code>##   Resid.Df        D Df.diff     P.value
+## 1     1062   0.0000       0            
+## 2     1032 114.0782      30 9.85079e-12</code></pre>
+<p>According to this ANOVA the model including the traits is more appropriate because the difference in Deviances is statistically significant. This supports the hypothesis that the reaction to the environment is mediated by traits.</p>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-Niku2020">
 <p>Niku, Jenni, Wesley Brooks, Riki Herliansyah, Francis K. C. Hui, Sara Taskinen, David I. Warton, and Bert van der Veen. 2020. <em>Gllvm: Generalized Linear Latent Variable Models</em>. <a href="https://CRAN.R-project.org/package=gllvm">https://CRAN.R-project.org/package=gllvm</a>.</p>
+</div>
 </div>
 </div>

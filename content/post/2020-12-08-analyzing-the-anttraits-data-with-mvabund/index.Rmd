@@ -18,7 +18,7 @@ text-align: justify}
 </style>
 
 
-In this post, we will use the *mvabund* R-package to analyze the antTraits data set. 
+In this post, we will use the *mvabund* R-package to analyze the antTraits data set. Elsewhere on the blog you can find an analysis of the same data using [gllvm](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/) and [boral](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttrait-data-with-boral-and-gllvm/analyzing-the-anttrait-data-with-boral/).
 
 First of we will setup the analysis by loading the required libraries. If you haven't already done so, you will need to install the pacman r package before running this code. 
 

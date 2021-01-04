@@ -15,28 +15,32 @@ images: ~
 
 
 
-<p>load packages</p>
+<p>In this post we will analyze the antTraits data with generalized linear latent variable models fit with the BORAL R package <span class="citation">[@Hui2016]</span>. Elsewhere on the blog you can find an analysis of the same data using <a href="https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/">mvabund</a> and <a href="https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/">gllvm</a>.</p>
+<p>First of we will setup the analysis by loading the required libraries. If you haven’t already done so, you will need to install the pacman R package before running this code.</p>
 <pre class="r"><code>pacman::p_load(boral,
                corrplot,
                mvabund,
                readxl,
                rjags,
                UncertainOrd)</code></pre>
-<p>load and prepare data</p>
+<p>The antTraits data set we will analyze here is included <em>mvabund</em> and <em>gllvm</em> so we can load it using the <em>data()</em> function.</p>
 <pre class="r"><code>data(antTraits)
 
 Y &lt;- antTraits$abund
 # scale environmental variables 
 X &lt;- scale(antTraits$env)
  
-traits = antTraits$traits</code></pre>
-<p>Now we can fit the first models</p>
-<pre class="r"><code>fit_unconstrained_po &lt;- boral(y = Y, 
-                              family = &quot;poisson&quot;, 
-                              lv.control = list(num.lv = 2), 
-                              row.eff = &quot;fixed&quot;, 
-                              save.model = T)</code></pre>
-<pre class="r"><code>summary(fit_unconstrained_po)</code></pre>
+TR = antTraits$traits</code></pre>
+<p>First we fit the one of simplest model conceivable with BORAL. It is fit with count data so we use a Poisson. From other analyses using mvabund and gllvm, we know that negative binomial distribution is likely better suited for these data. Nonetheless we will start out with a Poisson distribution to see if we also see a fan-shaped pattern in the residuals. The model is unconstrained so we do not need the environmental data (X) or the traits (TR) yet. Further we specify the number of latent variables (2) using the num.lv option in the lv.control argument. The row effect (row.eff) accounts for differences in total site abundance <span class="citation">[@Hui2015a]</span>. Another possibility is to fit a model with a random row effect drawn from a normal distribution with mean zero and unknown standard deviation. As n is rather small in this study we stick with the fixed row effects. Lastly, we set save.model to TRUE. This will enable us later to add uncertainty estimates.</p>
+<pre class="r"><code>fit_uc_po = boral(
+  y = Y,
+  family = &quot;poisson&quot;,
+  lv.control = list(num.lv = 2),
+  row.eff = &quot;fixed&quot;,
+  save.model = T
+)</code></pre>
+<p>Let’s have a look at the summary of this model. First we get the call</p>
+<pre class="r"><code>summary(fit_uc_po)</code></pre>
 <pre><code>## $call
 ## boral.default(y = Y, family = &quot;poisson&quot;, lv.control = list(num.lv = 2), 
 ##     row.eff = &quot;fixed&quot;, save.model = T)
@@ -150,7 +154,7 @@ traits = antTraits$traits</code></pre>
 ## 
 ## attr(,&quot;class&quot;)
 ## [1] &quot;summary.boral&quot;</code></pre>
-<pre class="r"><code>plot(fit_unconstrained_po)</code></pre>
+<pre class="r"><code>plot(fit_uc_po)</code></pre>
 <pre><code>## NULL</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
 <p>Strong fan, go ahead and fit nb model</p>
@@ -234,3 +238,6 @@ fit_constrained_nb_trait &lt;-
 <pre class="r"><code>corrplot(fit_constrained_nb_trait$geweke.diag$geweke.diag$traits.coefs,
          is.corr = FALSE)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div id="references" class="section level1">
+<h1>References</h1>
+</div>
