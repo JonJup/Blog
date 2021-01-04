@@ -7,21 +7,27 @@ categories: []
 tags:
   - R
   - MOD3
+  - gllvm
+bibliography: ref.bib
 comments: no
 images: ~
 ---
 
 
 
-<p>load libraries</p>
+<p>In this post we will analyze the antTraits data with generalized linear latent variable models fit with the gllvm R package <span class="citation">(Niku et al. 2020)</span>. Elsewehre on the blog you can find an analysis of the same data using <a href="https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/">mvabund</a>.</p>
+<p>First of we will setup the analysis by loading the required libraries. If you haven’t already done so, you will need to install the pacman R package before running this code.</p>
 <pre class="r"><code>pacman::p_load(gllvm, corrplot,gclus)</code></pre>
-<p>load data</p>
+<p>The antTraits data set we will analyze today is included <em>mvabund</em> and <em>gllvm</em> so we can load it using the <em>data()</em> function.</p>
 <pre class="r"><code>data(&quot;antTraits&quot;)
 y = as.matrix(antTraits$abund)
 X = scale(as.matrix(antTraits$env))
-TR &lt;- antTraits$traits</code></pre>
-<p>fit poisson model</p>
-<pre class="r"><code>fit_uo_po &lt;- gllvm(y, family = poisson())</code></pre>
+# here we avoid T as object name to avoid confusion
+# with the short form of TRUE
+TR = antTraits$traits</code></pre>
+<p>First we fit a unconstrained ordination model with a Poisson distribution. Unconstrained means that only look at one matrix (Y) without constaining it by any other matrix (X or TR). Thus all the <em>gllvm()</em> function needs is one data matrix (y) and a family argument.</p>
+<pre class="r"><code>fit_uo_po &lt;- gllvm(y = y, 
+                   family = poisson())</code></pre>
 <pre class="r"><code>plot(fit_uo_po)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-4.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-5-5.png" width="672" /></p>
 <p>fit nb model</p>
@@ -194,3 +200,8 @@ plot.4th</code></pre>
 <pre><code>##   Resid.Df       D Df.diff   P.value
 ## 1     1064  0.0000       0          
 ## 2     1046 26.4091      18 0.0907652</code></pre>
+<div id="refs" class="references">
+<div id="ref-Niku2020">
+<p>Niku, Jenni, Wesley Brooks, Riki Herliansyah, Francis K. C. Hui, Sara Taskinen, David I. Warton, and Bert van der Veen. 2020. <em>Gllvm: Generalized Linear Latent Variable Models</em>. <a href="https://CRAN.R-project.org/package=gllvm">https://CRAN.R-project.org/package=gllvm</a>.</p>
+</div>
+</div>

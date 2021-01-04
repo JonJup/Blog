@@ -7,27 +7,35 @@ categories: []
 tags:
   - R
   - MOD3
+  - gllvm
+bibliography: ref.bib
 comments: no
 images: ~
 ---
 
-load libraries
+In this post we will analyze the antTraits data with generalized linear latent variable models fit with the gllvm R package [@Niku2020]. Elsewehre on the blog you can find an analysis of the same data using [mvabund](https://jonjup.netlify.app/post/2020-12-08-analyzing-the-anttraits-data-with-mvabund/analyzing-the-anttraits-data-with-mvabund/). 
+
+First of we will setup the analysis by loading the required libraries. If you haven't already done so, you will need to install the pacman R package before running this code. 
 ```{r}
 pacman::p_load(gllvm, corrplot,gclus)
 ```
 
-load data 
+The antTraits data set we will analyze today is included *mvabund* and *gllvm* so we can load it using the *data()* function.
 ```{r}
 data("antTraits")
 y = as.matrix(antTraits$abund)
 X = scale(as.matrix(antTraits$env))
-TR <- antTraits$traits
+# here we avoid T as object name to avoid confusion
+# with the short form of TRUE
+TR = antTraits$traits
 ```
 
-fit poisson model
+First we fit a unconstrained ordination model with a Poisson distribution.  Unconstrained means that only look at one matrix (Y) without constaining it by any other matrix (X or TR). Thus all the *gllvm()* function needs is one data matrix (y) and a family argument. 
 ```{r eval = F}
-fit_uo_po <- gllvm(y, family = poisson())
+fit_uo_po <- gllvm(y = y, 
+                   family = poisson())
 ```
+
 ```{r echo = F}
 fit_uo_po = readRDS(
         "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_uo_po.RDS"
@@ -48,6 +56,9 @@ fit_4th2 = readRDS(
         "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/gllvm/anttraits/fit_model_traits_not_co_nb_2.RDS"
 )
 ```
+
+
+
 ```{r}
 plot(fit_uo_po)
 ```
