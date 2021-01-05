@@ -18,6 +18,11 @@ images: ~
 ```
 
 
+<style>
+body {
+text-align: justify}
+</style>
+
 In this blog post I will go though the copula model for ecological data that was proposed by @Anderson2019. 
 I will not go into more details concerning copulas in general so you should have a basic familiarity with the topic. Good places to get acquainted with copulas are: 
 
