@@ -7,13 +7,19 @@ categories: []
 tags:
   - Copula
   - R
+bibliography: ref.bib
 comments: no
 images: ~
 ---
 
 
 
-<p>Load data</p>
+<pre class="r"><code>#TODO fill good places for copulas </code></pre>
+<p>In this blog post I will go though the copula model for ecological data that was proposed by <span class="citation">Anderson et al. (2019)</span>.
+I will not go into more details concerning copulas in general so you should have a basic familiarity with the topic. Good places to get acquainted with copulas are:</p>
+<div id="prepare-analysis" class="section level1">
+<h1>Prepare analysis</h1>
+<p>To run this code you will need to install the <em>pacman</em> R package beforehand but this will take care of all the other packages required.</p>
 <pre class="r"><code>pacman::p_load(
         corrplot,
         here,
@@ -122,13 +128,13 @@ pwa_mar_99 = pairWise(
 )</code></pre>
 <p>We can construct correlation plots just like in the publication. For Index of the observed association (IoA),</p>
 <pre class="r"><code>corrplot(pwa_sep_98$IoA.obs, diag = FALSE, type = &quot;lower&quot;, tl.cex = 0.8, tl.srt = 45, tl.col = &quot;black&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>the shrunken IoA and</p>
 <pre class="r"><code>corrplot(pwa_sep_98$IoA.shrunk, diag = FALSE, type = &quot;lower&quot;, tl.cex = 0.8, tl.srt = 45, tl.col = &quot;black&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>the subset of statistically significant IoAs:</p>
 <pre class="r"><code>corrplot(pwa_sep_98$IoA.subset, diag = FALSE, type = &quot;lower&quot;, tl.cex = 0.8, tl.srt = 45, tl.col = &quot;black&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>add species column. Later functions require this column.</p>
 <pre class="r"><code>df_sep_98$Species &lt;- rownames(df_sep_98)
 df_mar_99$Species &lt;- rownames(df_mar_99)
@@ -181,7 +187,7 @@ species_indices &lt;- sample(x = colnames(mt_sep_98), 2)
 pch &lt;- c(rep(0, nrow(mt_sep_98)), rep(20, N))
 plot(rbind(mt_sep_98[ , species_indices], simulated_data_sep_98[[&quot;observed&quot;]][ , species_indices]), pch = pch, col = c(rep(&quot;red&quot;, nrow(mt_sep_98)), rep(&quot;black&quot;, N)))
 legend(x = &quot;topright&quot;, pch = c(0, 20), legend = c(&quot;observed&quot;, &quot;simulated&quot;))</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code>n_sim = 100
 n_g1 = nrow(mt_sep_98)
 n_g2 = nrow(mt_mar_99)
@@ -265,7 +271,7 @@ cowplot::plot_grid(p12 + theme(legend.position = &quot;none&quot;),
                    p13,
                    p23,
                    p12_leg)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <pre class="r"><code>p12 = ggplot(data= plot_data, aes(x = axis1, y = axis2, col = season)) + 
         stat_density_2d(aes(fill = ..level..), geom = &quot;polygon&quot;, alpha = 0.5) +
         geom_point(aes(shape = season)) + 
@@ -288,8 +294,17 @@ cowplot::plot_grid(p12 + theme(legend.position = &quot;none&quot;),
                    p13,
                    p23,
                    p12_leg)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre class="r"><code>colors3d = c(&#39;royalblue1&#39;, &#39;darkcyan&#39;, &#39;oldlace&#39;, &quot;gray&quot;)
 plot_data$color &lt;- colors3d[ as.numeric(plot_data$season) ]
 plot3d(x = plot_data$axis1, y = plot_data$axis2, z = plot_data$axis3, col = plot_data$color, type = &#39;s&#39;, 
        radius = .005)</code></pre>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-Anderson2019">
+<p>Anderson, Marti J., Perry de Valpine, Andrew Punnett, and Arden E. Miller. 2019. “A pathway for multivariate analysis of ecological communities using copulas.” <em>Ecology and Evolution</em> 9 (6): 3276–94. <a href="https://doi.org/10.1002/ece3.4948">https://doi.org/10.1002/ece3.4948</a>.</p>
+</div>
+</div>
+</div>
