@@ -35,4 +35,11 @@
   pmid          = {26519235},
 }
 
+@Book{ovaskainen2020joint,
+  author    = {Ovaskainen, Otso and Abrego, Nerea},
+  publisher = {Cambridge University Press},
+  title     = {Joint Species Distribution Modelling: With Applications in R},
+  year      = {2020},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

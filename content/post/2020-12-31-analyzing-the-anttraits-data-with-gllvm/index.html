@@ -60,7 +60,7 @@ summary(fit_uo_nb)$AIC &lt; summary(fit_uo_po)$AIC</code></pre>
          xlim = c(-5,3)
          )</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Ok, now lets use the trait data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike’s Information Criterion (AIC).</p>
+<p>Ok, now lets use the environmental data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike’s Information Criterion (AIC).</p>
 <pre class="r"><code>fit_co_zip2 &lt;- gllvm(y, X, num.lv = 2,
                     formula = ~ Bare.ground + Shrub.cover +
                             Volume.lying.CWD + Canopy.cover + Feral.mammal.dung,

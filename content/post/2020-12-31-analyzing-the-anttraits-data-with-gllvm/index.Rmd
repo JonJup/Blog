@@ -119,7 +119,7 @@ ordiplot(fit_uo_zip,
          )
 ```
 
-Ok, now lets use the trait data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike's Information Criterion (AIC). 
+Ok, now lets use the environmental data to fit a constrained model. Actually, we will fit two different models. One with two and one with three latent variables. Which one fits better can be evaluated with Akaike's Information Criterion (AIC). 
 
 ```{r eval = F}
 fit_co_zip2 <- gllvm(y, X, num.lv = 2,
