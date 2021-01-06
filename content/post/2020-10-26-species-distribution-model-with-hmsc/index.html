@@ -17,6 +17,10 @@ images: ~
 <link href="index_files/lightable/lightable.css" rel="stylesheet" />
 
 
+<style>
+body {
+text-align: justify}
+</style>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>In this short example, we will use the Hierarchical Modeling of Species Communities (HMSC, <span class="citation">Ovaskainen and Abrego (2020)</span>) approach through its implementation in the HMSC-R package <span class="citation">(Tikhonov et al. 2020)</span> to analyze and predict the distribution of the Western jackdaw (<em>Corvus monedula</em>) in Finland.
@@ -366,12 +370,12 @@ For these metrics, abundances are censored to presence-absence and we only evalu
 The three metrics are RSME, TjurR2 and AUC.</p>
 <p>AUC is short for Area under the Curve and was proposed by <span class="citation">Pearce and Ferrier (2000)</span>. Tjur R2 is a pseudo-<span class="math inline">\(R^2\)</span> value for binary data such as 0 or 1, presence or absence and was proposed by <span class="citation">Tjur (2009)</span>. We will not get into the details of their computation here but it is important to note that their scales differ.
 A model that performs no better than random has an AUC of 0.5 and a perfect model has an AUC of 1. The same models would get Tjur <span class="math inline">\(R^2\)</span> 0 and 1. Thus we can expect the Tjur <span class="math inline">\(R^2\)</span> of a model to be lower than it’s AUC.
-Using the AUC in species distribution models was recently criticized by <span class="citation">Laura Jiménez and Soberón (2020)</span>.</p>
+Using the AUC in species distribution models was recently criticized by <span class="citation">Jiménez and Soberón (2020)</span>.</p>
 </div>
 <div id="model-results-and-interpretation" class="section level1">
 <h1>Model results and interpretation</h1>
 <p>We can use variance partitioning to see how important sets of variables are in determining the abundance of <em>C. monedula</em>.
-First we group all covariates into one of two groups: habitat or climate.
+First, we group all covariates into one of two groups: habitat or climate.
 In our example, the number of covariates is low and each group basically represents one variable.
 The group habitat represents the factor habitat with all its dummy-variable levels and the group climate the second order polynomial of April and May mean temperatures.
 Again we are interested in the results for all three models, to see whether the non-convergent models perform differently.</p>
@@ -398,12 +402,12 @@ All three models agree that climate explains more of the variation than habitat 
 <p>Next, we will predict the probability of occurrence and the abundance of <em>C. monedula</em>.
 First along hypothetical gradients of covariates and afterwards across a grid of Finland.</p>
 <p>I will only show this with the third model (i.e. thinning = 100) but feel free to try this with the others.
-Additionally, we need to transform factors variable into factors within the model.
+Additionally, we need to transform categorical variable into factors within the model object.
 We can construct our artificial gradient with the <code>constructGraident()</code> function.
-The function has three arguments <em><span style="color:CornflowerBlue">hm</span></em> is the model we want to use for the prediction, <em><span style="color:CornflowerBlue">focalVariable</span></em> is the variable our artificial gradient is based on, and <em><span style="color:CornflowerBlue">non.focalVariables</span></em> describes how the other variables are handled.
+The function has three arguments: <em><span style="color:CornflowerBlue">hm</span></em> is the model we want to use for the prediction, <em><span style="color:CornflowerBlue">focalVariable</span></em> is the variable our artificial gradient is based on, and <em><span style="color:CornflowerBlue">non.focalVariables</span></em> describes how the other variables are handled.
 While the first two arguments are self-explanatory, the third one requires some explanation.
 If there are more than one variable in the model, the response of the species could vary along all of them.
-As we want to predict the changes in abundance along one focal variable and thus we need to make assumptions about the others.
+As we want to predict the changes in abundance along one focal variable we need to make assumptions about the others.
 This assumption can differ between non-focal variables.
 Three assumptions are available: 1: the non-focal variable is equal to its overall most common value; 2: the non-focal variable is equal to its most common value conditional on the focal variable; 3: the non-focal variable is fixed at a supplied value.
 In the code below, we test the first two options.</p>
@@ -483,7 +487,7 @@ dt_MF %&gt;%
 <p><img src="index_files/figure-html/pred-perf-plot-2.png" width="672" />
 Lastly, we also have a grid of values for sampling sites across Finland with their habitat types and climates.
 The grid is also part of the data that was linked in the beginning of this post.
-Using this data we can predict the occurrence probability and abundance of <em>C. monedula</em> across these Finland.</p>
+Using this data we can predict the occurrence probability and abundance of <em>C. monedula</em> across Finland.</p>
 <pre class="r"><code>m = model[[3]]
 grid = read.csv(file.path(data.directory,
                           &quot;grid_1000.csv&quot;))
@@ -532,7 +536,7 @@ spC +
 <h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-LauraJimenez2020">
-<p>Laura Jiménez, and J. Soberón. 2020. “Leaving the area under the receiving operating characteristic curve behind: An evaluation method for species distribution modeling applications based on presence-only data.” <em>Methods in Ecology and Evolution</em> 1 (1): 1–2. <a href="https://doi.org/10.1111/j.2041-210x.2010.00016.x">https://doi.org/10.1111/j.2041-210x.2010.00016.x</a>.</p>
+<p>Jiménez, Laura, and J. Soberón. 2020. “Leaving the area under the receiving operating characteristic curve behind: An evaluation method for species distribution modeling applications based on presence-only data.” <em>Methods in Ecology and Evolution</em> 1 (1): 1–2. <a href="https://doi.org/10.1111/j.2041-210x.2010.00016.x">https://doi.org/10.1111/j.2041-210x.2010.00016.x</a>.</p>
 </div>
 <div id="ref-ovaskainen2020joint">
 <p>Ovaskainen, Otso, and Nerea Abrego. 2020. <em>Joint Species Distribution Modelling: With Applications in R</em>. Cambridge University Press.</p>

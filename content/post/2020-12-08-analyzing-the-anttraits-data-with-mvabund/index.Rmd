@@ -51,7 +51,7 @@ For more information on the data try  *<span style="color:CornflowerBlue">?antTr
 ```{r, echo = F}
 head(antTraits$abund[,1:5])
 ```
-Note that this data set faces the typical n<p problem of more variables (species) than observations(sites) which makes the estimation of parameters difficult. 
+Note that this data set faces the typical n<p problem of more variables (species) than observations (sites) which makes the estimation of parameters difficult. 
 
 As in every analysis with *<span style="color:CornflowerBlue">mvabund</span>* we start of by converting our data in the mvabund data format and investigating the mean variance plot. 
 
@@ -100,7 +100,7 @@ plot(mod_nb, which = 3)
 
 The fan-shape in the first plot is gone. 
 In the upper right corner of the Q-Q plot the observed values now fall below the 1:1 line which means that the residuals are underdispersed. 
-Possibly this is because that data are rather zero-inflated and not overdispersed. 
+Possibly, this is because that data are rather zero-inflated and not overdispersed. 
 Indeed, a zero-inflated-Poisson gllvm model fit the data better than a negative binomial one, in that [analysis](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/). 
 In *<span style="color:CornflowerBlue">mvabund</span>*, we currently cannot fit such models, so we will move ahead with the negative binomial one. 
 
@@ -124,7 +124,7 @@ mod_nb_anova = anova.manyglm(
 ```
 
 
-First we can have a look at the community level results 
+First, we can have a look at the community level results 
 ```{r}
 mod_nb_anova$table
 ```
@@ -182,7 +182,7 @@ plot.tas = levelplot(
 )
 print(plot.tas)
 ```
-The problem with this plot is, that it is scaled relative the actually occurring values and one value (Volume.lying.CWD for *Cardiocondyla nuda atalanta*) is strongly negative. 
+The problem with this plot is, that it is scaled relative to the actually occurring values and one value (Volume.lying.CWD for *Cardiocondyla nuda atalanta*) is strongly negative. 
 To avoid this we can either use an absolute scale, base the relative scale on another statistic, remove the species or the variable. 
 Below, we use the third quantile instead of the maximum coefficient value to scale the coloring.
 ```{r}
@@ -199,7 +199,7 @@ plot.tas = levelplot(
 print(plot.tas)
 ```
 
-Such plots are of limited use to identify exact coefficient values but especially when there are many species or co variables they can be very handy to identify groups or general trends. 
+Such plots are of limited use to identify exact coefficient values but especially when there are many species or covariables they can be very handy to identify groups or general trends. 
 
 Lastly, we can have a look at the relationship between traits and variables.
 

@@ -11,7 +11,10 @@ tags:
 bibliography: ref.bib
 images: ~
 ---
-
+<style>
+body {
+text-align: justify}
+</style>
 # Introduction
 
 In this short example, we will use the Hierarchical Modeling of Species Communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the Western jackdaw (*Corvus monedula*) in Finland. 
@@ -44,7 +47,7 @@ data.directory="~/01_Uni/01_Lehre/05_MOD3-Lecture/001_raw_data/hmsc_birds/data"
 model.path="~/01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/hmsc_mcmc/corvusmonedula/"
 ```
 
-We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the method (e.g. Chapter 5 of @ovaskainen2020joint and @tikhonov2020joint). We will this analysis on the abundance and occurence *C. monedula* in the year 2014. 
+We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the method (e.g. Chapter 5 of @ovaskainen2020joint or @tikhonov2020joint). We will this analysis on the abundance and occurence *C. monedula* in the year 2014. 
 
 ```{r carpet data, echo=T}
 # data.directory needs to be a string, pointing 
@@ -118,7 +121,7 @@ We should be able to see this with the effective sample size.
 When you fit such models you should start with a low thin (like 5) to estimate run time and to get an idea about the general direction of the results. 
 Even though the estimate will change when you increase the thinning, you are often able to start writing your result section while the larger models are still running. 
 Simply plug in the estimates from the final model once its done. 
-You should increase the thinning until the model fit is satisfactory (high effective sampling size, low potential scale reduction factor, converged and stable chains)
+You should increase the thinning until the model fit is satisfactory (high effective sampling size, low potential scale reduction factor, converged and stable chains).
 
 ```{r run MCMC, eval = FALSE}
 nChains = 2
@@ -279,7 +282,7 @@ Using the AUC in species distribution models was recently criticized by @LauraJi
 # Model results and interpretation
 
 We can use variance partitioning to see how important sets of variables are in determining the abundance of *C. monedula*. 
-First we group all covariates into one of two groups: habitat or climate. 
+First, we group all covariates into one of two groups: habitat or climate. 
 In our example, the number of covariates is low and each group basically represents one variable. 
 The group habitat represents the factor habitat with all its dummy-variable levels and the group climate the second order polynomial of April and May mean temperatures. 
 Again we are interested in the results for all three models, to see whether the non-convergent models perform differently. 
@@ -312,12 +315,12 @@ Next, we will predict the probability of occurrence and the abundance of *C. mon
 First along hypothetical gradients of covariates and afterwards across a grid of Finland.  
 
 I will only show this with the third model (i.e. thinning = 100) but feel free to try this with the others. 
-Additionally, we need to transform factors variable into factors within the model. 
+Additionally, we need to transform categorical variable into factors within the model object. 
 We can construct our artificial gradient with the `constructGraident()` function. 
-The function has three arguments *<span style="color:CornflowerBlue">hm</span>* is the model we want to use for the prediction, *<span style="color:CornflowerBlue">focalVariable</span>* is the variable our artificial gradient is based on, and *<span style="color:CornflowerBlue">non.focalVariables</span>* describes how the other variables are handled. 
+The function has three arguments: *<span style="color:CornflowerBlue">hm</span>* is the model we want to use for the prediction, *<span style="color:CornflowerBlue">focalVariable</span>* is the variable our artificial gradient is based on, and *<span style="color:CornflowerBlue">non.focalVariables</span>* describes how the other variables are handled. 
 While the first two arguments are self-explanatory, the third one requires some explanation. 
 If there are more than one variable in the model, the response of the species could vary along all of them. 
-As we want to predict the changes in abundance along one focal variable and thus we need to make assumptions about the others. 
+As we want to predict the changes in abundance along one focal variable we need to make assumptions about the others. 
 This assumption can differ between non-focal variables. 
 Three assumptions are available: 1: the non-focal variable is equal to its overall most common value; 2: the non-focal variable is equal to its most common value conditional on the focal variable; 3: the non-focal variable is fixed at a supplied value. 
 In the code below, we test the first two options. 
@@ -412,7 +415,7 @@ dt_MF %>%
 ```
 Lastly, we also have a grid of values for sampling sites across Finland with their habitat types and climates. 
 The grid is also part of the data that was linked in the beginning of this post. 
-Using this data we can predict the occurrence probability and abundance of *C. monedula* across these Finland.  
+Using this data we can predict the occurrence probability and abundance of *C. monedula* across Finland.  
 
 ```{r hmsc-spatial-prediction, eval=F}
 m = model[[3]]
