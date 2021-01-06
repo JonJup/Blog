@@ -39,7 +39,7 @@ p_load(abind,
        magrittr,
        stringr)</code></pre>
 <p>You can download the data we use <a href="https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip">here</a>.</p>
-<p>We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the method (e.g. Chapter 5 of <span class="citation">Ovaskainen and Abrego (2020)</span> and <span class="citation">Tikhonov et al. (2020)</span>). We will this analysis on the abundance and occurence <em>C. monedula</em> in the year 2014.</p>
+<p>We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the method (e.g. Chapter 5 of <span class="citation">Ovaskainen and Abrego (2020)</span> or <span class="citation">Tikhonov et al. (2020)</span>). We will this analysis on the abundance and occurence <em>C. monedula</em> in the year 2014.</p>
 <pre class="r"><code># data.directory needs to be a string, pointing 
 # to where your data is
 data = fread(file.path(data.directory, &quot;data.csv&quot;))
@@ -101,7 +101,7 @@ We should be able to see this with the effective sample size.</p>
 <p>When you fit such models you should start with a low thin (like 5) to estimate run time and to get an idea about the general direction of the results.
 Even though the estimate will change when you increase the thinning, you are often able to start writing your result section while the larger models are still running.
 Simply plug in the estimates from the final model once its done.
-You should increase the thinning until the model fit is satisfactory (high effective sampling size, low potential scale reduction factor, converged and stable chains)</p>
+You should increase the thinning until the model fit is satisfactory (high effective sampling size, low potential scale reduction factor, converged and stable chains).</p>
 <pre class="r"><code>nChains = 2
 thin = c(5, 10, 100)
 nParallel = max(round(parallel::detectCores() / 2), 

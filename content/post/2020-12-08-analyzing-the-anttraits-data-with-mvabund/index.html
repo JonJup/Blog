@@ -90,15 +90,15 @@ As we are not interested in response correlations we assume that the variance-co
 <p><img src="index_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <pre class="r"><code>plot(mod_nb, which = 3)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
-<p>Both, the fan-shape and the deviation from the 1:1 line in the Q-Q plot are gone.
-This means that the negative-binomial models fits the data better and will be used for the rest if this analysis.
-In the upper right corner of the Q-Q plot the observed values actually fall below the 1:1 line now which means that the residuals are underdispersed.
+<p>The fan-shape in the first plot is gone.
+In the upper right corner of the Q-Q plot the observed values now fall below the 1:1 line which means that the residuals are underdispersed.
 Possibly this is because that data are rather zero-inflated and not overdispersed.
-Indeed, a zero-inflated-Poisson gllvm model fit the data better than a negative binomial one. In <em><span style="color:CornflowerBlue">mvabund</span></em> we currently cannot fit such models, so we will move ahead with the negative binomial one.</p>
+Indeed, a zero-inflated-Poisson gllvm model fit the data better than a negative binomial one, in that <a href="https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/">analysis</a>.
+In <em><span style="color:CornflowerBlue">mvabund</span></em>, we currently cannot fit such models, so we will move ahead with the negative binomial one.</p>
 </div>
 <div id="model-results" class="section level1">
 <h1>Model results</h1>
-<p>Now we can compute the statistical significance of our predictors for the every individual species and the community as whole with the <code>anova()</code> function.</p>
+<p>Now we can compute the statistical significance of our predictors for every individual species and the community as whole with the <code>anova()</code> function.</p>
 <pre class="r"><code>mod_nb_anova = anova.manyglm(
         object = mod_nb,
         p.uni = &quot;adjusted&quot;,
@@ -117,9 +117,9 @@ Indeed, a zero-inflated-Poisson gllvm model fit the data better than a negative 
 <p>The first column contains the variable names, the second the Residual degrees of freedom (<em><span style="color:CornflowerBlue">Res.Df</span></em>).
 Note how the fact that later variables are added to the previous model is made explicit by showing the decreasing residual degrees of freedom.
 The difference in Degrees of Freedom (<em><span style="color:CornflowerBlue">Df.diff</span></em>) shows how many degrees of freedom are necessary to add this variable.
-The test statistic (here the deviance or likelihood ratio) and lastly the pseudo <em>p</em>-value.</p>
-<p>We can see that only the canopy cover has a statistically significant influence on the community composition.</p>
-<p>As we have more than 40 species a table is a bad way to inspect the species-level results. Instead we can plot the <em>p</em>-values of each variable for each species.
+The test statistic (here the deviance or likelihood ratio) is next and last is the pseudo <em>p</em>-value.
+Only the canopy cover has a statistically significant influence on the community composition.</p>
+<p>As we have more than 40 species a table is a bad way to inspect the species-level results. Instead, we can plot the <em>p</em>-values of each variable for each species.
 This will require some reshaping of our data but can be achieved in a few lines of code.
 You can right-click the plots to open them in a new tab, where they will be larger.</p>
 <pre class="r"><code># uni.p holds the univariate p-values. The first row is 
@@ -164,7 +164,7 @@ plot.tas = levelplot(
 print(plot.tas)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 The problem with this plot is, that it is scaled relative the actually occurring values and one value (Volume.lying.CWD for <em>Cardiocondyla nuda atalanta</em>) is strongly negative.
-To avoid this we can either use an absolute scale, base the relative scale on another static, remove the species or the variable.
+To avoid this we can either use an absolute scale, base the relative scale on another statistic, remove the species or the variable.
 Below, we use the third quantile instead of the maximum coefficient value to scale the coloring.</p>
 <pre class="r"><code>a        = quantile(abs(coef(mod_nb)), .75)
 colort   = colorRampPalette(c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;))
@@ -178,7 +178,7 @@ plot.tas = levelplot(
 )
 print(plot.tas)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Such plots are of limited use to identify exact coefficient values but especially when there are many species or covariables they can be very handy to identify groups or general trends.</p>
+<p>Such plots are of limited use to identify exact coefficient values but especially when there are many species or co variables they can be very handy to identify groups or general trends.</p>
 <p>Lastly, we can have a look at the relationship between traits and variables.</p>
 <pre class="r"><code>trait_model1 = traitglm(
   antTraits$abund,
