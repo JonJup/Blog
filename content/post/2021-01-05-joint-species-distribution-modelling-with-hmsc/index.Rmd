@@ -19,11 +19,11 @@ text-align: justify}
 
 # Introduction 
 
-In this short example we will use the Hierarchical Modeling of species communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the several bird species in Finland. This is a multi-species example of HMSC - if you are interested in a single-species example see [here](https://jonjup.netlify.app/post/2020-10-26-species-distribution-model-with-hmsc/species-distribution-model-with-hmsc/). This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see @ovaskainen2017make, @ovaskainen2020joint, or the [official website](https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc).
+In this short example, we will use the Hierarchical Modeling of species communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the several bird species in Finland. This is a multi-species example of HMSC - if you are interested in a single-species example see [here](https://jonjup.netlify.app/post/2020-10-26-species-distribution-model-with-hmsc/species-distribution-model-with-hmsc/). This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but focuse on the implementation in R. For more introductory material to HMSC see @ovaskainen2017make, @ovaskainen2020joint, or the [official website](https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc).
 
 # Preparing the analysis
 
-To run this code you will need to install the *pacman* R package beforehand but this will take care of all the other packages required. 
+To run this code you will need to install the <span style="color:CornflowerBlue">pacman</span> R package beforehand but this will take care of all the other packages required. 
 
 ```{r}
 if (!require(pacman)) install.packages(pacman)
@@ -35,8 +35,8 @@ dir_data  = "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/001_raw_data/hmsc_bi
 dir_model = "../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/hmsc_mcmc/jsdm"
 ```
 
-The data we use in this example can be downloaded from [here](https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip).
-We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in @ovaskainen2020joint and in @tikhonov2020joint). 
+The data we use in this example can be downloaded [here](https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip).
+We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the method (e.g. Chapter 5 in @ovaskainen2020joint or @tikhonov2020joint). 
 
 ```{r}
 # SPECIES AND ENVIRONMENTAL DATA 
@@ -51,6 +51,7 @@ dt_traits$LogMass = log(dt_traits$Mass)
 ```
 
 To keep the length of this analysis manageable we restrict it to the nine most common bird species plus *Corvus monedula* (the species we used in the single species example). 
+
 ```{r}
 vc_subset = sort(colSums(dt_y[, 10:59]), 
                  decreasing = TRUE)
@@ -64,7 +65,8 @@ ma_y = as.matrix(dt_y[, 10:19])
 dt_traits = dt_traits[Species %in% colnames(dt_y)]
 ```
 
-Next we define the study design matrix. It is a matrix with two columns (site and year) and as many rows as there are rows in the species data.
+Next, we define the study design matrix. 
+It is a matrix with two columns (site and year) and as many rows as there are rows in the species data.
 
 ```{r}
 ma_studydesign = matrix(NA, nrow(ma_y), 2)
@@ -116,7 +118,7 @@ m = Hmsc(
 )
 ```
 
-Up to there is not much different from the single-species example and the same goes for the model fitting. We need to define the parameters of Markov chains and will assess them with Gelman diagnostic (same as potential scale reduction factor). The biggest difference here will be the time it takes to fit the model. 
+Up to here, there is not much different from the single-species example and the same goes for the model fitting. We need to define the parameters of Markov chains and will assess them with Gelman diagnostic (same as potential scale reduction factor). The biggest difference here will be the time it takes to fit the model. 
 
 ```{r, eval = FALSE}
 thin    = 5
@@ -145,7 +147,7 @@ mpost = convertToCodaObject(fit_m,
                             covNamesNumbers = c(T, F))
 ```
 
-We could still look at trace plots but there are so many now that focusing on the Gelman diagnostic is easier here. By all means have a look at the traceplots in your own analyses! We will just skip this step here to not interrupt the document's flow by several dozen plots. 
+We could still look at trace plots but there are so many now that focusing on the Gelman diagnostic is easier here. By all means, have a look at the trace plots in your own analyses! We will just skip this step here to not interrupt the document's flow by several dozen plots. 
 
 ```{r message=FALSE, warning=FALSE}
 ge.beta = gelman.diag(mpost$Beta,multivariate=FALSE)$psrf 
@@ -188,11 +190,12 @@ ge.gamma %>%
   ) +
   geom_hline(yintercept = 1.1)
 ```
+
 The Gelman diagnostics of the $\gamma$ parameters are lower but still too high in some cases. If this were an analysis for a publication we should refit the model with more thinning. But for this example we will just keep going. 
 
 # Model fit 
 
-Lets have a look at model fit. In a multi-species context all the metrics are computed for each species separately.
+Let's have a look at model fit. In a multi-species context all the metrics are computed for each species separately.
 
 ```{r eval = FALSE}
 predY = computePredictedValues(hM = fit_m, 
@@ -264,7 +267,7 @@ ma_y %>%
         axis.ticks.x = element_blank())
 
 ```
-All errors are within one standard deviation of the observed values and species with higher mean abundnce have larger errors. 
+All errors (black bars) are within one standard deviation (colored boxes) of the observed values and species with higher mean abundance have larger errors. 
 
 ```{r}
 plot_data %>%
@@ -299,9 +302,10 @@ For now let us focus on the explained variance.
 In most species the habitat type explains more variance than the mean temperature in in April and May.
 A Notable exception is *Carduelis spinus*.
 
-One might be interested if the species niches (i.e. their $\beta$s) are phylogenetically structured. Such questions can be answered with the plot below. 
+One might ask if the species niches (i.e. their $\beta$s) are phylogenetically structured. Such questions can be answered with the plot below. 
 For the three kinds of plots that follow we always have the choice between a continuous measure (the mean) without information on uncertainty or a categorical measure (is zero included in the 95% credible interval) without detailed information on strength. 
 We will start with the latter: 
+
 ```{r}
 postBeta = getPostEstimate(fit_m, parName="Beta")
 show.sp.names = (is.null(fit_m$phyloTree))
@@ -318,9 +322,10 @@ plotBeta(
 )
 ```
 
-The plot can be read just like a matrix. When zero is part of the 95% credible interval the field remains white (0). 
+The plot can be read like a matrix.
+When zero is part of the 95% credible interval the field remains white (0). 
 If instead zero is not included then the field are red (if the estimate is positive) or blue (if the estimate is negative).
-I am keeping 95% for not because it is also used in other examples. 
+I am keeping 95% because it is also used in other examples. 
 On theoretical grounds there now reason not to use any other interval such as 66% or 83%.
 The intercept is positive which indicates that most species have higher mean abundances then the overall mean. 
 This shows that some of the rarer species must be a lot rarer (especially *C. monedula*) than the others and consequently drag down the overall mean abundance. 
@@ -328,7 +333,7 @@ Next come the four levels of habitat type.
 Most species either have no or negative associations with the habitat types. 
 Positive associations are most common with the urban habitat type (*C. monedula*, *P. major*, *T. pilaris*).
 The parameters of *P. trochilus* and *T. iliacus* for climate are noteworthy. 
-Both show negative responses to first term, if temperatures decrease so does there abundnace.
+Both show negative responses to first term, if temperatures decrease so does there abundance.
 However, they have positive responses the second, quadratic, term.
 This is a little harder to interpret, as quadratic effects often are, but think about the opposite case for a moment: positive first term and negative second. 
 As long as the absolute value of the first parameter is larger then that of the second this creates a unimodal response. 
@@ -349,6 +354,7 @@ The second plot gives some additional information.
 So rare that large uncertainty remains for its intercept parameter why it is not flagged as negative in the first plot.  
 As expected the positive coefficient of *P. trochilus* and *T. iliacus* for the second power of climate is very small. 
 However this also means that the uncertainty must also be small, as zero is not included in the 95% credible interval. 
+
 ```{r}
 plotBeta(
   m,
@@ -364,6 +370,7 @@ plotBeta(
 
 
 Now lets see how traits modulate the response. 
+
 ```{r}
 postGamma = getPostEstimate(fit_m, parName="Gamma")
 # categorical 
@@ -378,6 +385,7 @@ plotGamma(
 )
 
 ```
+
 The interpretation for this plot is the same as for the one before. 
 Again we see mostly white squares indicating that zero is part of the 95% credible interval. 
 From this plot we can deduct: large species tend to be less abundant than smaller ones (LogMass and Intercept); birds that prefer urban habitats are less abundant and larger. 
@@ -398,6 +406,7 @@ plotGamma(
 We can have a look at species co-occurrences with the Omega matrix. 
 Again we have to choice to plot a continuous measure (mean) without information on uncertainty or a categorical measure (support) with detailed information on strength. 
 Here again, more information is better so we plot both. 
+
 ```{r}
 par(xpd = TRUE)
 OmegaCor = computeAssociations(fit_m)
@@ -424,10 +433,12 @@ corrplot(
         tl.srt = 45
 )
 ```
+
 Most species associations are positive, but this might be due to some unmeasured environmental variables. 
 The only negative association is between *P. trochilus* and *C. monedula*. 
 We already saw before (in the phylogeny - niche plot) that the former is negatively associated with urban habitat while the latter is positively associated. 
 What we can see in this plot however shows that these residuals of these species are even negatively correlated after accounting for the habitat.
+
 ```{r}
 mymain = paste0("Associations: ",names(fit_m$ranLevels)[[1]], " - mean")
 corrplot(
@@ -441,9 +452,6 @@ corrplot(
         diag = FALSE,
         tl.srt = 45
 )
-
-
-
 ```
  
 A similar picture can be seen in the second plot. 
@@ -451,7 +459,7 @@ The associations of *C. monedula* closely track the distinction between urban an
 
 # Prediction 
 
-Lastly we can use our model to predict 
+Lastly, we can use our model to predict the occurrence and abundance of our ten bird species across Finnland. Below, I show all three versions of accounting for <span style="color:CornflowerBlue">non.focalVariables</span>.  As you will see the model performs bad in all cases. 
 
 ```{r eval = F}
 m = fit_m

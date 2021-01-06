@@ -39,7 +39,7 @@ cao_p = readRDS(file.path(dir_cao, "cao.RDS"))
 ```
 
 
-The antTraits data set we will analyze today is included *mvabund* and *gllvm* so we can load it using the *data()* function after loading the mvabund package.
+The antTraits data set we will analyze today is included <span style="color:CornflowerBlue">mvabund</span> and <span style="color:CornflowerBlue">gllvm</span> so we can load it using the `data()` function after loading the <span style="color:CornflowerBlue">mvabund</span> package.
 ```{r}
 data("antTraits")
 
@@ -65,10 +65,10 @@ comb = cbind(bio,env)
 ```
 
 
-Below we fit the first CAO. There are tons of options that can be tuned in CAOs and even more in CQOs. Here, I will merely cover the most important and basic ones. For a more in-depth treatment I refer to @yee2015vector.  
-We start of with the formula. Here we provide the column names of response variables, in a cbind, and separate them with a tilde from the predictors. 
-The family argument determines the residual distribution and mean variance relationship. In VGLM some family names end in ff for some reason. So its poissonff instead of Poisson and bionomialff instead of binomial but negative binomial models can be fitted with the negbinomial family. For a complete list of implemented families see the help page of the cqo function. The rank argument gives the number of latent variables. If you try to fit a CAO with two latent variable you will see an error saying: "havent got Rank = 2 going yet". If you dare fitting a model with more than two latent variable R will probably crash. Or at least mine did. 
-The non-linear degree of freedom (df1.nl) are specific to the CAO and determine the smoothness of the function. A df1.nl of 1.5 approximates CQO [@yee2015vector]. By setting df1.nl to 2 we apply a liberal inclusion criterion. Bestof determines the number of models fitted, each with different randomly chosen.  starting values. CAO and CQO are prone to finding local solutions to prevent this multiple models are fit and their deviances are compared. If the lowest deviance was found more than three times (just a rule of thumb) you probably found a global minimum. 
+Below we fit the first CAO. There are tons of options that can be tuned in CAOs and even more in CQOs. Here, I will merely cover the most important and basic ones. For a more in-depth treatment, I refer to @yee2015vector.  
+We start of with the formula. Here we provide the column names of response variables, inside `cbind()`, and separate them with a tilde from the predictors. 
+The family argument determines the residual distribution and mean variance relationship. In VGLM some family names end in ff for some reason. So its poissonff instead of Poisson and bionomialff instead of binomial but negative binomial models can be fitted with the negbinomial family. For a complete list of implemented families see the help page of the `cqo()` function. The <span style="color:CornflowerBlue">rank</span> argument gives the number of latent variables. If you try to fit a CAO with two latent variable you will see an error saying: "havent got Rank = 2 going yet". If you dare fitting a model with more than two latent variable R will probably crash. Or at least mine did. 
+The non-linear degree of freedom (<span style="color:CornflowerBlue">df1.nl</span>) are specific to the CAO and determine the smoothness of the function. A <span style="color:CornflowerBlue">df1.nl</span> of 1.5 approximates CQO [@yee2015vector]. By setting <span style="color:CornflowerBlue">df1.nl</span> to 2 we apply a liberal inclusion criterion. <span style="color:CornflowerBlue">Bestof</span> determines the number of models fitted, each with different randomly chosen starting values. CAO and CQO are prone to finding local solutions to prevent this multiple models are fit and their deviances are compared. If the lowest deviance was found more than three times (just a rule of thumb) you probably found a global minimum. 
 
 ```{r eval = F}
 cao_p = cao(
@@ -94,7 +94,7 @@ cao_p = cao(
 )
 ```
 
-With the second line below we evaluate if a global minimum was reached. If the number that is returned there is below 3 we should rerun the CAO and possibly increase the *Bestof* argument. Here 8 from 30 models have the same deviance which means that we are likely to have found a global minimum. 
+With the second line below we evaluate if a global minimum was reached. If the number that is returned there is below 3 we should rerun the CAO and possibly increase the <span style="color:CornflowerBlue">Bestof</span> argument. Here 8 from 30 models have the same deviance which means that we are likely to have found a global minimum. 
 
 ```{r}
 cao_p_summary = summary(cao_p)
@@ -191,14 +191,15 @@ par(mfrow=c(3,4))
 plot(cao_p, lcol = "blue", lwd = 2, ylim = c(-5, 5))
 ```
 
-The result is still not perfect but it will suffice for our purposes here. For a publication I would replace *Camponotus consorbinus* and *Monomorium sydneyense*.
+The result is still not perfect but it will suffice for our purposes here. 
+For a publication I would replace *Camponotus consorbinus* and *Monomorium sydneyense*.
 Now we can fit a CQO with Poisson response and one latent variable.
 The function call is almost identical to that of the CAOs above.
-We remove the df1.nl argument and add a tolerance argument eq.toler.
+We remove the <span style="color:CornflowerBlue">df1.nl</span> argument and add a tolerance argument <span style="color:CornflowerBlue">eq.toler</span>.
 For CQOs there are three different ways to define or estimate tolerances:
-1. Estimate them from the data. (eq.toler = FALSE)
-2. Estimate one tolerance to use for all species. (eq.toler = TRUE)
-3. Set all tolerances to 1 (I.tolerances = TRUE).
+1. Estimate them from the data. (<span style="color:CornflowerBlue">eq.toler = FALSE</span>)
+2. Estimate one tolerance to use for all species. (<span style="color:CornflowerBlue">eq.toler = TRUE</span>)
+3. Set all tolerances to 1 (<span style="color:CornflowerBlue">I.tolerances = TRUE</span>).
 Note that 3 always implies 2. 
 For this model we will choose the first option. 
 
@@ -232,13 +233,15 @@ cqo_p_ut = readRDS(file.path(dir_cqo, "cqo_p_ut.RDS"))
 cqo_p_summary = summary(cqo_p_ut)
 globsol(cqo_p_summary)
 ```
+
 We can look at the tolerances and whether the shape of the response conforms to unimodality. 
+
 ```{r}
 data.frame(tolerance = Tol(cqo_p_ut)[1, 1, ],
            bell = is.bell(cqo_p_ut))
 ```
 
-While the is.bell function accepts all responses the large tolerance of *Camponotus consobrinus* is very likely due to its response shape. We will omit it from the next model with two latent variables. We also omit *Aphaenogaster longiceps* and *Meranoplus sp A* because their models do not seem to converge (as can be seen by the model output when you fit a model with those species). 
+While the `is.bell` function accepts all responses the large tolerance of *Camponotus consobrinus* is very likely due to its response shape. We will omit it from the next model with two latent variables. We also omit *Aphaenogaster longiceps* and *Meranoplus sp A* because their models do not seem to converge (as can be seen by the model output when you fit a model with those species). 
 
 ```{r eval = F}
 cqo2_p_ut = cqo(
@@ -273,14 +276,23 @@ data.frame(tolerance1 = tol_obj[1,1,],
                        tolerance2 = tol_obj[2,2,], 
                        bell       = is.bell(cqo2_p_ut))
 ```
-From all of this we can see that adding a second latent variables makes a lot of things more complicated. We had to use 10 times as many iterations, drop three species and four out of five are not responding unimodaly to both gradients.  Lets have a quick look at the residuals. The fact the that some tolerances are negative, which makes no ecological sense also is due to non-unimodal responses  
+From all of this we can see that adding a second latent variables makes a lot of things more complicated. We had to use 10 times as many iterations, drop three species and four out of five are not responding unimodaly to both gradients. 
+The fact the that some tolerances are negative, which makes no ecological sense, also is due to non-unimodal responses.
+Lets have a quick look at the residuals. 
 
 ```{r warning=FALSE, message=FALSE}
 cqo_resid_plot(list(cqo_p_ut,
                     cqo2_p_ut))
 ```
 
-Maybe we can improve the methods performance by making stronger assumptions. Namely by imposing equal variance. In the first tries this also did not work. The function did not throw and error but, after 200 iterations ,the returned model did not have a positive-definite tolerance matrix, which is another way of saying that responses were not unimodal. If we go back to the unequal tolerances model *Iridomyrmex bicknelli* had a remarkably large tolerance. Trying to fit this model did not help as well. Finally the I.toler model was successfully fit. 
+Maybe we can improve the methods performance by making stronger assumptions. 
+Namely by imposing equal variance. 
+In the first tries this also did not work. 
+The function did not throw and error but, after 200 iterations, the returned model did not have a positive-definite tolerance matrix, which is another way of saying that responses were not unimodal. 
+If we go back to the unequal tolerances model *Iridomyrmex bicknelli* had a remarkably large tolerance. 
+So I fit a model without it. 
+This model still did not have a positive-definite tolerance matrix. 
+Finally the I.toler model was successfully fit. 
 
 ```{r eval=F}
 cqo2_p_it = cqo(
@@ -326,7 +338,7 @@ This might cause the problems with estimation.
 persp(cqo2_p_it, label = T, xlim = c(-3,6), ylim = c(-11,2))
 ```
 
-In the perspective plot we can see another common issue of CQO. 
+In the perspective plot, we can see another common issue of CQO. 
 The expected abundance of species with optima close to the edge of or outside of the latent variable space is strongly exaggerated. The maximal recorded abundance for *Idridiomyrmex purpureus* is 18. A far cry from 3e+22! 
 
 ```{r}
