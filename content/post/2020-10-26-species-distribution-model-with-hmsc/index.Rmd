@@ -12,13 +12,9 @@ bibliography: ref.bib
 images: ~
 ---
 
-```{r}
-#TODO add link to multispecies example
-```
-
 # Introduction
 
-In this short example we will use the Hierarchical Modeling of species communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the Western jackdaw (*Corvus monedula*) in Finland. This is a univariate example of HMSC - if you are interested in a multi-species example see here. However I would suggest you start with the easier univariate case if you are not familiar with HMSC. This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see @ovaskainen2017make, @ovaskainen2020joint, or the [offical website](https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc). 
+In this short example we will use the Hierarchical Modeling of species communities (HMSC, @ovaskainen2020joint) approach through its implementation in the HMSC-R package [@tikhonov2020joint] to analyze and predict the distribution of the Western jackdaw (*Corvus monedula*) in Finland. This is a univariate example of HMSC - if you are interested in a multi-species example see [here](https://jonjup.netlify.app/post/2021-01-05-joint-species-distribution-modelling-with-hmsc/joint-species-distribution-modelling-with-hmsc/). However I would suggest you start with the easier univariate case if you are not familiar with HMSC. This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see @ovaskainen2017make, @ovaskainen2020joint, or the [official website](https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc). 
 
 # Preparing the analysis
 
@@ -29,14 +25,14 @@ if(!require(pacman)) install.packages("pacman")
 p_load(abind, data.table, dplyr, ggplot2, here, kableExtra, Hmsc, magrittr)
 ```
 
-The data we use in this example can be downloaded from the [here](https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip).
+The data we use in this example can be downloaded from [here](https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip).
 
 ```{r load data, echo=FALSE}
 data.directory="~/01_Uni/01_Lehre/05_MOD3-Lecture/001_raw_data/hmsc_birds/data"
 model.path="~/01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/hmsc_mcmc/corvusmonedula/"
 ```
 
-We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in @ovaskainen2020joint and in @tikhonov2020joint). In addtion to only focussing on *C. monedula* we will also reduce the data to just one year (2014) while the data set contains the years 2006 to 2014. 
+We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in @ovaskainen2020joint and in @tikhonov2020joint). In addition to only focusing on *C. monedula* we will also reduce the data to just one year (2014) while the data set contains the years 2006 to 2014. 
 
 ```{r carpet data, echo=T}
 # data.directory needs to be a string, pointing 

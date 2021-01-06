@@ -16,18 +16,17 @@ images: ~
 <link href="index_files/lightable/lightable.css" rel="stylesheet" />
 
 
-<pre class="r"><code>#TODO add link to multispecies example</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>In this short example we will use the Hierarchical Modeling of species communities (HMSC, <span class="citation">Ovaskainen and Abrego (2020)</span>) approach through its implementation in the HMSC-R package <span class="citation">(Tikhonov et al. 2020)</span> to analyze and predict the distribution of the Western jackdaw (<em>Corvus monedula</em>) in Finland. This is a univariate example of HMSC - if you are interested in a multi-species example see here. However I would suggest you start with the easier univariate case if you are not familiar with HMSC. This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see <span class="citation">Ovaskainen et al. (2017)</span>, <span class="citation">Ovaskainen and Abrego (2020)</span>, or the <a href="https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc">offical website</a>.</p>
+<p>In this short example we will use the Hierarchical Modeling of species communities (HMSC, <span class="citation">Ovaskainen and Abrego (2020)</span>) approach through its implementation in the HMSC-R package <span class="citation">(Tikhonov et al. 2020)</span> to analyze and predict the distribution of the Western jackdaw (<em>Corvus monedula</em>) in Finland. This is a univariate example of HMSC - if you are interested in a multi-species example see <a href="https://jonjup.netlify.app/post/2021-01-05-joint-species-distribution-modelling-with-hmsc/joint-species-distribution-modelling-with-hmsc/">here</a>. However I would suggest you start with the easier univariate case if you are not familiar with HMSC. This post is meant to accompany the advanced methods in multivariate statistics lecture at the University of Koblenz-Landau. It will not delve deeply into the theoretical aspects of HMSC but is rather focused on the implementation in R. For more introductory material to HMSC see <span class="citation">Ovaskainen et al. (2017)</span>, <span class="citation">Ovaskainen and Abrego (2020)</span>, or the <a href="https://www.helsinki.fi/en/researchgroups/statistical-ecology/hmsc">official website</a>.</p>
 </div>
 <div id="preparing-the-analysis" class="section level1">
 <h1>Preparing the analysis</h1>
 <p>To run this code you will need to install the <em>pacman</em> R package beforehand but this will take care of all the other packages required.</p>
 <pre class="r"><code>if(!require(pacman)) install.packages(&quot;pacman&quot;)
 p_load(abind, data.table, dplyr, ggplot2, here, kableExtra, Hmsc, magrittr)</code></pre>
-<p>The data we use in this example can be downloaded from the <a href="https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip">here</a>.</p>
-<p>We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in <span class="citation">Ovaskainen and Abrego (2020)</span> and in <span class="citation">Tikhonov et al. (2020)</span>). In addtion to only focussing on <em>C. monedula</em> we will also reduce the data to just one year (2014) while the data set contains the years 2006 to 2014.</p>
+<p>The data we use in this example can be downloaded from <a href="https://www.helsinki.fi/sites/default/files/atoms/files/section_11_1_birds_2020_05_31.zip">here</a>.</p>
+<p>We use the Finnish bird data that are often used by the creators of HMSC to demonstrate the package (e.g. Chapter 5 in <span class="citation">Ovaskainen and Abrego (2020)</span> and in <span class="citation">Tikhonov et al. (2020)</span>). In addition to only focusing on <em>C. monedula</em> we will also reduce the data to just one year (2014) while the data set contains the years 2006 to 2014.</p>
 <pre class="r"><code># data.directory needs to be a string, pointing 
 # to where your data is
 data = fread(file.path(data.directory, &quot;data.csv&quot;))
@@ -358,7 +357,7 @@ predY2 = predict(m,
              measure = &quot;Y&quot;,
              index = 1,
              showData = TRUE)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>plotGradient(m, 
              Gradient2, 
@@ -366,7 +365,7 @@ predY2 = predict(m,
              measure = &quot;Y&quot;,
              index = 1,
              showData = TRUE)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 <pre><code>## [1] 1</code></pre>
 <p>Lastly, we can evaluate the predictive performance with cross-validation.
 HMSC-R has functions that make this very easy. The first is <em>createPartition()</em>.
