@@ -52,7 +52,7 @@ disableHugoGeneratorInject = false
   highlightjsVersion = "9.11.0"
   highlightjsCDN = "//cdn.bootcss.com"
   highlightjsLang = ["r"]
-  highlightjsTheme = "default"
+  highlightjsTheme = "hybrid"
   MathJaxCDN = "//cdn.bootcss.com"
 ## --   
   dateform        = "Jan 2, 2006"
