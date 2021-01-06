@@ -18,17 +18,26 @@ text-align: justify}
 </style>
 
 
-In this post, we will use the *mvabund* R-package to analyze the antTraits data set. Elsewhere on the blog you can find an analysis of the same data using [gllvm](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/) and [boral](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttrait-data-with-boral-and-gllvm/analyzing-the-anttrait-data-with-boral/).
+In this post, we will use the *mvabund* R-package to analyze the antTraits data set. Elsewhere on the blog you can find an analysis of the same data using [gllvm](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-gllvm/analyzing-the-anttraits-data-with-gllvm/), [boral](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttrait-data-with-boral-and-gllvm/analyzing-the-anttrait-data-with-boral/) and [CAO/CQO](https://jonjup.netlify.app/post/2020-12-31-analyzing-the-anttraits-data-with-cqo-and-cao/analyzing-the-anttraits-data-with-cqo-and-cao/).
 
-First of we will setup the analysis by loading the required libraries. If you haven't already done so, you will need to install the pacman r package before running this code. 
+# Preparing the analysis
+
+First we will setup the analysis by loading the required libraries. 
+If you haven't already done so, you will need to install the pacman R package before running this code. 
 
 ```{r}
-pacman::p_load(data.table, dplyr, 
-               ggplot2, lattice, magrittr, 
-               mvabund, stringr, readxl, tidyr)
+pacman::p_load(data.table,
+               dplyr,
+               ggplot2,
+               lattice,
+               magrittr,
+               mvabund,
+               readxl,
+               stringr,
+               tidyr)
 ```
 
-The antTraits data set we will analyze today is included *mvabund* and *gllvm*. 
+The antTraits data set we will analyze today is included *<span style="color:CornflowerBlue">mvabund</span>* and *<span style="color:CornflowerBlue">gllvm</span>*. 
 ```{r}
 data(antTraits)
 ```
@@ -37,27 +46,31 @@ The data set is a list that contains three data frames with self explanatory nam
 names(antTraits)
 ```
 
-*abund* contains the abundance of 41 epigaeic Australian ant species at 30 sites. For more information on the data try ?antTraits.
+*<span style="color:CornflowerBlue">abund</span>* contains the abundance of 41 epigaeic Australian ant species at 30 sites. 
+For more information on the data try  *<span style="color:CornflowerBlue">?antTraits</span>*.
 ```{r, echo = F}
 head(antTraits$abund[,1:5])
 ```
 Note that this data set faces the typical n<p problem of more variables (species) than observations(sites) which makes the estimation of parameters difficult. 
 
-As in every analysis with *mvabund* we start of by converting our data in the mvabund data format and investigating the mean variance plot. 
+As in every analysis with *<span style="color:CornflowerBlue">mvabund</span>* we start of by converting our data in the mvabund data format and investigating the mean variance plot. 
 
 ```{r}
-ant_mv <- mvabund(antTraits$abund)
+ant_mv = mvabund(antTraits$abund)
 meanvar.plot(ant_mv,
-             xlab=expression(mu), 
+             xlab = expression(mu),
              ylab = expression(sigma))
 ```
-There is a straight line relationship between variance and mean but since the y axis is scaled logarithmically this indicates an exponential relationship. 
+There is a straight line relationship between variance and mean but since the y-axis is scaled logarithmically this indicates an exponential relationship. 
 
-First we will fit a Poisson model. As we are not interrested in response correlations we assume that the variance-covariance matrix is the identity matrix $I$. 
+# Fiting a model
+
+First we will fit a Poisson model. 
+As we are not interested in response correlations we assume that the variance-covariance matrix is the identity matrix *<span style="color:CornflowerBlue">I</span>*. 
 ```{r}
-mod_p = manyglm(ant_mv ~ ., 
-                data = antTraits$env, 
-                family = "poisson", 
+mod_p = manyglm(ant_mv ~ .,
+                data = antTraits$env,
+                family = "poisson",
                 cor.type = "I")
 ```
 
@@ -68,7 +81,7 @@ plot(mod_p, which = 2)
 plot(mod_p, which = 3)
 ```
 
-While the third plot looks ok, there is a clear fan shape (residuals get larger with larger values of the linear predictor) and the Q-Q plot suggests that there is overdispersion (small values are smaller and large values larger than you would expect in a normal distribution).  
+While the third plot looks ok, there is a clear fan-shape (residuals get larger with larger values of the linear predictor) in the first plot and the Q-Q plot suggests that there is overdispersion (small values are smaller and large values larger than you would expect in a normal distribution).  
 
 A negative binomial model might be the better choice here. 
 ```{r}
@@ -85,15 +98,21 @@ plot(mod_nb, which = 2)
 plot(mod_nb, which = 3)
 ```
 
-Both, the fan shape and the deviation form the 1:1 line in the Q-Q plot are gone. 
-This mean that the negative-binomial models fits the data better and will be used for the rest if this analysis.
+Both, the fan-shape and the deviation from the 1:1 line in the Q-Q plot are gone. 
+This means that the negative-binomial models fits the data better and will be used for the rest if this analysis. 
+In the upper right corner of the Q-Q plot the observed values actually fall below the 1:1 line now which means that the residuals are underdispersed. 
+Possibly this is because that data are rather zero-inflated and not overdispersed. 
+Indeed, a zero-inflated-Poisson gllvm model fit the data better than a negative binomial one. In *<span style="color:CornflowerBlue">mvabund</span>* we currently cannot fit such models, so we will move ahead with the negative binomial one. 
+
 
 ```{r, echo=F}
 anova_list = readRDS("../../../../../01_Uni/01_Lehre/05_MOD3-Lecture/003_processed_data/mvabund/anova/antTrait/anova_list.RDS")
 mod_nb_anova = anova_list$LR_pit.trap
 ```
 
-Now we can compute the statistical significance of our predictors for the every individual species and the community as whole with the *anova()* function. 
+# Model results 
+
+Now we can compute the statistical significance of our predictors for the every individual species and the community as whole with the `anova()` function. 
 
 ```{r , eval=F}
 mod_nb_anova = anova.manyglm(
@@ -110,12 +129,16 @@ First we can have a look at the community level results
 mod_nb_anova$table
 ```
 
-The first column contains the variable names, the second the Residual degrees of freedom (*Res.Df*). Note how the fact later variables are added to the previous model is made explicit by showing the decreasing residual degrees of freedom. The difference in Degrees of Freedom (Df.diff) shows how many degrees of freedom are necessary to add this variable. The test statistic (here the deviance or likelihood ratio) and lastly the pseudo *p*-value. 
+The first column contains the variable names, the second the Residual degrees of freedom (*<span style="color:CornflowerBlue">Res.Df</span>*). 
+Note how the fact that later variables are added to the previous model is made explicit by showing the decreasing residual degrees of freedom. 
+The difference in Degrees of Freedom (*<span style="color:CornflowerBlue">Df.diff</span>*) shows how many degrees of freedom are necessary to add this variable. 
+The test statistic (here the deviance or likelihood ratio) and lastly the pseudo *p*-value. 
 
 We can see that only the canopy cover has a statistically significant influence on the community composition. 
 
-As we have more than 40 species a table is a bad way to inspect the species-level results. Instead lets make a plot showing the *p*-values of each variable for each species. This will require some reshaping of our data but can be achieved in a few lines of code. 
-
+As we have more than 40 species a table is a bad way to inspect the species-level results. Instead we can plot the *p*-values of each variable for each species. 
+This will require some reshaping of our data but can be achieved in a few lines of code. 
+You can right-click the plots to open them in a new tab, where they will be larger. 
 ```{r warning=FALSE, message=FALSE}
 # uni.p holds the univariate p-values. The first row is 
 # the intercept which we do not care about. 
@@ -160,7 +183,8 @@ plot.tas = levelplot(
 )
 print(plot.tas)
 ```
-The problem with this uninformative plot is, it is scaled relative the actually occurring values and one value (Volume.lying.CWD for *Cardiocondyla nuda atalanta*) is very low. To avoid this we can either use an absolute scale, remove the species or the variable. 
+The problem with this plot is, that it is scaled relative the actually occurring values and one value (Volume.lying.CWD for *Cardiocondyla nuda atalanta*) is strongly negative. 
+To avoid this we can either use an absolute scale, base the relative scale on another static, remove the species or the variable. 
 Below, we use the third quantile instead of the maximum coefficient value to scale the coloring.
 ```{r}
 a        = quantile(abs(coef(mod_nb)), .75)
