@@ -59,15 +59,15 @@ source(file.path(script_directory, &quot;RCode3_functions.R&quot;))</code></pre>
 The data contains three seasons: September 1998 and 99 as well as March 1999.
 We want to construct a different copula model for each season so we need to separate the data set.<br />
 The <code>select()</code> function from <span style="color:CornflowerBlue">dplyr</span> is explicitly
-loaded the <code>::</code> sign because the <span style="color:CornflowerBlue">MASS</span> package which will is loaded inside the <code>chooseDistr()</code> function also contains a <code>select()</code> function
+loaded with the <code>::</code> sign because the <span style="color:CornflowerBlue">MASS</span> package which is loaded inside the <code>chooseDistr()</code> function also contains a <code>select()</code> function
 which would mask dplyr’s.</p>
 <pre class="r"><code>vec_unique_levels =
         dt_fish %&gt;%
         dplyr::select(Time) %&gt;%
         pull() %&gt;%
         unique()</code></pre>
-<p>Next we define a function to: 1. subset data with a certain value of the variable
-<span style="color:CornflowerBlue">Time</span>, 2. remove the two variables <span style="color:CornflowerBlue">Sample</span> and <span style="color:CornflowerBlue">Time</span>, and 3. convert the result to a matrix.
+<p>Next, we define a function to: 1. subset data with a certain value of the variable
+<span style="color:CornflowerBlue">Time</span>, 2. remove the two variables <span style="color:CornflowerBlue">Sample</span> and <span style="color:CornflowerBlue">Time</span> and 3. convert the result to a matrix.
 The last step is necessary because the <code>chooseDistr()</code> function requires
 a matrix as input.
 We use a function for all of this to adhere to the DRY principle:
@@ -81,7 +81,7 @@ This makes it more cumbersome to fix errors or to rerun the analysis.</p>
 }</code></pre>
 <p>The original season names have dots (.) in them. In coding in general, you
 should avoid dots in the names of objects. In R this is not a problem
-but in other languages they can cause errors, so its a good habit to use
+but in other languages they can cause errors, so it’s a good habit to use
 underscores instead.</p>
 <pre class="r"><code>for (i in vec_unique_levels){
         cr_new_i &lt;- i %&gt;%
@@ -92,8 +92,10 @@ underscores instead.</p>
         rm(i, cr_new_i)
 }</code></pre>
 <p>In this loop, we first remove species that do not occur in the subsets (i.e.
-where the sum of the column is zero). They would cause errors in the
-<code>chooseDistr()</code> function. Afterwards we call the function on each matrix.
+where the sum of the column is zero).
+They would cause errors in the
+<code>chooseDistr()</code> function.
+Afterwards, we call the function on each matrix.
 The loop loops over all files in the environment whose names contain “mt”.</p>
 <pre class="r"><code>for(i in ls()[grepl(pattern=&quot;mt&quot;, x = ls())]){
   
@@ -111,13 +113,13 @@ The loop loops over all files in the environment whose names contain “mt”.</
         assign(x=cr_save_name,value=df_cd_out)
         rm(i, mt_loop,l_cd_out,df_cd_out,cr_save_name_part,cr_save_name,rm_id);gc()
 }</code></pre>
-<p>Now we have the optimal marginal distributions for each species and can turn to
+<p>Now, we have the optimal marginal distributions for each species and can turn to
 the significant pair-wise associations.
 The <code>pairWise()</code> function is not well written and occasionally returns an error.
 If that happens to you, simply rerun it.
 You can warp it in a while-loop combined with <span style="color:CornflowerBlue">purrr’s</span> <code>safely()</code> to let the function run until it finishes without error.</p>
-<p>The arguments are the data set (<span style="color:CornflowerBlue">Y</span>), the number of permutations (<span style="color:CornflowerBlue">nperm</span>), the type of correction applied to handle family-wise error rate (<span style="color:CornflowerBlue">alpha_type</span>), should a graph be plotted (<span style="color:CornflowerBlue">graphic) and the significance level (<span style="color:CornflowerBlue">sig_level</span>).
-The avaialable options for <span style="color:CornflowerBlue">alpha_type</span> are described well in <span class="citation">Anderson et al. (2019)</span>.</p>
+<p>The arguments are the data set (<span style="color:CornflowerBlue">Y</span>), the number of permutations (<span style="color:CornflowerBlue">nperm</span>), the type of correction applied to handle family-wise error rate (<span style="color:CornflowerBlue">alpha_type</span>), should a graph be plotted (<span style="color:CornflowerBlue">graphic</span>) and the significance level (<span style="color:CornflowerBlue">sig_level</span>).
+The available options for <span style="color:CornflowerBlue">alpha_type</span> are described well in <span class="citation">Anderson et al. (2019)</span>.</p>
 <pre class="r"><code>pwa_sep_98 = pairWise(
         Y = mt_sep_98,
         nperm = 99999,
@@ -179,7 +181,7 @@ corrplot(
 <pre class="r"><code>df_sep_98$Species &lt;- rownames(df_sep_98)
 df_mar_99$Species &lt;- rownames(df_mar_99)
 df_sep_99$Species &lt;- rownames(df_sep_99)</code></pre>
-<p>We also extract the ids of species with statistically significant associations …</p>
+<p>We also extract the IDs of species with statistically significant associations …</p>
 <pre class="r"><code>s98mt_id &lt;- which(colnames(mt_sep_98) %in%  pwa_sep_98$associated)
 s98df_id &lt;- which(rownames(df_sep_98) %in%  pwa_sep_98$associated)
 m98mt_id &lt;- which(colnames(mt_mar_99) %in%  pwa_mar_99$associated)
@@ -241,13 +243,13 @@ legend(
 <p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Now comes the part which was hardest to figure out because it is not included in the provided code. If you compare all we have done with figure 6 in <span class="citation">Anderson et al. (2019)</span>, we are only at c. The next steps are simulating new data sets from our copulas to create a new super matrix. This we can use to compute a super distance matrix from which we will derive centroids for each treatment (season).<br />
 We are going to do 100 separate simulations (<span style="color:CornflowerBlue">n_sim</span>). The number of sites belonging to each season will be kept constant at the original levels which are stored in <span style="color:CornflowerBlue">n_g1-3</span>. <span style="color:CornflowerBlue">dt_base</span> is a template witch will be used as a starting point in each simulation.
-In its original form it only has a Sample column which gives each row an id and a Treatment (here: season) column which assigns a treatment level to each observation.
+In its original form it only has a sample column which gives each row an ID and a treatment (here: season) column which assigns a treatment level to each observation.
 Each iteration of the for-loop fills a copy of <span style="color:CornflowerBlue">dt_base</span> with the simulated abundances and saves its results as an element in the list <span style:color="CornflowerBlue&quot;">sim_list</span>.
 After the loop is finished we combine all single data sets into one super set (<span style="color:CornflowerBlue">sim_mat</span>).
 In the loop, we also create null model simulations in which the observations are randomly shuffled after drawing them from the simulations.
-This super set is quite large and computing its distance matrix can is computationally demanding.
+This super set is large and computing its distance matrix is computationally demanding.
 To speed this up we use the <span style="color:CornflowerBlue">parrallelDist</span> package which enables us to use multiple cores for this task.
-Lastly, we can find the centroids of each season with the <code>betadisper()</code> function from &lt;span style:“CornflowerBlue”&gt;vegan</span>.</p>
+Lastly, we can find the centroids of each season with the <code>betadisper()</code> function from <span style="color:CornflowerBlue">vegan</span>.</p>
 <pre class="r"><code>n_sim = 100
 n_g1 = nrow(mt_sep_98)
 n_g2 = nrow(mt_mar_99)
@@ -375,7 +377,7 @@ cowplot::plot_grid(p12 + theme(legend.position = &quot;none&quot;),
                    p23,
                    p12_leg)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-<p>Below is code to create a 3d ordination plot. Displaying this on the website unfortunately does not work. However, you should be able to display in your R instance.</p>
+<p>Below is code to create a 3D ordination plot. Displaying this on the website unfortunately does not work. However, you should be able to display it in your R instance.</p>
 <pre class="r"><code>colors3d = c(&#39;royalblue1&#39;, &#39;darkcyan&#39;, &#39;oldlace&#39;, &quot;gray&quot;)
 plot_data$color &lt;- colors3d[ as.numeric(plot_data$season) ]
 plot3d(x = plot_data$axis1, y = plot_data$axis2, z = plot_data$axis3, col = plot_data$color, type = &#39;s&#39;, 

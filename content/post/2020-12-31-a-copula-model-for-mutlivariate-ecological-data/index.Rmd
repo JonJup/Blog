@@ -73,7 +73,7 @@ The "treatment" in this example is the season in which the fish were observed.
 The data contains three seasons:  September 1998 and 99 as well as March 1999. 
 We want to construct a different copula model for each season so we need to separate the data set.  
 The `select()` function from <span style="color:CornflowerBlue">dplyr</span> is explicitly
-loaded the `::` sign because the <span style="color:CornflowerBlue">MASS</span> package which will is loaded inside the `chooseDistr()` function also contains a `select()` function
+loaded with the `::` sign because the <span style="color:CornflowerBlue">MASS</span> package which is loaded inside the `chooseDistr()` function also contains a `select()` function
 which would mask dplyr's.
 
 ```{r}
@@ -84,8 +84,8 @@ vec_unique_levels =
         unique()
 ```
 
-Next we define a function to: 1. subset data with a certain value of the variable
-<span style="color:CornflowerBlue">Time</span>, 2. remove the two variables <span style="color:CornflowerBlue">Sample</span> and <span style="color:CornflowerBlue">Time</span>, and 3. convert the result to a matrix. 
+Next, we define a function to: 1. subset data with a certain value of the variable
+<span style="color:CornflowerBlue">Time</span>, 2. remove the two variables <span style="color:CornflowerBlue">Sample</span> and <span style="color:CornflowerBlue">Time</span> and 3. convert the result to a matrix. 
 The last step is necessary because the `chooseDistr()` function requires
 a matrix as input. 
 We use a function for all of this to adhere to the DRY principle:
@@ -103,7 +103,7 @@ tbl_to_mat <- function(sub){
 
 The original season names have dots (.) in them. In coding in general, you
 should avoid dots in the names of objects. In R this is not a problem
-but in other languages they can cause errors, so its a good habit to use
+but in other languages they can cause errors, so it's a good habit to use
 underscores instead.
 
 ```{r}
@@ -118,8 +118,10 @@ for (i in vec_unique_levels){
 ```
 
 In this loop, we first remove species that do not occur in the subsets (i.e.
-where the sum of the column is zero). They would cause errors in the
-`chooseDistr()` function. Afterwards we call the function on each matrix.
+where the sum of the column is zero). 
+They would cause errors in the
+`chooseDistr()` function. 
+Afterwards, we call the function on each matrix.
 The loop loops over all files in the environment whose names contain "mt".
 
 ```{r eval = F}
@@ -150,14 +152,14 @@ df_sep_99 = readRDS(file.path(load_dir,"chooseD_sep_99.RDS"))
 df_sep_98 = readRDS(file.path(load_dir,"chooseD_sep_98.RDS"))
 ```
 
-Now we have the optimal marginal distributions for each species and can turn to
+Now, we have the optimal marginal distributions for each species and can turn to
 the significant pair-wise associations. 
 The `pairWise()` function is not well written and occasionally returns an error. 
 If that happens to you, simply rerun it.
 You can warp it in a while-loop combined with <span style="color:CornflowerBlue">purrr's</span> `safely()` to let the function run until it finishes without error. 
 
-The arguments are the data set (<span style="color:CornflowerBlue">Y</span>), the number of permutations (<span style="color:CornflowerBlue">nperm</span>), the type of correction applied to handle family-wise error rate (<span style="color:CornflowerBlue">alpha_type</span>), should a graph be plotted (<span style="color:CornflowerBlue">graphic) and the significance level (<span style="color:CornflowerBlue">sig_level</span>). 
-The avaialable options for <span style="color:CornflowerBlue">alpha_type</span> are described well in @Anderson2019. 
+The arguments are the data set (<span style="color:CornflowerBlue">Y</span>), the number of permutations (<span style="color:CornflowerBlue">nperm</span>), the type of correction applied to handle family-wise error rate (<span style="color:CornflowerBlue">alpha_type</span>), should a graph be plotted (<span style="color:CornflowerBlue">graphic</span>) and the significance level (<span style="color:CornflowerBlue">sig_level</span>). 
+The available options for <span style="color:CornflowerBlue">alpha_type</span> are described well in @Anderson2019. 
 
 ```{r eval = F}
 pwa_sep_98 = pairWise(
@@ -239,7 +241,7 @@ df_mar_99$Species <- rownames(df_mar_99)
 df_sep_99$Species <- rownames(df_sep_99)
 ```
 
-We also extract the ids of species with statistically significant associations ... 
+We also extract the IDs of species with statistically significant associations ... 
 ```{r}
 s98mt_id <- which(colnames(mt_sep_98) %in%  pwa_sep_98$associated)
 s98df_id <- which(rownames(df_sep_98) %in%  pwa_sep_98$associated)
@@ -329,13 +331,13 @@ legend(
 
 Now comes the part which was hardest to figure out because it is not included in the provided code. If you compare all we have done with figure 6 in @Anderson2019, we are only at c. The next steps are simulating new data sets from our copulas to create a new super matrix. This we can use to compute a super distance matrix from which we will derive centroids for each treatment (season).  
 We are going to do 100 separate simulations (<span style="color:CornflowerBlue">n_sim</span>). The number of sites belonging to each season will be kept constant at the original levels which are stored in <span style="color:CornflowerBlue">n_g1-3</span>. <span style="color:CornflowerBlue">dt_base</span> is a template witch will be used as a starting point in each simulation. 
-In its original form it only has a Sample column which gives each row an id and a Treatment (here: season) column which assigns a treatment level to each observation.
+In its original form it only has a sample column which gives each row an ID and a treatment (here: season) column which assigns a treatment level to each observation.
 Each iteration of the for-loop fills a copy of <span style="color:CornflowerBlue">dt_base</span> with the simulated abundances and saves its results as an element in the list <span style:color=CornflowerBlue">sim_list</span>. 
 After the loop is finished we combine all single data sets into one super set (<span style="color:CornflowerBlue">sim_mat</span>). 
 In the loop, we also create null model simulations in which the observations are randomly shuffled after drawing them from the simulations.
-This super set is quite large and computing its distance matrix can is computationally demanding. 
+This super set is large and computing its distance matrix is computationally demanding. 
 To speed this up we use the <span style="color:CornflowerBlue">parrallelDist</span> package which enables us to use multiple cores for this task. 
-Lastly, we can find the centroids of each season with the `betadisper()` function from <span style:"CornflowerBlue">vegan</span>. 
+Lastly, we can find the centroids of each season with the `betadisper()` function from <span style="color:CornflowerBlue">vegan</span>. 
 
 ```{r eval = F}
 n_sim = 100
@@ -480,7 +482,7 @@ cowplot::plot_grid(p12 + theme(legend.position = "none"),
                    p12_leg)
 ```
 
-Below is code to create a 3d ordination plot. Displaying this on the website unfortunately does not work. However, you should be able to display in your R instance. 
+Below is code to create a 3D ordination plot. Displaying this on the website unfortunately does not work. However, you should be able to display it in your R instance. 
 
 ```{r}
 colors3d = c('royalblue1', 'darkcyan', 'oldlace', "gray")
