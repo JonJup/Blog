@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advances in the analysis of multivariate ecological data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jonathan Jupke" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/sydney.css" type="text/css" />
+    <link rel="stylesheet" href="libs/sydney-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Advances in the analysis of multivariate ecological data
+## MOD3: Advanced data science
+### Jonathan Jupke
+### University of Koblenz-Landau
+### 2021/01/07
+
+---
+
+&lt;style type="text/css"&gt;
+.remark-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+                                    font-size: 100%;
+                                  }
+}
+&lt;/style&gt;
+
+
+
+For these slides and additional material see [here](https://jonjup.netlify.app/post/).
+
+---
+
+# Plan for today 
+
+1. What’s new in multivariate analysis?
+
+2. mvabund
+
+3. Vector GLM/GAM
+
+4. Latent Variable Models 
+
+5. Hierarchical Modeling of Species Communities
+
+6. Copulas 
+
+---
+
+
+
+class: inverse, center, middle 
+
+# What’s new in multivariate analysis?
+
+---
+
+.pull-left[
+  .blockquote[
+    ### <i class="fas  fa-comment-dots "></i> Question
+    What does multivariate mean? 
+  ]
+]
+
+--
+
+.pull-right[
+<i class="fas  fa-list-ol "></i> <i class="fas  fa-list-ol " style="color:white;"></i> multi-response   
+<i class="fas  fa-expand "></i> <i class="fas  fa-list-ol " style="color:white;"></i> **Y** is a matrix not a vector  
+<i class="fas  fa-fish "></i> <i class="fas  fa-list-ol " style="color:white;"></i> e.g. many taxa
+]
+
+--
+
+.pull-left[
+  .blockquote[
+    ### <i class="fas  fa-comment-dots "></i> Question
+    What methods do you know?
+  ]
+]
+
+--
+
+.pull-right[
+  <i class="fas  fa-hand-point-right "></i><i class="fas  fa-map-marker " style="color:white;"></i> PCA, RDA, CA, CCA   
+  <i class="fas  fa-hand-point-right "></i><i class="fas  fa-map-marker " style="color:white;"></i> Random Forests, Clustering    
+  <i class="fas  fa-hand-point-right "></i><i class="fas  fa-map-marker " style="color:white;"></i> PERMANOVA     
+]
+
+--
+
+.pull-left[
+  .blockquote[
+    ### <i class="fas  fa-comment-dots "></i> Question
+    Why multivariate methods? 
+  ]
+]
+
+--
+
+.pull-right[
+<i class="fas  fa-arrows-alt "></i> <i class="fas  fa-arrows-alt " style="color:white;"></i> responses covary   
+<i class="fas  fa-dumbbell "></i> <i class="fas  fa-arrows-alt " style="color:white;"></i> borrowing strength
+]
+
+---
+
+# What does it look like in R? 
+
+
+
+```r
+library(vegan)
+data(dune)
+data(dune.env)
+rda_object &lt;- rda(dune ~ ., dune.env)
+```
+
+--
+
+&lt;img src="mod3-1-intro_files/figure-html/plot-rda-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+# Common ground? 
+
+--
+
+<i class="fas  fa-ruler-combined "></i> <i class="fas  fa-ruler " style="color:white;"></i> They are based on .blue[**distance metrics**].  
+
+--
+
+<i class="fas  fa-ruler-combined "></i> <i class="fas  fa-ruler " style="color:white;"></i> Jaccard, Soerensen, Dice, Manhattan, Bray-Curtis, Canberra, ... 
+
+--
+
+<i class="fas  fa-ruler-combined "></i> <i class="fas  fa-ruler " style="color:white;"></i> How different are two sites in terms of their community composition.   
+
+--
+
+.pull-left[
+.content-box-blue[**fixed distance**]
+- PCA and RDA: Euclidean 
+- CA and CCA: `\(\chi^2\)`-distance
+]
+
+--
+
+.pull-right[
+.content-box-blue[**flexible distances    **]
+
+- NMDS 
+- dbRDA
+]
+
+--
+
+.blockquote[
+  ### <i class="fas  fa-comment-dots "></i> Question
+  How does this differ form univariate analysis?
+]
+
+---
+
+# Models! 
+
+In univariate analyses we mostly use models:
+
+--
+
+- linear model 
+
+--
+
+- linear mixed model 
+
+--
+
+- generalized linear model 
+
+--
+
+- generalized additive models 
+
+--
+
+.blockquote[
+  ### <i class="fas  fa-comment-dots "></i> Question
+  Why not in multivariate analyses?
+]
+
+---
+class: middle, center
+
+&lt;img src="figures/old_pc.gif" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What is the model-based approach? 
+
+<i class="fas  fa-book "></i><i class="fas  fa-cog " style="color:white;"></i> model-based approaches assume a parametric generative model
+
+--
+
+<i class="fas  fa-hand-rock "></i><i class="fas  fa-cog " style="color:white;"></i> model-based vs. distance-based 
+
+--
+
+.blue[**Terms are not consistent**]:  
+<i class="fas  fa-hand-rock "></i><i class="fas  fa-cog " style="color:white;"></i> Roberts (2019) and Warton *et al.* (2012) disagree about CA
+
+--
+
+<i class="fas  fa-file-invoice-dollar "></i><i class="fas  fa-cog " style="color:white;"></i> Alternative name: algorithm-based (Warton *et al.* 2015)  
+
+--
+
+&lt;blockquote&gt;
+Our constrained ordination model [...] 
+.right[-- &lt;cite&gt;Brittain *et al.* (2020)&lt;/cite&gt;]
+&lt;/blockquote&gt;
+
+--
+
+&lt;blockquote&gt;
+Many biologist fit CCA models [...] 
+.right[-- &lt;cite&gt;Yee (2004) &lt;/cite&gt;]
+&lt;/blockquote&gt;
+
+
+---
+
+# mean-variance relationship
+
+.content-box-blue[Ordinary Linear Regression]  
+
+`\begin{align}
+y_i &amp;= \alpha + \beta x_i + \epsilon_i \\
+y_i &amp;\sim N(\mu = \alpha + \beta x_i, \sigma^2) \\
+\epsilon_i &amp;\sim N(\mu = 0, \sigma^2) \\
+\end{align}`
+
+--
+
+The variance does not change with the mean! 
+
+--
+
+.content-box-blue[Poisson GLM] 
+
+`\begin{align}
+L_i &amp;= \alpha + \beta x_i + \epsilon_i \\
+y_i &amp;\sim Poisson(\lambda = exp(L_i)) \\
+\end{align}`
+
+--
+
+`$$\lambda = \mu = \sigma = np$$`
+
+--
+
+The variance and the mean are the same <i class="fas  fa-arrow-right "></i>
+
+--
+
+The variance increases linearly with the mean. 
+
+---
+
+background-image: url("figures/glm_error.png")
+background-size: 550px
+background-position: 50% 70%
+        
+# mean-variance relationship
+        
+---
+
+background-image: url("figures/WWW12_4.png")
+background-size: 550px
+background-position: 50% 70%
+
+.footnote[Warton *et al.* (2012)]
+
+# mean-variance of abundance data 
+
+---
+
+# mean-variance of binary data
+
+&lt;img src="mod3-1-intro_files/figure-html/example-binomial-mean-var-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# mean-variance relationship
+
+Distance metric assume a mean-variance relationship
+
+--
+
+.content-box-blue[Euclidean Distance] 
+
+--
+
+`$$d_{ij} = \sqrt{\sum_{s=1}^S (y_{is} - y_{js})^2}$$`
+
+--
+
+The difference is not weight by the absolute values <i class="fas  fa-arrow-right "></i>
+
+--
+
+Assumes a constant variance.
+
+--
+
+.content-box-blue[Canberra distance] 
+
+`$$d_{ij} = \sum_{s=1}^S \frac{|y_{is} - y_{js}|}{(y_{is} - y_{js})}$$`
+--
+
+Straight line relationship
+
+---
+
+background-image: url("figures/WWW12_1_1.png")
+background-size: 900px
+background-position: 50% 50%
+        
+# Are models better? 
+        
+.footnote[Warton *et al.* (2012)]
+
+---
+
+count: false
+
+background-image: url("figures/WWW12_1_2.png")
+background-size: 900px
+background-position: 50% 50%
+        
+# Are models better? 
+        
+.footnote[Warton *et al.* (2012)]
+
+---
+
+count: false
+
+background-image: url("figures/WWW12_1.png")
+background-size: 900px
+background-position: 50% 50%
+        
+# Are models better? 
+        
+.footnote[Warton *et al.* (2012)]
+---
+
+background-image: url("figures/WWW12_2.png")
+background-size: 600px
+background-position: 50% 75%
+        
+# Are models better? 
+      
+.footnote[Warton *et al.* (2012)]
+
+---
+
+background-image: url("figures/WWW12_3.png")
+background-size: 600px
+background-position: 50% 75%
+        
+# Are models better? 
+        
+.footnote[Warton *et al.* (2012)]
+
+---
+
+background-image: url("figures/szöcs15_1.png")
+background-size: 800px
+background-position: 50% 50%
+        
+# Are models better? 
+        
+.footnote[Szöcs *et al.* (2015)]
+
+---
+
+background-image: url("figures/jupke20_1.png")
+background-size: 800px
+background-position: 50% 50%
+        
+# Are models better? 
+        
+.footnote[Jupke &amp; Schäfer (2020)]
+
+
+---
+# Conclusion: What's new 
+
+- classical approaches use distances as heuristic
+
+--
+
+- advances in statistics and computer power enable us to use multivariate models
+
+--
+
+- some models perform better in comparisons but it depends on data, question, and specific methods
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
