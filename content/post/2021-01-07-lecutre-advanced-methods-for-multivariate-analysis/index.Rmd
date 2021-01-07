@@ -13,36 +13,36 @@ This post is the penultimate lecture in MOD3: Advanced data analysis given at th
 Due to its size it is split into multiple presentations. 
 Each is embedded in this post and you can enter full-screen view by clicking the link above.  
 
-[Introduction](https://jonjup.netlify.app/slides/mod3/1intro#1)
+[Introduction](https://jonjup.netlify.app/slides/mod3/1intro#1)  
 ```{r echo = F }
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/1intro#1')
 ```
    
-[mvabund](https://jonjup.netlify.app/slides/mod3/2mvabund#1)
+[mvabund](https://jonjup.netlify.app/slides/mod3/2mvabund#1)  
 ```{r echo = F}
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/2mvabund#1')
 ```
 
   
-[cqo](https://jonjup.netlify.app/slides/mod3/3cqo#1)
+[cqo](https://jonjup.netlify.app/slides/mod3/3cqo#1)  
 ```{r echo = F}
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/3cqo#1')
 ```
   
 
-[gllvm](https://jonjup.netlify.app/slides/mod3/4gllvm#1)
+[gllvm](https://jonjup.netlify.app/slides/mod3/4gllvm#1)  
 ```{r echo = F}
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/4gllvm#1')
 ```
   
 
-[hmsc](https://jonjup.netlify.app/slides/mod3/5hmsc#1)
+[hmsc](https://jonjup.netlify.app/slides/mod3/5hmsc#1)   
 ```{r echo = F}
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/5hmsc#1')
 ```
 
   
-[copula](https://jonjup.netlify.app/slides/mod3/6copula#1)
+[copula](https://jonjup.netlify.app/slides/mod3/6copula#1)   
 ```{r echo = F}
 knitr::include_url('https://jonjup.netlify.app/slides/mod3/6copula#1')
 ```
