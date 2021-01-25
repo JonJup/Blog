@@ -12,6 +12,9 @@ comments: no
 images: ~
 ---
 
+For this first post in the series, we will look at small but nice packge called x-ray.
+Just like a doctor can use x-rays whether something is wrong with your 
+
 In this post I want to show you, how you can use the xray R package to ...
 As an example data set we will use the AntTraits data set from the mvabund package. 
 ```{r}
