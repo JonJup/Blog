@@ -19,25 +19,11 @@ images: ~
 
 <p>For this first post in the series, we will look at small but nice packge called x-ray.
 Just like a doctor can use x-rays whether something is wrong with your funky looking arm, we can use the x-ray package to see if there is anything wrong with our data set.</p>
-<p>As an example data set we will use the AntTraits data set from the mvabund package which used before in other analyses and later in the post we will also simulate some data to highlight some features of xray.</p>
+<p>As an example data set we will use the antTraits data set from the mvabund package which used before in other analyses and later in the post we will also simulate some data to highlight some features of xray.</p>
 <pre class="r"><code>pacman::p_load(mvabund, xray, data.table)
 data(&quot;antTraits&quot;)
 data1 = antTraits$abund
 data2 = antTraits$env</code></pre>
-<pre><code>## 
-## Attache Paket: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:kableExtra&#39;:
-## 
-##     group_rows</code></pre>
-<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
-## 
-##     between, first, last</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
 <p>The first function,<code>anomalies()</code>, is great to get an initial impression of your data.
 You only have to provide one argument (a data set) and it returns two objects:<br />
 1. <em><span style="color:CornflowerBlue">variables</span></em><br />
