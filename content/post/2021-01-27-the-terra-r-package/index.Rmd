@@ -35,27 +35,34 @@ However, when you know raster, you also know how to do most things in terra.
 
 The easiest way to specify a new raster is by calling `rast()` without any arguments.
 
-```{r}
+```{r eval= F}
 # loading the package 
 library(terra)
 library(dplyr)
-(x <- rast())
-
+```
+```{r echo = F, results = "hide", message =FALSE}
+library(terra)
+library(dplyr)
 ```
 
-As you can see, the new object covers the whole earth and is projected using a longitude and latitude on a WGS84 globe.
-The resolution is 1 by 1 which means each cell covers 1 degree of latitude and one degree of longitude.
-Of course we can also specify the extend and resolution of the rasters we create.
+```{r}
+(x <- rast())
+```
 
+
+
+As you can see, the new object covers the whole earth and is projected using longitude and latitude on a WGS84 globe.
+The resolution is 1 by 1 which means each cell covers 1 degree of latitude and one degree of longitude.
+Of course, we can also specify the extend and resolution of the rasters we create.
 The following, raster for example, only covers the southern hemisphere.
 
 ```{r}
 (x = rast(ymax = 0))
 ```
 
-As you can see this also automatically altered the resolution to 0.5.
-We cut the area in half so the resolution that corresponds to the direction is also cut in half.
-By explicitly setting the resolution we can keep this from happening.
+As you can see, this also automatically altered the resolution to 0.5.
+We cut the area in half so the resolution that corresponds to that direction is also cut in half.
+By explicitly setting the resolution, we can prevent this from happening.
 
 ```{r}
 x = rast(ymax = 0, res = c(1,1))
@@ -85,7 +92,7 @@ y
 ```
 
 The last thing we have not altered about this raster skeleton, is its coordinate reference system.
-If you only have a epsg code for you desired CRS check out this [website](https://epsg.io/).
+If you only have an EPSG code for you desired CRS check out this [website](https://epsg.io/).
 It provides you with the corresponding PROJ.4 string.
 
 ```{r}
@@ -101,7 +108,7 @@ x
 # Going beyond the hull
 
 We can now create an empty raster anywhere on the world.
-As long as no values are in the cells this doesn't get us anywhere however.
+However, as long as no values are in the cells this doesn't get us anywhere.
 About time we introduce some values.
 
 ```{r}
@@ -369,7 +376,7 @@ dem1_cut = classify(dem1, rcl = m)
 plot(dem1_cut)
 ```
 
-`focal()` can be used to replace the value of a focal cell by some function of its neighbours. Which neighbours and what function to use can be chosen as arguments. 
+`focal()` can be used to replace the value of a focal cell by some function of its neighbours. Which neighbors and what function to use can be chosen as arguments. 
 
 ```{r}
 mw = focal(dem1, w=3)

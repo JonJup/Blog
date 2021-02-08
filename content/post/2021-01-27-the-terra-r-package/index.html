@@ -1,0 +1,377 @@
+---
+title: The terra R package
+author: 'Jonathan Jupke '
+date: '2021-01-27'
+slug: the-terra-r-package
+categories:
+  - GIS
+tags:
+  - GIS
+  - terra
+comments: no
+images: null
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>For the longest time, when you wanted to manipulate raster files in R, the raster package was your tool of choice.
+And it still is a well-proven and tested alternative to the newer packages, one of which we will discuss today: terra.</p>
+<div id="basic-idea" class="section level1">
+<h1>Basic idea</h1>
+<p>terra implements two new object classes: SpatRaster and SpatVector.
+It is written and maintained by Robert Hijmans who also did so for the raster package.
+In that sense you can think of terra as the sequel to raster.
+Why did Robert Hijmans decide we need a new package?
+Well the problem of creating a widely used R package is that other packages start to use it and depend on it working they way it did when that package was written.
+So even if you don’t like certain aspects of you package anymore, you can’t just go ahead and rewrite them.
+Robert Hijmans thinks that raster has grown to be unnecessarily complex with over 200 functions.
+Its also slower than it could be and doesn’t support HDF5 files, which is a popular format for satellite data complex.
+So now terra is faster, simpler (functions have been streamlined) and more capable.
+However, when you know raster, you also know how to do most things in terra.</p>
+</div>
+<div id="creating-a-new-raster" class="section level1">
+<h1>Creating a new Raster</h1>
+<p>The easiest way to specify a new raster is by calling <code>rast()</code> without any arguments.</p>
+<pre class="r"><code># loading the package 
+library(terra)
+library(dplyr)</code></pre>
+<pre class="r"><code>(x &lt;- rast())</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 180, 360, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs</code></pre>
+<p>As you can see, the new object covers the whole earth and is projected using longitude and latitude on a WGS84 globe.
+The resolution is 1 by 1 which means each cell covers 1 degree of latitude and one degree of longitude.
+Of course, we can also specify the extend and resolution of the rasters we create.
+The following, raster for example, only covers the southern hemisphere.</p>
+<pre class="r"><code>(x = rast(ymax = 0))</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 180, 360, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 0.5  (x, y)
+## extent      : -180, 180, -90, 0  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs</code></pre>
+<p>As you can see, this also automatically altered the resolution to 0.5.
+We cut the area in half so the resolution that corresponds to that direction is also cut in half.
+By explicitly setting the resolution, we can prevent this from happening.</p>
+<pre class="r"><code>x = rast(ymax = 0, res = c(1,1))</code></pre>
+<p>Alternatively we can also specify the number of rows and cells we want our raster to have.</p>
+<pre class="r"><code>x = rast(nrow = 180, ncol = 360)</code></pre>
+<p>You can check the resolution of a raster with the <code>res()</code> function.
+The function can also be used to compare the resolution of two (or more) rasters.</p>
+<pre class="r"><code>y = rast()
+all(res(x) == res(y))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can also <code>res()</code> to change the resolution of a raster after creating or loading it.</p>
+<pre class="r"><code>res(y) = 10
+y</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 18, 36, 1  (nrow, ncol, nlyr)
+## resolution  : 10, 10  (x, y)
+## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs</code></pre>
+<pre class="r"><code>res(y) = c(10,100)
+y</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 2, 36, 1  (nrow, ncol, nlyr)
+## resolution  : 10, 100  (x, y)
+## extent      : -180, 180, -90, 110  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs</code></pre>
+<p>The last thing we have not altered about this raster skeleton, is its coordinate reference system.
+If you only have an EPSG code for you desired CRS check out this <a href="https://epsg.io/">website</a>.
+It provides you with the corresponding PROJ.4 string.</p>
+<pre class="r"><code>x = rast()
+crs(x)</code></pre>
+<pre><code>## [1] &quot;GEOGCRS[\&quot;unknown\&quot;,\n    DATUM[\&quot;World Geodetic System 1984\&quot;,\n        ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,\n            LENGTHUNIT[\&quot;metre\&quot;,1]],\n        ID[\&quot;EPSG\&quot;,6326]],\n    PRIMEM[\&quot;Greenwich\&quot;,0,\n        ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],\n        ID[\&quot;EPSG\&quot;,8901]],\n    CS[ellipsoidal,2],\n        AXIS[\&quot;longitude\&quot;,east,\n            ORDER[1],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]],\n        AXIS[\&quot;latitude\&quot;,north,\n            ORDER[2],\n            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433,\n                ID[\&quot;EPSG\&quot;,9122]]]]&quot;</code></pre>
+<pre class="r"><code># set to WGS 84
+crs(x) &lt;- &quot;+proj=longlat +datum=WGS84 +no_defs &quot;
+# set to UTM 48
+crs(x) &lt;- &quot;+proj=utm +zone=48 +datum=WGS84&quot;
+x</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 180, 360, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=48 +datum=WGS84 +units=m +no_defs</code></pre>
+</div>
+<div id="going-beyond-the-hull" class="section level1">
+<h1>Going beyond the hull</h1>
+<p>We can now create an empty raster anywhere on the world.
+However, as long as no values are in the cells this doesn’t get us anywhere.
+About time we introduce some values.</p>
+<pre class="r"><code>r &lt;- rast(ncol=10, nrow=10)
+# number of cells (ncol * nrow)
+ncell(r)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code># do we have any values yet? 
+hasValues(r)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># now we fill the raster with increasing numbers, staring with 1 
+values(r) &lt;- 1:ncell(r)
+plot(r, main=&#39;Raster with 100 cells&#39;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Let’s have a look at two actual raster file from my harddrive.</p>
+<pre class="r"><code>file1 &lt;- here::here(&quot;data/terra/DGM25_2905530.xyz&quot;)
+file2 &lt;- here::here(&quot;data/terra/DGM25_2905540.xyz&quot;)
+dem1 &lt;- rast(file1)
+dem2 &lt;- rast(file2)
+par(mfrow = c(1,2))
+plot(dem1)
+plot(dem2)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>crs(dem1) = &quot;+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs &quot;
+crs(dem2) = &quot;+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs &quot;</code></pre>
+<p>As you can see they are two digital elevation models.</p>
+<pre class="r"><code>dem1</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 161, 161, 1  (nrow, ncol, nlyr)
+## resolution  : 25, 25  (x, y)
+## extent      : 295987.5, 300012.5, 5535988, 5540013  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## source      : DGM25_2905530.xyz 
+## name        : DGM25_2905530 
+## min value   :       207.683 
+## max value   :       511.909</code></pre>
+</div>
+<div id="multiple-layers-in-one-spatraster" class="section level1">
+<h1>Multiple layers in one SpatRaster</h1>
+<p>One SpatRaster can have multiple raster layers.
+Think of the temperature in the same area in several years where each layer is one year.
+Let’s simulate such an example.</p>
+<pre class="r"><code># First we create a raster with temperatures between 10 and 15 degrees
+r1 = rast(nrow = 25, ncol = 25)
+values(r1) = runif(n = 25^2, min = 10, max = 15)
+plot(r1)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code># Now we create two rasters that are based on r1 but slightly warmer. 
+r2 = r1 + 1
+r3 = r2 + 1</code></pre>
+<p>We can combine the three rasters into one multi-layer object.
+With terra this is as easy as writing a simple vector</p>
+<pre class="r"><code>s &lt;- c(r1, r2, r3)
+s</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 25, 25, 3  (nrow, ncol, nlyr)
+## resolution  : 14.4, 7.2  (x, y)
+## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
+## sources     : memory  
+##               memory  
+##               memory  
+## names       :    lyr.1,    lyr.1,    lyr.1 
+## min values  : 10.00719, 11.00719, 12.00719 
+## max values  : 14.99639, 15.99639, 16.99639</code></pre>
+<p>Note that the class of a multi-layer object is the same as a single layer raster.</p>
+<pre class="r"><code>class(s)</code></pre>
+<pre><code>## [1] &quot;SpatRaster&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;terra&quot;</code></pre>
+<p>Calling the generic plot function on such a multi-layer raster plots all layers, so be care full with this if you have many layers!</p>
+<pre class="r"><code>plot(s)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>We can subset the object like a list.</p>
+<pre class="r"><code>s[[1]]</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 25, 25, 1  (nrow, ncol, nlyr)
+## resolution  : 14.4, 7.2  (x, y)
+## extent      : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
+## source      : memory 
+## name        :    lyr.1 
+## min value   : 10.00719 
+## max value   : 14.99639</code></pre>
+</div>
+<div id="raster-algebra" class="section level1">
+<h1>Raster algebra</h1>
+<p>SpatRaster objects can be passed to most algebraic operations in R such as <code>+</code> and <code>-</code> or <code>sum()</code> and <code>abs()</code>.
+You have just seen this above, when I added a degree of temperature to our simulated temperature rasters.
+Below are some more examples</p>
+<pre class="r"><code>p = r1 + 4
+o = sqrt(r1)
+x = sum(values(r))</code></pre>
+<p>You can also add, substract, multiply and divide rasters with each other.</p>
+<pre class="r"><code>xo = x + o 
+ox = x + o
+px = p / x</code></pre>
+</div>
+<div id="high-level-functions" class="section level1">
+<h1>High-level functions</h1>
+<p>In most situations you will have rasters that are larger than what you need.
+You might be interested in the landcover of your study area but the data covers all of Europe.
+Conversely, you might also need to combine different rasters if the scale of your analysis is larger than the data you are using.
+Often this is the case when larger rasters are split in smaller areas to reduce their size.</p>
+<p>In the first case you would use <code>crop()</code>.
+Provided with a raster and an extend, <code>crop()</code> will return only the part of the raster that lies within the extend.
+An extend usually is a named vector with four elements: xmin, xmax, ymin and ymax.
+It might for example be the bounding box you derived from the vector data you were analyzing in sf.
+You can create this raster yourself if you know, or can derive, the relevant numbers.
+An alternative is the <code>drawExtent()</code> function from the raster package.
+This lets you click on an already plotted raster an returns the extend of the thus created rectangle.
+Try the code below in your own R instance to see what I mean.</p>
+<pre class="r"><code>plot(dem1)
+extent = raster::drawExtent()
+dem1crop = terra::crop(x =dem1, y=extent)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-21-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<p>Nice!
+Now have reduced the raster to the area we are actually interested in.
+We can compute the mean hight or the sum of all hights with <code>global()</code>.</p>
+<pre class="r"><code>global(dem1crop, &quot;sum&quot;)</code></pre>
+<pre><code>##                    sum
+## DGM25_2905530 96477.17</code></pre>
+<pre class="r"><code>global(dem1crop, &quot;mean&quot;)</code></pre>
+<pre><code>##                   mean
+## DGM25_2905530 317.3591</code></pre>
+<p>We can also expand a raster.
+That means we add rows and/ or columns with NA values.
+The other way around we can also trim them, removing all cells with NAs in the margins.</p>
+<pre class="r"><code>dem1.exp = expand(dem1, y = c(100,100))
+plot(dem1.exp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Since all the NAs are just white its hard to see what we actually did here.
+Lets give them some random value so we can actually see the cells we added.</p>
+<pre class="r"><code>na_cells = which(is.na(values(dem1.exp)))
+values(dem1.exp)[na_cells] = 1
+plot(dem1.exp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>We can now clearly see the added cells in gray.
+With <code>trim()</code> we can remove them again.</p>
+<pre class="r"><code>na_cells = which(values(dem1.exp) == 1)
+values(dem1.exp)[na_cells] = NA
+dem1.trm = trim(dem1.exp)
+plot(dem1.trm)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>As mentioned before, sometimes you want to combine rasters.
+For example our to dems are both part of a larger DEM that covers all of German federal state of Rhineland-Palatinate.
+We can combine the two with <code>merge()</code></p>
+<pre class="r"><code>dem_merge = merge(dem1, dem2)
+plot(dem_merge)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>Whenever you want to use multiple raster in an operation, it is important that they have the same CRS and cell sizes.
+You can increase cell sizes with <code>aggregate()</code> and reduce cell sizes with <code>disaggregate()</code>.
+In the first case several cells are combined into one.
+The number of cells is set in the fact argument.
+When you supply one number it is used for both directions.
+So if you call <code>aggregate(x, fact = 2)</code> and raster has the cell size 10m by 10m, the new raster will be 20m by 20m.
+You can also provide fact with a vector that specifies the aggregation factor in each direction.
+The third argument is fun which specifies how to calculate the new cell value.
+If our new cell consists out of four old cells (aggregation factor of 2) we somehow need to combine these four numbers into one.
+Common options here are mean, median, modal, maximum, minimum or sum.</p>
+<pre class="r"><code>dem1_agg_2_mean = aggregate(dem1, fact=2, fun = &quot;mean&quot;)
+dem1_agg_3_mean = aggregate(dem1, fact=4, fun = &quot;mean&quot;)
+dem1_agg_4_mean = aggregate(dem1, fact=6, fun = &quot;mean&quot;)
+dem1_agg_5_mean = aggregate(dem1, fact=8, fun = &quot;mean&quot;)
+par(mfrow = c(2,2))
+plot(dem1_agg_2_mean)
+plot(dem1_agg_3_mean)
+plot(dem1_agg_4_mean)
+plot(dem1_agg_5_mean)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(2,2))
+dem1_agg_mean = aggregate(dem1, fact = c(1,6), fun = &quot;mean&quot;)
+dem1_agg_min = aggregate(dem1, fact = 4, fun = &quot;min&quot;)
+dem1_agg_max = aggregate(dem1, fact = 4, fun = &quot;max&quot;)
+dem1_agg_sum = aggregate(dem1, fact = 4, fun = &quot;sum&quot;)
+plot(dem1_agg_mean,  main = &quot;directed aggregation&quot;)
+plot(dem1_agg_min,   main = &quot;minimum&quot;)
+plot(dem1_agg_max,   main = &quot;maximum&quot;)
+plot(dem1_agg_sum , main = &quot;sum&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<p>When we want to go in the other direction we disaggregate raster cells.
+Sadly, we cannot magically determine what values are the field truth for the new, smaller cells.
+Instead each new cell gets the same value as it’s parent.</p>
+<pre class="r"><code>dem1_disagg = disaggregate(dem1, fact = 2)
+plot(dem1_disagg)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Both <code>aggregate()</code> and <code>disaggregate()</code> can only take integer values as (dis)aggregation factors.
+So what do you do if the new cell size you need as not simple multiple of the old one?
+We use <code>resample()</code>.
+To highlight how this works we will create a new raster which covers the same area and has a cell size of 15 by 15 meters.</p>
+<pre class="r"><code>x = rast(resolution = c(15,15), crs = &quot;+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs &quot;,
+         extent = ext(dem1))
+x2 = resample(x = dem1, y = x)
+plot(x2)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Changing the CRS, i.e. what we know as transforming for vectors is called wrapping for rasters and can be done with the aptly named function <code>wrap()</code>.</p>
+<div id="masking" class="section level2">
+<h2>Masking</h2>
+<p>Sometimes we might want to fill holes in rasters, i.e. areas that only contain NAs or some other non-informative value, with the values from a second raster.
+This operation is called masking.
+Here we will work through a short example, where there are randomly scatted NAs throughout the raster.
+This might happen if small but thick clouds prevented our satellite to accurately measure conditions on the ground.</p>
+<pre class="r"><code># Example1 
+dem1_na = dem1 
+values(dem1_na)[sample(1:ncell(dem1), size = 100)] = NA
+#to increase the visibility of the masked cells we will create a separate mask layer with extreme values. 
+dem1_mask = dem1
+values(dem1_mask) = 1000
+dem1_nax = cover(x = dem1_na, y = dem1_mask)
+plot(dem1_nax)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The <code>lapp()</code> function is used for functional programming. It is similar to <code>apply()</code>-family functions or <code>map</code>-family functions from the <em>purrr</em> package.
+It applies a function to each layer of a raster
+Here for example we increase the height of a third of the cells by 10m.</p>
+<pre class="r"><code>dem1_2 = dem1_3 = dem1
+values(dem1_2) = rbinom(ncell(dem1),1,0.33)
+values(dem1_3) = 10
+dem1_all = c(dem1, dem1_2, dem1_3)
+dem_lapp = lapp(dem1_all, function(x,y,z) x + y * z)
+plot(dem_lapp)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>We can classify the cells with the <code>classify()</code> function.</p>
+<pre class="r"><code>m &lt;- c(0, 100, 1,
+       100, 250, 2,
+       250, 400, 3,
+       400, 600, 4)
+dem1_cut = classify(dem1, rcl = m)
+plot(dem1_cut)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><code>focal()</code> can be used to replace the value of a focal cell by some function of its neighbours. Which neighbors and what function to use can be chosen as arguments.</p>
+<pre class="r"><code>mw = focal(dem1, w=3)
+plot(mw)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+</div>
+<div id="cell-level-functions" class="section level1">
+<h1>Cell-level functions</h1>
+<p>In terra the cells within a raster a numbered from the upper left cell to the upper right and then continuing in the second row.
+See the first plot in <strong>Going beyond the hull</strong>.
+There is bunch of functions to help you figure out the values of specific cells:</p>
+<pre class="r"><code># how many columns
+ncol(r)
+# how many rows
+nrow(r)
+# how many cells 
+ncell(r)
+# in which row is cell 3?
+rowFromCell(dem1, 3)
+# in which column is cell 3?
+colFromCell(dem1, 3)
+# which cell is in row 5 and column 5?
+cellFromRowCol(dem1,5,5)
+# what are the coordinates of cell 100? 
+xyFromCell(dem1, 100)
+# which cell lies at the coordinates 0,0 
+cellFromXY(r, cbind(0,0))
+# which column has a Y coordinate of 0 
+colFromX(r, 0)
+# which row has a Y coordinate of 0 
+rowFromY(r, 0)</code></pre>
+<p>We have seen before that we can use <code>values()</code> to alter or extract the cell values of a raster to a vector.
+As alternatives we can use <code>valuesBlock()</code> to read a rectangle of blocks or <code>extract()</code> to get the cell values in a specific area.</p>
+<pre class="r"><code>cells &lt;- cellFromRowCol(dem1, 50, 35:39)
+xy &lt;- xyFromCell(dem1, cells)
+extract(dem1, xy)</code></pre>
+<pre><code>##   DGM25_2905530
+## 1       227.560
+## 2       228.122
+## 3       225.683
+## 4       228.754
+## 5       231.383</code></pre>
+<p>This wraps up our quick first peek at the <em>terra</em> package.
+However there are many more things one can do with the package which we might cover in a later post.
+If you want to know more about it before, check out this <a href="https://www.youtube.com/watch?v=5b2xhqlH49I">talk</a> of Robert Hijmans and Anirddha Ghosh</p>
+</div>
