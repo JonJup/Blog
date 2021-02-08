@@ -27,8 +27,7 @@ Why did Robert Hijmans decide we need a new package?
 Well the problem of creating a widely used R package is that other packages start to use it and depend on it working they way it did when that package was written.
 So even if you don't like certain aspects of you package anymore, you can't just go ahead and rewrite them.
 Robert Hijmans thinks that raster has grown to be unnecessarily complex with over 200 functions.
-Its also slower than it could be and doesn't support HDF5 files, which is a popular format for satellite data
-complex.
+Its also slower than it could be and doesn't support HDF5 files, which is a popular format for satellite data complex.
 So now terra is faster, simpler (functions have been streamlined) and more capable.
 However, when you know raster, you also know how to do most things in terra.
 
@@ -346,9 +345,8 @@ dem1_nax = cover(x = dem1_na, y = dem1_mask)
 plot(dem1_nax)
 ```
 
-## lapp, app, tapp
-
-Apply a function with the layers of a raster.
+The `lapp()` function is used for functional programming. It is similar to `apply()`-family functions or `map`-family functions from the *purrr* package. 
+It applies a function to each layer of a raster 
 Here for example we increase the height of a third of the cells by 10m.
 
 ```{r}
@@ -360,6 +358,8 @@ dem_lapp = lapp(dem1_all, function(x,y,z) x + y * z)
 plot(dem_lapp)
 ```
 
+We can classify the cells with the `classify()` function. 
+
 ```{r}
 m <- c(0, 100, 1,
        100, 250, 2,
@@ -369,21 +369,11 @@ dem1_cut = classify(dem1, rcl = m)
 plot(dem1_cut)
 ```
 
+`focal()` can be used to replace the value of a focal cell by some function of its neighbours. Which neighbours and what function to use can be chosen as arguments. 
+
 ```{r}
 mw = focal(dem1, w=3)
 plot(mw)
-```
-
-# Vector to raster
-
-In many cases you have to switch between the two fundamental spatial data models raster and vector.
-
-```{r}
-library(sp)
-
-spsample(n = 100, 
-         type = "random")
-
 ```
 
 # Cell-level functions
