@@ -10,6 +10,8 @@ tags:
   - R package
 comments: no
 images: ~
+bibliography: ref.bib
+link-citations: true
 ---
 
 ```{r eval = F}
@@ -29,7 +31,7 @@ data$habitat %<>% factor
 ```
 
 This weeks package is similar to last weeks. 
-Just like **xray**,  **DataExplorer** is used for exploratory data analysis. 
+Just like **xray** @Seibelt2017,  **DataExplorer** @Cui2020 is used for exploratory data analysis. 
 To highlight the features and capabilities of the package we will use a data set of different diatom
 metrics derived from a large data set of diatoms, which I
 unfortunately am not able to share with you. 
@@ -44,14 +46,18 @@ it. Your initial questions might be: Are there any missing data?
 plot_missing(data)
 ```
 
-Indeed, 100 rows in [epid]{style="color:CornflowerBlue"} are missing which consitutes 4.4% if the rows. 
-What about our categorical variables. How are they distributed? 
+Indeed, 100 rows in [epid]{style="color:CornflowerBlue"} are missing which constitutes 4.4% if the rows. 
+What about our categorical variables. 
+How are they distributed? 
+
 ```{r}
 plot_bar(data)
 ```
+
 Note that I did not have to tell the function which variables are categorical. 
 As long as they are formatted as a factor, the function will pick them out itself. 
 Of course, we also want to know how the continuous variables are distributed, which we can find out with `plot_histogram()`.
+
 ```{r}
 plot_histogram(data)
 ```
@@ -61,11 +67,11 @@ plot_histogram(data)
 Now we have a basic understanding of all the variables we can start to look at relationships.
 All metrics except for richness are diatom indices. 
 This is not the place to go into details but diatoms are great as bioindicators, i.e. to judge the state of a waterbody. 
-There are many different species (according to xxx about 200 new species are described each year) and many of them are sensitive to environmental conditions. 
-These indices (EPID, IPS, TDI, SPEAR) are different ways to achive this goal. They focus on somewhat different aspects of the environment. 
+There are many different species (according to @smol2010diatoms about 200 new species are described each year) and many of them are sensitive to environmental conditions. 
+These indices (EPID, IPS, TDI, SPEAR) are different ways to achieve this goal. They focus on somewhat different aspects of the environment. 
 Actually SPEAR is distinct from the others, it gives the relative richness of species that are sensitive to pesticides and was originally developed for invertebrates. 
-XXX applied the approach to diatoms. 
-Anyhow, are these metrics dependend on the species richness? 
+@wood2019benthic applied the approach to diatoms. 
+Anyhow, are these metrics depended on the species richness? 
 ```{r}
 plot_boxplot(data, by = "richness")
 ```
@@ -87,10 +93,11 @@ plot_correlation(data)
 
 # For the lazy data explorer 
 
-Another nice feature is the `create_report()` function which allows you to kick back for a moment while the function automatically runs several of the functions above as well as QQ-Plots and a PCA on the data set and compiles a HTML document with all of them. 
+Another nice feature is the `create_report()` function, which allows you to kick back for a moment while the function automatically runs several of the functions above as well as QQ-Plots and a PCA on the data set and compiles a HTML document with all of them. 
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 create_report(data)
 ```
 
 
+# References
