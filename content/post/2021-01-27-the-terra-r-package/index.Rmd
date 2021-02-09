@@ -40,6 +40,7 @@ The easiest way to specify a new raster is by calling `rast()` without any argum
 library(terra)
 library(dplyr)
 ```
+
 ```{r echo = F, results = "hide", message =FALSE}
 library(terra)
 library(dplyr)
@@ -48,8 +49,6 @@ library(dplyr)
 ```{r}
 (x <- rast())
 ```
-
-
 
 As you can see, the new object covers the whole earth and is projected using longitude and latitude on a WGS84 globe.
 The resolution is 1 by 1 which means each cell covers 1 degree of latitude and one degree of longitude.
@@ -352,9 +351,9 @@ dem1_nax = cover(x = dem1_na, y = dem1_mask)
 plot(dem1_nax)
 ```
 
-The `lapp()` function is used for functional programming. It is similar to `apply()`-family functions or `map`-family functions from the *purrr* package. 
-It applies a function to each layer of a raster 
-Here for example we increase the height of a third of the cells by 10m.
+The `lapp()` function is used for functional programming.
+It is similar to `apply()`-family functions or `map`-family functions from the *purrr* package.
+It applies a function to each layer of a raster Here for example we increase the height of a third of the cells by 10m.
 
 ```{r}
 dem1_2 = dem1_3 = dem1
@@ -365,7 +364,7 @@ dem_lapp = lapp(dem1_all, function(x,y,z) x + y * z)
 plot(dem_lapp)
 ```
 
-We can classify the cells with the `classify()` function. 
+We can classify the cells with the `classify()` function.
 
 ```{r}
 m <- c(0, 100, 1,
@@ -376,7 +375,8 @@ dem1_cut = classify(dem1, rcl = m)
 plot(dem1_cut)
 ```
 
-`focal()` can be used to replace the value of a focal cell by some function of its neighbours. Which neighbors and what function to use can be chosen as arguments. 
+`focal()` can be used to replace the value of a focal cell by some function of its neighbours.
+Which neighbors and what function to use can be chosen as arguments.
 
 ```{r}
 mw = focal(dem1, w=3)
