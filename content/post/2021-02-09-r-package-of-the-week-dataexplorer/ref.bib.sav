@@ -1,11 +1,12 @@
 % Encoding: UTF-8
 
 @Manual{Cui2020,
-  title  = {DataExplorer: Automate Data Exploration and Treatment},
-  author = {Boxuan Cui},
-  note   = {R package version 0.8.2},
-  year   = {2020},
-  url    = {https://CRAN.R-project.org/package=DataExplorer},
+  title   = {DataExplorer: Automate Data Exploration and Treatment},
+  author  = {Boxuan Cui},
+  note    = {R package version 0.8.2},
+  year    = {2020},
+  comment = {testsetset},
+  url     = {https://CRAN.R-project.org/package=DataExplorer},
 }
 
 @Manual{Seibelt2017,

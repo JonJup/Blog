@@ -1,6 +1,6 @@
 % Encoding: UTF-8
 
-@Manual{,
+@Manual{Cui2020,
   title  = {DataExplorer: Automate Data Exploration and Treatment},
   author = {Boxuan Cui},
   note   = {R package version 0.8.2},
@@ -8,7 +8,7 @@
   url    = {https://CRAN.R-project.org/package=DataExplorer},
 }
 
-@Manual{,
+@Manual{Seibelt2017,
   title  = {xray: X Ray Vision on your Datasets},
   author = {Pablo Seibelt},
   note   = {R package version 0.2},
