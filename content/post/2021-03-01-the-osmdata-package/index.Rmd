@@ -58,10 +58,10 @@ The only argument you usually have to supply is `place_name`.
 ld = getbb("Landau")
 ```
 
-This worked, and returned the bounding box of Landau in Longitude and Latitude. 
+This worked, and returned the bounding box of Landau in longitude and latitude. 
 Using our new bounding box we can now call `opq()`. 
 Of course you can also write a custom bbox directly into `opq()`.
-This function build a query to Overpass (**o**ver**p**ass **q**uery).
+This function builds a query to Overpass (**o**ver**p**ass **q**uery).
 
 ```{r}
 ld = opq(bbox = ld)
@@ -73,7 +73,7 @@ This request is further expanded in `add_osm_feature()`.
 All items in the Open Street Map data have a **key** and a **value**. 
 A few example are key: amenity - value: bar, cafe or fast_food; key: building - value: school, public or church, key: landuse - value: basin, cementery, grass. 
 See [here](https://wiki.openstreetmap.org/wiki/Map_Features) for a complete overview of all keys and features. 
-Let's donwload one of each. 
+Let's download one of each. 
 
 ```{r}
 ld_amenity = add_osm_feature(ld, key = "amenity", value = "bar") 
@@ -81,16 +81,16 @@ ld_building = add_osm_feature(ld, key = "building", value = "school")
 ld_landuse = add_osm_feature(ld, key = "landuse", value = "grass") 
 ```
 
-Now our queries are complete and we can download the data. 
+Now our queries are complete and we can download the data using `osmdata_sf()`. 
 
-```{r}
+```{r results="hide"}
 ld_amenity  %<>% osmdata_sf() 
 ld_building %<>% osmdata_sf() 
 ld_landuse  %<>% osmdata_sf() 
 ```
 
 The suffix of `osmdata_sf()` specifies that we want the downloaded data to be in the `sf` format. 
-Alternatives are; `osmdata_sp`,`osmdata_sc` and `osmdata_xml`
+Alternatives are: `osmdata_sp`,`osmdata_sc` and `osmdata_xml`.
 
 The resulting objects are lists which have the different geometries as elements.
 Below we plot the three data sets together.

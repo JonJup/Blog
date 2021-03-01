@@ -57,10 +57,10 @@ A complete call with osmdata looks like his:</p>
 <code>getbb()</code> returns the bounding box of some place in the world.
 The only argument you usually have to supply is <code>place_name</code>.</p>
 <pre class="r"><code>ld = getbb(&quot;Landau&quot;)</code></pre>
-<p>This worked, and returned the bounding box of Landau in Longitude and Latitude.
+<p>This worked, and returned the bounding box of Landau in longitude and latitude.
 Using our new bounding box we can now call <code>opq()</code>.
 Of course you can also write a custom bbox directly into <code>opq()</code>.
-This function build a query to Overpass (<strong>o</strong>ver<strong>p</strong>ass <strong>q</strong>uery).</p>
+This function builds a query to Overpass (<strong>o</strong>ver<strong>p</strong>ass <strong>q</strong>uery).</p>
 <pre class="r"><code>ld = opq(bbox = ld)
 ld</code></pre>
 <pre><code>## $bbox
@@ -84,17 +84,18 @@ This request is further expanded in <code>add_osm_feature()</code>.
 All items in the Open Street Map data have a <strong>key</strong> and a <strong>value</strong>.
 A few example are key: amenity - value: bar, cafe or fast_food; key: building - value: school, public or church, key: landuse - value: basin, cementery, grass.
 See <a href="https://wiki.openstreetmap.org/wiki/Map_Features">here</a> for a complete overview of all keys and features.
-Let’s donwload one of each.</p>
+Let’s download one of each.</p>
 <pre class="r"><code>ld_amenity = add_osm_feature(ld, key = &quot;amenity&quot;, value = &quot;bar&quot;) 
 ld_building = add_osm_feature(ld, key = &quot;building&quot;, value = &quot;school&quot;) 
 ld_landuse = add_osm_feature(ld, key = &quot;landuse&quot;, value = &quot;grass&quot;) </code></pre>
-<p>Now our queries are complete and we can download the data.</p>
-<pre class="r"><code>ld_amenity  %&lt;&gt;% osmdata_sf() 
-ld_building %&lt;&gt;% osmdata_sf() 
+<p>Now our queries are complete and we can download the data using <code>osmdata_sf()</code>.</p>
+<pre class="r"><code>ld_amenity  %&lt;&gt;% osmdata_sf() </code></pre>
+<pre><code>## Error in curl::curl_fetch_memory(url, handle = handle): Timeout was reached: [overpass-api.de] Operation timed out after 10000 milliseconds with 0 out of 0 bytes received
+## Request failed [ERROR]. Retrying in 1.6 seconds...</code></pre>
+<pre class="r"><code>ld_building %&lt;&gt;% osmdata_sf() 
 ld_landuse  %&lt;&gt;% osmdata_sf() </code></pre>
-<pre><code>## Request failed [429]. Retrying in 1 seconds...</code></pre>
 <p>The suffix of <code>osmdata_sf()</code> specifies that we want the downloaded data to be in the <code>sf</code> format.
-Alternatives are; <code>osmdata_sp</code>,<code>osmdata_sc</code> and <code>osmdata_xml</code></p>
+Alternatives are: <code>osmdata_sp</code>,<code>osmdata_sc</code> and <code>osmdata_xml</code>.</p>
 <p>The resulting objects are lists which have the different geometries as elements.
 Below we plot the three data sets together.</p>
 <pre class="r"><code>tmap_mode(&quot;view&quot;)</code></pre>

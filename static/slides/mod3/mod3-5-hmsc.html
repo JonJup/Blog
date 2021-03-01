@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Hierarchical Modeling of Species Communities</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jonathan Jupke" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="libs/sydney.css" type="text/css" />
+    <link rel="stylesheet" href="libs/sydney-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Hierarchical Modeling of Species Communities
+## MOD3: Advanced data science
+### Jonathan Jupke
+### University of Koblenz-Landau
+### 2021/01/07
+
+---
+
+
+background-image: url("figures/Elith2007_1.png")
+background-size: 900px
+background-position: 50% 50%
+
+&lt;style type="text/css"&gt;
+.remark-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+                                    font-size: 100%;
+                                  }
+}
+&lt;/style&gt;
+
+
+
+
+
+# Species Distribution Models
+
+.footnote[Elith *et al.* (2009)]
+
+---
+
+# Species Distribution Models
+        
+- aka
+  - niche models (Peterson *et al.* 2011)
+  - environmental models (Guisan *et al*. 2017)
+  - habitat suitability models (Guisan *et al*. 2017)
+  - envelope models (Hijmans &amp; Graham 2006)
+
+--
+
+- model the realized niche of taxa
+
+
+
+---
+
+background-image: url("figures/zurell2020-1.png")
+background-size: 800px
+background-position: 50% 50%
+
+# Species Distribution Models
+
+.footnote[Zurell *et al.* (2020)]
+
+---
+
+# Biotic Interactions
+        
+&lt;svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M575.81 217.98C572.64 157.41 518.28 112 457.63 112h-9.37c-52.82 0-104.25-16.25-147.74-46.24-41.99-28.96-96.04-41.62-153.21-28.7C129.3 41.12-.08 78.24 0 224c.04 70.95 38.68 132.8 95.99 166.01V464c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16v-54.26c15.36 3.96 31.4 6.26 48 6.26 5.44 0 10.68-.73 16-1.18V464c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16v-59.43c14.24-5.06 27.88-11.39 40.34-19.51C342.07 355.25 393.86 336 448.46 336c25.48 0 16.01-.31 23.05-.78l74.41 136.44c2.86 5.23 8.3 8.34 14.05 8.34 1.31 0 2.64-.16 3.95-.5 7.09-1.8 12.05-8.19 12.05-15.5 0 0 .14-240.24-.16-246.02zM463.97 248c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24zm80 153.25l-39.86-73.08c15.12-5.83 28.73-14.6 39.86-25.98v99.06z"&gt;&lt;/path&gt;&lt;/svg&gt; biotic interactions influence realized niche (Wisz *et al.*, 2013)
+
+--
+        
+- limit range to that of another species (Schweiger *et al.*, 2012)
+
+--
+        
+- use species at predictor variables (Leathwick &amp; Austin, 2001)
+
+--
+        
+- use residual correlation of latent variables (Pollock *et al.* 2014)
+
+--
+        
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"&gt;&lt;/path&gt;&lt;/svg&gt; same as latent models before   
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"&gt;&lt;/path&gt;&lt;/svg&gt; Joint Species Distribution Model 
+
+---
+        
+# Are jSDMs worth the trouble? 
+        
+- alternative is called stacked SDM (many single species models)
+
+--
+        
+- many studies compare predictive performance 
+
+--
+        
+- jSDMs better if many rare species present (Norberg *et al.*, 2019)
+
+--
+        
+- no difference in performance (Zurell *et al.*, 2019)
+
+--
+        
+- community level models:  
+  - "predict first, assemble later" vs. "assemble first, predict later" 
+
+--
+        
+- clm outperform stacked models slightly (Maguire *et al.*, 2016)
+
+--
+        
+- clm perform poorly (Baselga &amp; Araújo, 2010)
+
+---
+
+# HMSC
+        
+- Hierarchical modeling of species communities 
+
+--
+        
+- bayesian hierarchical multivariate mixed effect model
+
+--
+        
+- .blue[bayesian]: fit with MCMC
+
+--
+        
+- .blue[hierarchical]: some model parameters are modeled themselves 
+
+--
+        
+- .blue[multivariate]: multiple response variables 
+
+--
+        
+- .blue[mixed effect]: includes fixed and random effects
+
+---
+
+.footnote[Ovaskainen *et al.* (2017a)]      
+
+# HMSC
+
+&lt;img src="figures/ovaskainen2017_1.png" width="664" style="display: block; margin: auto;" /&gt;
+
+---
+
+# HMSC
+
+&lt;img src="figures/ovaskainen_abrego_2020-1.png" width="614" style="display: block; margin: auto;" /&gt;
+
+.footnote[Ovaskainen &amp; Abrego (2020)]
+
+---
+
+# HMSC - Single Species Example
+        
+
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Route &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Year &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; x &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; y &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Effort &lt;/th&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; Habitat &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; JunJul &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; DJF &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; AprMay &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Phylloscopus_trochilus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Turdus_iliacus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Fringilla_coelebs &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Turdus_philomelos &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Carduelis_spinus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Parus_major &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Anthus_trivialis &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Erithacus_rubecula &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Cuculus_canorus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Muscicapa_striata &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Ficedula_hypoleuca &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Turdus_pilaris &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Loxia_curvirostra &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Columba_palumbus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sylvia_borin &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Corvus_corone &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Dendrocopos_major &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Emberiza_citrinella &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Turdus_merula &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sylvia_curruca &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Regulus_regulus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Prunella_modularis &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Phoenicurus_phoenicurus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Parus_caeruleus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Parus_montanus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Motacilla_alba &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Carduelis_chloris &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Phylloscopus_collybita &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Tringa_ochropus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Parus_cristatus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sylvia_communis &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Grus_grus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Larus_canus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pica_pica &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Phylloscopus_sibilatrix &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Turdus_viscivorus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Hirundo_rustica &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sylvia_atricapilla &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Tetrao_tetrix &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pyrrhula_pyrrhula &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Dryocopus_martius &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Certhia_familiaris &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Alauda_arvensis &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Corvus_corax &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Saxicola_rubetra &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Garrulus_glandarius &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Numenius_arquata &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Carpodacus_erythrinus &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Gallinago_gallinago &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Corvus_monedula &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5028.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4167.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6200 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Op &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.777 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.89438 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.57005 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5052.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4171.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Co &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.934 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.13370 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.74435 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5077.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4178.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Urb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.887 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.27420 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.70685 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5101.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4183.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Co &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.803 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.17750 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.63350 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4876.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4153.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6300 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Urb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.297 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.72022 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.89660 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4975.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4176.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Co &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.326 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.30000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.11275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+
+# HMSC - Single Species Example
+
+```r
+m_full = Hmsc(
+  Y = as.matrix(data$Corvus_monedula),
+  XData = as.data.frame(data[, c("Habitat", "AprMay")]),
+  XFormula =  ~ Habitat + poly(AprMay, degree = 2, raw = TRUE),
+  distr = "lognormal poisson",
+  studyDesign = data.frame(route = factor(data$Route)),
+  ranLevels = list(route = HmscRandomLevel(sData = xy))
+)
+```
+
+--
+        
+.blue[**lognormal poisson?**]
+
+--
+        
+- instead of negative binomial
+- Poisson: `\(y_i \sim Poisson(exp(L_i))\)`
+- lognormal Poisson: `\(y_i \sim Poisson(exp(L_i + \epsilon_i)), \ \epsilon \sim N(0, \sigma^2)\)` 
+        
+---
+
+# Fit model with MCMC
+
+
+```r
+nChains = 2
+thin = c(5, 10, 100)
+nParallel = max(round(parallel::detectCores() / 2), nChains)
+samples = 1000
+transient = 500 * thin
+verbose = 500 * thin
+
+for (i in 1:3) {
+  m_full_fit = sampleMcmc(
+    m_full,
+    thin = thin[i],
+    samples = samples,
+    transient = transient,
+    nChains = nChains,
+    verbose = verbose,
+    initPar = "fixed effects"
+  )
+}
+```
+
+
+
+---
+
+# thinning=5
+
+.scroll-output[
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot1-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot1-2.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+        
+# thinning=10
+.scroll-output[
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot2-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot2-2.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# thinning=100
+.scroll-output[
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot3-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-beta-plot3-2.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Other MCMC convergence metrics
+
+.blue[**Effective sample size**]
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; ess &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110.1091 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habCo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 433.1376 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habOp &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 593.9599 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habUrb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 787.8184 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habWe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 236.7238 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; poly(clim, degree = 2, raw = TRUE)1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 184.9870 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; poly(clim, degree = 2, raw = TRUE)2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 404.2062 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+--
+        
+.blue[**potential scale reduction factor**] 
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Point est. &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Upper C.I. &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0598018 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.133281 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habCo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9995814 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.000565 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habOp &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0024632 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.007084 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habUrb &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9996922 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.001133 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habWe &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0000163 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.000624 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; poly(clim, degree = 2, raw = TRUE)1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0750217 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.261937 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; poly(clim, degree = 2, raw = TRUE)2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0630630 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.245347 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+
+# Cross-Validation Performance 
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; . &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; RMSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5232570 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SR2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5477913 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O.AUC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9193548 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O.TjurR2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4019935 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; O.RMSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3483511 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; C.SR2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3787763 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; C.RMSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4040931 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+--
+        
+.blue[**O**] - Occurrence, .blue[**C**] - Count
+
+--
+        
+.blue[**SR**]: pseudo- `\(R^2\)` based on squared spearman correlation  
+
+--
+        
+.blue[**AUC**]: Area under Curve - higher = better   
+
+--
+        
+.blue[**TjurR2**]: `\(\bar{\hat{y_i}}- \bar{\hat{y_j}}, \forall y_i = 1 \land  y_j = 0\)`
+
+---
+
+# Variance Partioining
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:180px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Corvus monedula &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; habitat &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2134576 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; climate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7397280 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Random: route &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0468144 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+
+# Spatial Prediction 
+        
+
+
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-pred-fig1-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Spatial Prediction 
+
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-ss-pred-fig2-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Joint Modeling with HMSC 
+
+.footnote[Ovaskainen &amp; Abrego (2020)]
+
+All regression parameters for species `\(s\)` are drawn from: 
+.center[
+`\(\boldsymbol{\beta}_{.s} \sim N(\boldsymbol{\mu}, \mathbf{V})\)`  
+]
+
+--
+
+Parameters are not species specific.
+
+`\begin{align}
+\beta_{1s} &amp;\sim N(\mu_1, \boldsymbol{V_1}) \\
+\beta_{2s} &amp;\sim N(\mu_2, \boldsymbol{V_2})
+\end{align}`
+
+--
+
+&lt;img src="figures/ovaskainen_abrego_2020-2.png" width="1368" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Including traits in the model
+
+.footnote[Ovaskainen &amp; Abrego (2020)]
+
+.pull-left[
+        Species specific expected value:
+        `$$\boldsymbol{\beta}_{.s} \sim N(\boldsymbol{\mu_{.s}}, \mathbf{V})$$`
+        Modeled as regression to traits
+        `$$\mu_{ps} = \Sigma_{j=1}^{J} t_{sj}\gamma_{pj}$$`
+]
+
+
+
+.pull-right[
+        `\(t_{sj}\)` - trait `\(j\)` of species `\(s\)`  
+        `\(\gamma_{pj}\)` - influence of trait `\(j\)` on how species are expected to respond to covariate `\(p\)`  
+]
+
+--
+
+&lt;img src="figures/ovaskainen_abrego_2020-3.png" width="383" style="display: block; margin: auto;" /&gt;
+
+---
+        
+# Inlcuding Phylogeny 
+
+.footnote[Ovaskainen (2020)]
+
+&lt;img src="figures/ovaskainen_course_2.png" width="807" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.footnote[Ovaskainen (2020)]     
+        
+# Inlcuding Phylogeny 
+
+&lt;img src="figures/ovaskainen_course_3.png" width="681" style="display: block; margin: auto;" /&gt;
+
+---
+
+# How to include phylogeny? 
+        
+- add family or order as .blue[categorical variable]
+
+--
+  - does not scale well 
+
+--
+
+  - some families are more similar to each other than others 
+
+--
+
+- a .blue[phylogenetic tree] is the best representation 
+
+--
+
+- we can summarize a tree with a .blue[phylogenetic correlation matrix] `\(\boldsymbol{C}\)`
+
+--
+
+- HMSC uses `\(\boldsymbol{C}\)` to include phylogeny 
+
+--
+
+- `\(\boldsymbol{C}\)` is S `\(\times\)` S matrix 
+
+--
+
+- `\(c_{ij}\)` is the .blue[shared evolutionary time]
+
+---
+
+.footnote[Felsenstein (1985), Ives &amp; Helmus (2011)]
+
+# How to include phylogeny? 
+
+One environmental variable and fully phylogenetically structured covariance  
+`$$\beta \sim N(\mu, C)$$`
+        
+--
+
+No phylogenetic structure in covariance  
+
+`$$\beta \sim N(\mu, I)$$`
+
+--
+
+Middle option implemented in HMSC
+`$$\beta \sim N(\mu, W)$$`
+`$$W = \rho C + (1-\rho)I$$`
+`\(0 \le \rho \le 1\)` - the strength of the phylogenetic signal
+
+---
+
+class:center,middle
+
+# The Kronecker Product
+        
+
+`\(\begin{bmatrix}1 &amp; 2\\3 &amp; 4\\\end{bmatrix} \otimes \begin{bmatrix}1 &amp; 2\\3 &amp; 4\\\end{bmatrix} =\)` 
+        `\(\begin{bmatrix} 1 \begin{bmatrix} 5 &amp; 6  \\7 &amp; 8  \\\end{bmatrix}&amp; 2 \begin{bmatrix} 5 &amp; 6  \\7 &amp; 8  \\\end{bmatrix} \\3 \begin{bmatrix} 5 &amp; 6  \\7 &amp; 8  \\\end{bmatrix}&amp; 4\begin{bmatrix} 5 &amp; 6  \\7 &amp; 8  \\\end{bmatrix}  \\\end{bmatrix} =\)`
+        `\(\begin{bmatrix}5 &amp; 6 &amp; 10 &amp; 12 \\7 &amp; 8 &amp; 14 &amp; 16 \\15 &amp; 18 &amp; 20 &amp; 24 \\21 &amp; 24 &amp; 28 &amp; 32 \\\end{bmatrix}\)`
+  
+
+
+---
+
+# How to include phylogeny?
+        
+`$$\boldsymbol{\beta} \sim N(\mu, \mathbf{W} \otimes \mathbf{V})$$`   
+--
+        
+`\(\mathbf{W} \otimes \mathbf{V}\)` gives a PS `\(\times\)` PS matrix  
+
+--
+        
+`\(\mathbf{W}\)` is a S `\(\times\)` S matrix of species to species covariances 
+`\(\mathbf{W} = \begin{bmatrix} w_{11} &amp; w_{12} &amp; w_{13} \\ w_{21} &amp; w_{22} &amp; w_{23} \\ w_{31} &amp; w_{32} &amp; w_{33} \\  \end{bmatrix}\)` = 
+`\(\begin{bmatrix} 1 &amp; 0.8 &amp; 0.4 \\ 0.8 &amp; 1 &amp; 0 \\ 0.4 &amp; 0 &amp; 1 \\ \end{bmatrix}\)`
+        
+--
+        
+`\(\mathbf{V}\)` is a P `\(\times\)` P matrix of covariance between responses towards environmental variables  
+`\(\mathbf{V} = \begin{bmatrix} v_{11} &amp; v_{12}\\ v_{21} &amp; v_{22}\\  \end{bmatrix}\)` = 
+`\(\begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1\\\end{bmatrix}\)`
+        
+---
+
+`$$\mathbf{W} \otimes \mathbf{V} =\begin{bmatrix} 1 &amp; 0.8 &amp; 0.4 \\ 0.8 &amp; 1 &amp; 0 \\ 0.4 &amp; 0 &amp; 1 \\ \end{bmatrix} \otimes \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1\\\end{bmatrix}$$`
+
+--
+
+`$$=\begin{bmatrix} 1 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix}  &amp; 0.8 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix} &amp; 0.4 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix}\\ 0.8 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix}  &amp; 1 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix} &amp; 0 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix} \\ 0.4 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix}  &amp; 0 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix} &amp; 1 \begin{bmatrix} 1 &amp; -0.2 \\ -0.2 &amp; 1 \end{bmatrix}\end{bmatrix}$$`
+
+--
+
+`$$=\begin{bmatrix} 1 &amp; -0.2 &amp; 0.8 &amp; -0.16 &amp; 0.4 &amp; -0.08 \\ -0.2  &amp; 1 &amp; -0.16 &amp; 0.8 &amp; -0.08 &amp;  0.4 \\ 0.8   &amp; -0.16 &amp; 1 &amp; -0.2 &amp; 0 &amp; 0 \\ -0.16 &amp; 0.8 &amp; -0.2 &amp; 1 &amp; 0 &amp;0 \\ 0.4   &amp; -0.2 &amp; 0 &amp;  0 &amp; 1 &amp; -0.2 \\ -0.08 &amp; -0.2 &amp; 0 &amp;0 &amp; -0.2 &amp; 1 \end{bmatrix}$$`
+---
+
+.footnote[Ovaskainen &amp; Abrego (2020)]
+
+&lt;img src="figures/ovaskainen_abrego_2020-1-mod.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="figures/ovaskainen_abrego_2020-1-mod-study-desgin.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+.footnote[Ovaskainen *et al.* (2017a)]
+
+# `\(\Pi\)` Study Design 
+
+&lt;img src="figures/ovaskainen2017_2.png" width="325" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+&lt;img src="figures/ovaskainen_abrego_2020-1-mod-spatial-coordinates.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="figures/ovaskainen_abrego_2020-1-mod-eta_and_gamma.png" width="641" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random effects - `\(H\)` and `\(\Lambda\)`
+       
+.footnote[Bhattacharya and Dunson (2011)]
+`$$L_{is} = L_{is}^{\mathbf{F}ixed} + L_{is}^{\mathbf{Ra}ndom}$$`
+--
+        
+.content-box-blue[**Random effects**] 
+`$$L^{Ra}_{ij} = \Sigma_{r=1}^{R} \eta_{ir}\lambda_{rs}$$`
+`$$\boldsymbol{L}^{Ra} = \boldsymbol{H}\boldsymbol{\Lambda}$$`
+
+--
+        
+`\(\eta\)`  .blue[site loading]  
+`\(\eta \sim N(0,1)\)`    
+
+--
+
+`\(\lambda\)`  .blue[species loading]  
+`\(\lambda \sim\)` multiplicative gamma process shrinkage prior 
+
+---
+class: middle,center
+
+`\begin{align}
+\eta &amp;\sim N(0,1)
+\end{align}`
+
+---
+class: middle,center
+
+`\begin{align}
+\eta &amp;\sim N(0,1)\\
+Cov[L^{Ra}_{i_1s_1}L^{Ra}_{i_2s_2}] &amp;= \Sigma_{r=1}^{R} \lambda_{rs_1}\lambda_{rs_2}\delta_{i_1i_2}\\
+\end{align}`
+
+---
+class: middle,center
+
+`\begin{align}
+\eta &amp;\sim N(0,1)\\
+Cov[L^{Ra}_{i_1s_1}L^{Ra}_{i_2s_2}] &amp;= \Sigma_{r=1}^{R} \lambda_{rs_1}\lambda_{rs_2}\delta_{i_1i_2}\\
+L_{i\cdot}^{Ra} &amp;\sim N(0, \boldsymbol{\Omega})\\
+\end{align}`
+
+---
+class: middle,center
+
+`\begin{align}
+\eta &amp;\sim N(0,1)\\
+Cov[L^{Ra}_{i_1s_1}L^{Ra}_{i_2s_2}] &amp;= \Sigma_{r=1}^{R} \lambda_{rs_1}\lambda_{rs_2}\delta_{i_1i_2}\\
+L_{i\cdot}^{Ra} &amp;\sim N(0, \boldsymbol{\Omega})\\
+\boldsymbol{\Omega} &amp;= \boldsymbol{\Lambda}^T\boldsymbol{\Lambda}
+\end{align}`
+                
+---
+class: middle,center
+
+`\begin{align}
+\eta &amp;\sim N(0,1)\\
+Cov[L^{Ra}_{i_1s_1}L^{Ra}_{i_2s_2}] &amp;= \Sigma_{r=1}^{R} \lambda_{rs_1}\lambda_{rs_2}\delta_{i_1i_2}\\
+L_{i\cdot}^{Ra} &amp;\sim N(0, \boldsymbol{\Omega})\\
+\boldsymbol{\Omega} &amp;= \boldsymbol{\Lambda}^T\boldsymbol{\Lambda}\\
+R_{s_1s_2} &amp;= \dfrac{\Omega_{s_1s_2}}{\sqrt{\Omega_{s_1s_1} \Omega_{s_2s_2}}}
+\end{align}`
+
+---
+
+&lt;img src="figures/ovaskainen_abrego_2020-1-mod-spatial-scale.png" width="640" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `\(\alpha\)` Spatial scale parameter 
+
+.content-box-blue[Spatial autocorrelation in a linear model]
+
+`$$y_i = L_i + \epsilon_i$$`
+
+--
+
+`$$\epsilon_i \sim N(0, \Sigma)$$`
+--
+
+`$$\Sigma_{i_1i_2} = \sigma^2_{space}\ exp(-d_{i_1i_2}/\alpha)$$`
+--
+
+.content-box-blue[Spatial autocorrelation in a latent variable]  
+
+.center[
+`\(\boldsymbol{\eta}_{\cdot r} \sim N(0, \boldsymbol{\Sigma}_r)\)` with `\(\boldsymbol{\Sigma}_{r,i_1i_2} = exp(-d_{i_1i_2}/\alpha)\)`  
+]
+
+--
+
+`$$Cov[L^{Ra}_{i_1s_1}L^{Ra}_{i_2s_2}]
+= \Sigma_{r=1}^{R} \lambda_{rs_1}\lambda_{rs_2}exp(-d_{i_1i_2}/\alpha)$$`
+
+---
+
+# JSDM with HMSC 
+
+```r
+# directories
+dir = list(data = here("001_raw_data/hmsc_birds/data/"),
+           model = here("003_processed_data/hmsc_mcmc/jsdm"))
+
+# load bio and environment data 
+dt_y = data.table::fread(file.path(dir$data, "data.csv"))
+dt_x = dt_y[,c(5,6,7,8,9)]
+# load phylogenetic data
+ph_phylo &lt;- ape::read.tree(file.path(dir$data, "CTree.tre"))
+# load traits
+dt_traits = fread(file.path(dir$data, "traits.csv"))
+dt_traits$LogMass = log(dt_traits$Mass)
+```
+
+---
+        
+# Phylogenetic data
+.scroll-output[
+
+```r
+ph_phylo
+```
+
+```
+## 
+## Phylogenetic tree with 50 tips and 49 internal nodes.
+## 
+## Tip labels:
+##   Pica_pica, Corvus_corone, Corvus_corax, Corvus_monedula, Garrulus_glandarius, Alauda_arvensis, ...
+## 
+## Rooted; includes branch lengths.
+```
+]
+
+---
+
+# Phylogenetic data
+
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-phylo-plot-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Trait data
+
+&lt;div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Migration &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Mass &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Urb &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Br &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Co &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Op &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Ma &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; We &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; LogMass &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Phylloscopus_trochilus &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; L &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.197225 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Turdus_iliacus &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.094345 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fringilla_coelebs &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.091042 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Turdus_philomelos &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.234107 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Carduelis_spinus &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; S &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.564949 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Parus_major &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; R &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.944439 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+
+
+---
+
+# Study Design 
+
+
+```r
+ma_studydesign           = matrix(NA, nrow = nrow(ma_y), ncol = 2)
+ma_studydesign[,1]       = sprintf('Route_%.3d',dt_y$Route)
+ma_studydesign[,2]       = sprintf('Year_%.3d',dt_y$Year)
+df_studydesign           = as.data.frame(ma_studydesign)
+colnames(df_studydesign) = c("Route","Year")
+df_studydesign[,1]       = as.factor(df_studydesign[,1])
+df_studydesign[,2]       = as.factor(df_studydesign[,2])
+```
+
+--
+        
+&lt;div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Route &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Year &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_010 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2012 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_010 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2010 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_010 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2011 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_010 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2013 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_013 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2014 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Route_013 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Year_2008 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+# Random Effect Structure 
+        
+
+```r
+# Vector of Route names
+vc_routes  = levels(df_studydesign[,1])
+# Create matrix that will hold route coordinates
+ma_xy      = matrix(0,
+                    nrow = length(vc_routes),
+                    ncol = 2)
+# Fill ma_xy with mean coordiantes of all observations that belong to a route
+for (i in seq_along(vc_routes)){
+        rows       = df_studydesign[,1]==vc_routes[i]
+        ma_xy[i,1] = mean(dt_y[rows,]$x)
+        ma_xy[i,2] = mean(dt_y[rows,]$y)
+}
+
+colnames(ma_xy) = c("x","y")
+rownames(ma_xy) = vc_routes
+# Create spatial random level 
+rL = HmscRandomLevel(sData=ma_xy)
+# Minimum and maximum number of latent variables 
+rL$nfMin = 5
+rL$nfMax = 10
+```
+
+---
+        
+# Defining the model 
+        
+
+```r
+XFormula  = ~ Habitat + poly(AprMay, degree = 2, raw = TRUE)
+TrFormula = ~ Migration + LogMass
+
+m = Hmsc(Y = ma_y,
+         XData = as.data.frame(dt_x),
+         XFormula = XFormula,
+         TrData = dt_traits,
+         TrFormula = TrFormula,
+         phyloTree = ph_phylo,
+         distr = "lognormal poisson",
+         studyDesign = df_studydesign,
+         ranLevels = list(Route=rL))
+```
+
+---
+
+# MCMC convergence 
+        
+
+
+.scroll-output[
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-2.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-3.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-4.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-5.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-6.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-7.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-8.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-9.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-10.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-11.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-12.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-13.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-14.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-15.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-16.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-17.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-18.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.scroll-output[
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-sigma-1.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-sigma-2.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-sigma-3.png" style="display: block; margin: auto;" /&gt;&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-plot-mcmc-sigma-4.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Effective Sample size
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-eff-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+        
+# Gelman Diagnostic 
+        
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-gelman-diagnostic-plots-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+# Evaluate model fit 
+
+
+&lt;div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; "&gt;&lt;table class=" lightable-minimal" style='font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; species &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; RMSE &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; SR2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; O.AUC &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; O.TjurR2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; O.RMSE &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; C.SR2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; C.RMSE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Phylloscopus_trochilus &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.535198 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5486734 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9982674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3047113 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0640103 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5396600 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.586480 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Turdus_iliacus &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.043019 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5024904 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9092372 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2240347 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2306145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4203349 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.122433 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fringilla_coelebs &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.226818 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8458551 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9935238 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6969371 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1739321 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7659493 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.045951 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Turdus_philomelos &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.292442 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4642628 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9513368 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3889763 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2066998 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3520275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.412730 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Carduelis_spinus &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.078783 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3721363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9396205 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4649564 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1964117 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2465895 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.255499 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Parus_major &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.051670 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7553808 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9629012 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5653437 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2534849 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6109200 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.473900 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+
+# Variation Partitioning 
+        
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-variation-partitioning-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Beta plot 
+
+&lt;img src="figures/R_hmsc_beta.png" width="655" style="display: block; margin: auto;" /&gt;
+
+---
+# Gamma plot 
+&lt;img src="figures/R_hmsc_gamma.png" width="655" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Omega plot 
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-omega-plot-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Make Predictions 
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-prediction-plot-1-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+## [1] 0.00025
+```
+
+---
+
+# Make Predictions
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-prediction-plot-2-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+## [1] 0.0695
+```
+
+---
+
+# Make Predictions
+&lt;img src="mod3-5-hmsc_files/figure-html/hmsc-jsdm-prediction-plot-3-1.png" style="display: block; margin: auto;" /&gt;
+
+```
+## [1] 0.045
+```
+
+---
+
+# Interactions in multiple variables 
+.footnote[Saine *et al.* 2020]
+&lt;img src="figures/saine2020.png" width="567" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
