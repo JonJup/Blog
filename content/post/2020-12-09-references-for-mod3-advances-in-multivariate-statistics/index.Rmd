@@ -231,6 +231,10 @@ Gelman, A. *et al.* (2020). Bayesian Workflow. arXiv. Retrieved from <http://arx
 
 Hawinkel, S. et al. (2019). A unified framework for unconstrained and constrained ordination of microbiome read count data. **PLoS ONE**, 14(2), 1--20.
 
+Pichler & Hartig (2021). A new joint species distribution model for faster and more accurate inference of species associations from big community data. **Methods in Ecology and Evolution** 
+
+> A new and fast joint species distribution model. Still have to try it out - look out for a post covering the corresponding sjSDM package. 
+
 Roberts, D. W. (2008). Statistical Analysis of Multidimensional Fuzzy Set Ordinations. **Ecology**, 89(5), 1246--1260.
 
 > Article on fuzzy set ordination. Method is not commonly used and was not dicussed in lecture. 
