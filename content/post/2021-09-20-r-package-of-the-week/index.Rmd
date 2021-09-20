@@ -26,7 +26,7 @@ I will provide some examples using the varechem data set from the `vegan` packag
 First, load the data and have a look at them. 
 ```{r}
 data(varechem)
-head(varechem) |> knitr::kable()
+head(varechem) 
 ```
 As you can see, the data set contains different soil parameters like Nitrogen, Phosphorus or depth of the humus layer. 
 The basic function of the `corrr` package is `correlate()`, which works similar to base R's `cor()`. 
@@ -70,7 +70,7 @@ focus(corrr_table, N) |>
 
 The last in the bunch is `fashion()` which can be used to create a nice looking version of the table: no leading zeros, NAs are replace by empty cells 
 ```{r}
-fashion(corrr_table) |> knitr::kable()
+fashion(corrr_table) 
 ```
 
 While all these things are nice the really cool thing about `corrr` is the plots: 
