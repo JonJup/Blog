@@ -17,6 +17,7 @@ images: ~
 }
 </style>
 ```
+
 This documents contains literature that was either cited in the MOD3 Lecture or that I think is helpful to deepen your understanding of the discussed methods. The references are arranged in thematic groups following the same structure as the lecture. References within each group are ordered alphabetically. As some references are pertinent to multiple topics you will find repetitions. In the very end there is an additional section pointing you towards methods or papers that were not discussed but are noteworthy and interesting nonetheless.
 
 ## What's new in multivariate analysis?
