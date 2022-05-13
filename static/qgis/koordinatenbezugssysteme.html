@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Koordinatenbezugssysteme | Einführung in GIS - QGIS</title>
+  <meta name="description" content="4 Koordinatenbezugssysteme | Einführung in GIS - QGIS" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Koordinatenbezugssysteme | Einführung in GIS - QGIS" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Koordinatenbezugssysteme | Einführung in GIS - QGIS" />
+  
+  
+  
+
+<meta name="author" content="Jonathan Jupke" />
+
+
+<meta name="date" content="2022-05-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="karten-speichern.html"/>
+<link rel="next" href="digitalisierung.html"/>
+<script src="book_assets/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="book_assets/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="einführung.html"><a href="einführung.html"><i class="fa fa-check"></i><b>1</b> Einführung</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="einführung.html"><a href="einführung.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>1.1</b> Was sehe ich hier?</a></li>
+<li class="chapter" data-level="1.2" data-path="einführung.html"><a href="einführung.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>1.2</b> Wie lade ich Daten?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="einführung.html"><a href="einführung.html#räumliche-datenformate"><i class="fa fa-check"></i><b>1.2.1</b> Räumliche Datenformate</a></li>
+<li class="chapter" data-level="1.2.2" data-path="einführung.html"><a href="einführung.html#nicht-räumliche-datenformate"><i class="fa fa-check"></i><b>1.2.2</b> Nicht räumliche Datenformate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>2</b> Symbologie</a></li>
+<li class="chapter" data-level="3" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>3</b> Karten speichern</a></li>
+<li class="chapter" data-level="4" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html"><i class="fa fa-check"></i><b>4</b> Koordinatenbezugssysteme</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind"><i class="fa fa-check"></i><b>4.1</b> Wie finde ich heraus wie meine Daten projeziert sind?</a></li>
+<li class="chapter" data-level="4.2" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten"><i class="fa fa-check"></i><b>4.2</b> Wie ändere ich das Koordinatenbezugssystem meiner Daten?</a></li>
+<li class="chapter" data-level="4.3" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus"><i class="fa fa-check"></i><b>4.3</b> Wie finde ich das Koordinatenbezugssystem herraus?</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="digitalisierung.html"><a href="digitalisierung.html"><i class="fa fa-check"></i><b>5</b> Digitalisierung</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="digitalisierung.html"><a href="digitalisierung.html#keycoding"><i class="fa fa-check"></i><b>5.1</b> Keycoding</a></li>
+<li class="chapter" data-level="5.2" data-path="digitalisierung.html"><a href="digitalisierung.html#erstellen-eines-neuen-vektorlayers"><i class="fa fa-check"></i><b>5.2</b> Erstellen eines neuen Vektorlayers</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="vektoroperationen.html"><a href="vektoroperationen.html"><i class="fa fa-check"></i><b>6</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#geoprocessing"><i class="fa fa-check"></i><b>6.1</b> Geoprocessing</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#buffer"><i class="fa fa-check"></i><b>6.1.1</b> Buffer</a></li>
+<li class="chapter" data-level="6.1.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#clip"><i class="fa fa-check"></i><b>6.1.2</b> Clip</a></li>
+<li class="chapter" data-level="6.1.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#convex-hull"><i class="fa fa-check"></i><b>6.1.3</b> Convex hull</a></li>
+<li class="chapter" data-level="6.1.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>6.1.4</b> Difference</a></li>
+<li class="chapter" data-level="6.1.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>6.1.5</b> Dissolve</a></li>
+<li class="chapter" data-level="6.1.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>6.1.6</b> Intersection</a></li>
+<li class="chapter" data-level="6.1.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#symmetrical-difference"><i class="fa fa-check"></i><b>6.1.7</b> Symmetrical Difference</a></li>
+<li class="chapter" data-level="6.1.8" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>6.1.8</b> Union</a></li>
+<li class="chapter" data-level="6.1.9" data-path="vektoroperationen.html"><a href="vektoroperationen.html#eliminate-selected-polygons"><i class="fa fa-check"></i><b>6.1.9</b> Eliminate Selected Polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>6.2</b> Misc</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>6.2.1</b> Minimum bounding geometry</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>7</b> Rasteroperationen</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Einführung in GIS - QGIS</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="koordinatenbezugssysteme" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Koordinatenbezugssysteme<a href="koordinatenbezugssysteme.html#koordinatenbezugssysteme" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="wie-finde-ich-heraus-wie-meine-daten-projeziert-sind" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Wie finde ich heraus wie meine Daten projeziert sind?<a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Klickt mit der rechten Maustaste auf den Layer von dem ihr die aktuelle Projektion wissen wollt und wählt dann <strong>Properties</strong>, die unterste Option. Klick hier ganz oben auf Information <img src="inline/metadata.png" />. Im dritten Feld von oben (Coordinate Reference System (CRS)) findet ihr die Informationen.</p>
+</div>
+<div id="wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Wie ändere ich das Koordinatenbezugssystem meiner Daten?<a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Hier gibt es zwei Möglichkeiten. Eure Daten haben CRS X aber wurden, fälschlicherweise, in CRS Y geladen. In diesem Szenario wollt ihr die Daten nicht reprojezieren sondern nur eine Einstellung ändern. Das könnt ihr mit im <strong>Properties</strong> (siehe <a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind">hier</a>) im Reiter <strong>Source</strong> <img src="inline/system.png" />. Das Fenster seht ihr in Abbilding <a href="koordinatenbezugssysteme.html#fig:proj1">4.1</a></p>
+<div class="figure"><span style="display:block;" id="fig:proj1"></span>
+<img src="../../../../../../Bilder/GIS-Lecture/screenshots/proj1.png" alt="Source Fenters " width="410" />
+<p class="caption">
+Figure 4.1: Source Fenters
+</p>
+</div>
+<p>Im obersten Fenster wählt ihr den Layer den ihr anpassen wollt. Darunter könnt auf die aktuelle Auswahl klicken um eine Liste mit kürzlich verwendeten oder geläufigen Alternativen angezeigt zu bekommen. Falls das gesuchte CRS nicht dabei ist könnt ihr mit einem Klick auf den <img src="inline/mActionCustomProjection.png" /> Knopf ein Fenster öffnen in dem ihr mithilfe des EPSG codes jedes CRS finden könnt, das QGIS kennt.</p>
+<p>Falls eure Daten in CRS X geladen sind und auch in diesem Format vorliegen, aber ihr sie in CRS Y haben wollt, also wenn ihr die Daten reprojezieren wollt geht das über das <strong>reproject layer</strong> Tool (Abb. <a href="koordinatenbezugssysteme.html#fig:proj2">4.2</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:proj2"></span>
+<img src="../../../../../../Bilder/GIS-Lecture/screenshots/proj2.png" alt="Reproject Layer" width="434" />
+<p class="caption">
+Figure 4.2: Reproject Layer
+</p>
+</div>
+<p>Im erscheinenden Fenster einfach den Layer auswählen den ihr reprojezieren wollt (<em>Input Layer</em>) und unter <em>Target CRS</em> das Ziel CRS auswählen. Dann auf <strong>Run</strong> klicken.</p>
+</div>
+<div id="wie-finde-ich-das-koordinatenbezugssystem-herraus" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Wie finde ich das Koordinatenbezugssystem herraus?<a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Folgendes Szenario: Ihr habt einen Datensatz erhalten mit räumlichen Koordinaten und Namen der Orte. Ihr wisst aber nicht in welchem Koordinatenbezgssystem (KBS) und in welcher Projektion die Daten vorliegen. Dabei kann euch die website <a href="http://projfinder.com/" class="uri">http://projfinder.com/</a> weiterhelfen.</p>
+<p>Die Seite ist zweigeteilt (Abb. <a href="koordinatenbezugssysteme.html#fig:pf1">4.3</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:pf1"></span>
+<img src="../../../../../../Bilder/GIS-Lecture/screenshots/projfinder1.png" alt="projfinder.com" width="960" />
+<p class="caption">
+Figure 4.3: projfinder.com
+</p>
+</div>
+<p>Auf der linken Seite seht ihr zwei Eingabefelder und auf der rechten eine Karte mit Fadenkreuz. Angenommen ihr wisst nicht welche Projektion die Kohlmeisendaten haben, könntet ihr in der Tabelle in der Spalte <em>locality</em> weitere Informationen zur Probestelle finden. Einen Ausschnit meiner Tabelle seht ihr in Abbildung <a href="koordinatenbezugssysteme.html#fig:pf2">4.4</a></p>
+<div class="figure"><span style="display:block;" id="fig:pf2"></span>
+<img src="../../../../../../Bilder/GIS-Lecture/screenshots/projfinder2.png" alt="Kohlmeisendaten" width="961" />
+<p class="caption">
+Figure 4.4: Kohlmeisendaten
+</p>
+</div>
+<p>In Reihe elf sehe ich das eine Beobachtung aus Bad Harzburg stammt und die Koordinaten 51.87653 und 10.556916 hat. Nun kann ich auf projfinder.com auf der rechten Karte Bad Harzburg auswählen, links die beiden Koordinante eingeben und dann find <em>find my projection</em> klicken. Dann tauch unter dem <em>find my projection</em> Knopf eine Tabelle auf (Abb. <a href="koordinatenbezugssysteme.html#fig:pf3">4.5</a>)</p>
+<div class="figure"><span style="display:block;" id="fig:pf3"></span>
+<img src="../../../../../../Bilder/GIS-Lecture/screenshots/projfinder3.png" alt="Auswahl der besten Projektionen" width="570" />
+<p class="caption">
+Figure 4.5: Auswahl der besten Projektionen
+</p>
+</div>
+<p>In der Tabelle sind verschiedene Projektionen aufgeführt und die Distanz die der Punkt mit den angegeben Koordinatne in der jeweiligen Projektion zu dem von uns mit dem Fadenkreuz gewähten Punkt hat. In unserem Fall wissen wir das die Daten mit WGS 84 projeziert sind. Das ist erst auf Stelle 8 aber die Unterschiede bewegen sich im Zentimeterbereich. Falls eure Daten nur eine kleine Fläche bedeken, so wie unsere Maisendaten, ist es egal welche der hier angegebenen Projektionen ihr wählt. Alle passen für diese Region gut. Falls ihr einen größeren Datensatz habt (ganz Deutschland oder Europa) solltet ihr das Verfahren mit mehreren Punkten wiederholen und die Projekten mit der insgesammt kleinsten Projektion wählen. Diese Punkte sollten möglichst weit von einander entfernt liegen.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="karten-speichern.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="digitalisierung.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
