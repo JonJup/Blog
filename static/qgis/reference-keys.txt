@@ -31,7 +31,8 @@ fig:vo5
 fig:vo6
 fig:vo7
 fig:vo8
-einführung
+intro
+erste-schritte
 was-sehe-ich-hier
 wie-lade-ich-daten
 räumliche-datenformate
