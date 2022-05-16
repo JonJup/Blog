@@ -35,8 +35,9 @@ intro
 erste-schritte
 was-sehe-ich-hier
 wie-lade-ich-daten
-räumliche-datenformate
-nicht-räumliche-datenformate
+der-data-source-manager
+sonstiges
+plug-ins
 symbologie
 karten-speichern
 koordinatenbezugssysteme
@@ -60,3 +61,5 @@ eliminate-selected-polygons
 misc
 minimum-bounding-geometry
 rasteroperationen
+rastercalculator
+section

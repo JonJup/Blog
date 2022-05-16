@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2022-05-13" />
+<meta name="date" content="2022-05-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,6 +56,7 @@
 
 
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -74,9 +75,10 @@
 <li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.1</b> Was sehe ich hier?</a></li>
 <li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.2</b> Wie lade ich Daten?</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#räumliche-datenformate"><i class="fa fa-check"></i><b>2.2.1</b> Räumliche Datenformate</a></li>
-<li class="chapter" data-level="2.2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#nicht-räumliche-datenformate"><i class="fa fa-check"></i><b>2.2.2</b> Nicht räumliche Datenformate</a></li>
+<li class="chapter" data-level="2.2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#der-data-source-manager"><i class="fa fa-check"></i><b>2.2.1</b> Der Data Source Manager</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#sonstiges"><i class="fa fa-check"></i><b>2.3</b> Sonstiges</a></li>
+<li class="chapter" data-level="2.4" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.4</b> Plug-ins</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>3</b> Symbologie</a></li>
 <li class="chapter" data-level="4" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>4</b> Karten speichern</a></li>
@@ -110,7 +112,11 @@
 <li class="chapter" data-level="7.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>7.2.1</b> Minimum bounding geometry</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a></li>
+<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rastercalculator"><i class="fa fa-check"></i><b>8.1</b> Rastercalculator</a></li>
+<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#section"><i class="fa fa-check"></i><b>8.2</b> </a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -143,8 +149,8 @@
 Figure 5.1: Source Fenters
 </p>
 </div>
-<p>Im obersten Fenster wählt ihr den Layer den ihr anpassen wollt. Darunter könnt auf die aktuelle Auswahl klicken um eine Liste mit kürzlich verwendeten oder geläufigen Alternativen angezeigt zu bekommen. Falls das gesuchte CRS nicht dabei ist könnt ihr mit einem Klick auf den <img src="inline/mActionCustomProjection.png" /> Knopf ein Fenster öffnen in dem ihr mithilfe des EPSG codes jedes CRS finden könnt, das QGIS kennt.</p>
-<p>Falls eure Daten in CRS X geladen sind und auch in diesem Format vorliegen, aber ihr sie in CRS Y haben wollt, also wenn ihr die Daten reprojezieren wollt geht das über das <strong>reproject layer</strong> Tool (Abb. <a href="koordinatenbezugssysteme.html#fig:proj2">5.2</a>).</p>
+<p>Im obersten Fenster wählt ihr den Layer den ihr anpassen wollt. Darunter könnt auf die aktuelle Auswahl klicken um eine Liste mit kürzlich verwendeten oder geläufigen Alternativen angezeigt zu bekommen. Falls das gesuchte CRS nicht dabei ist könnt ihr mit einem Klick auf den <img src="inline/mActionCustomProjection.png" /> Knopf ein Fenster öffnen in dem ihr mithilfe des EPSG Codes jedes CRS finden könnt, das QGIS kennt.</p>
+<p>Falls ihr die Daten reprojezieren wollt, sie also in CRS X geladen sind und auch in diesem Format vorliegen, aber ihr sie in CRS Y haben wollt, geht das über das <strong>reproject layer</strong> Tool (Abb. <a href="koordinatenbezugssysteme.html#fig:proj2">5.2</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:proj2"></span>
 <img src="fig/proj2.png" alt="Reproject Layer" width="434" />
 <p class="caption">
@@ -155,7 +161,7 @@ Figure 5.2: Reproject Layer
 </div>
 <div id="wie-finde-ich-das-koordinatenbezugssystem-herraus" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Wie finde ich das Koordinatenbezugssystem herraus?<a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Folgendes Szenario: Ihr habt einen Datensatz erhalten mit räumlichen Koordinaten und Namen der Orte. Ihr wisst aber nicht in welchem Koordinatenbezgssystem (KBS) und in welcher Projektion die Daten vorliegen. Dabei kann euch die website <a href="http://projfinder.com/" class="uri">http://projfinder.com/</a> weiterhelfen.</p>
+<p>Folgendes Szenario: Ihr habt einen Datensatz erhalten mit räumlichen Koordinaten und Namen der Orte. Ihr wisst aber nicht in welchem Koordinatenbezgssystem (KBS) und in welcher Projektion die Daten vorliegen. Dabei kann euch die Website <a href="http://projfinder.com/" class="uri">http://projfinder.com/</a> weiterhelfen.</p>
 <p>Die Seite ist zweigeteilt (Abb. <a href="koordinatenbezugssysteme.html#fig:pf1">5.3</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:pf1"></span>
 <img src="fig/projfinder1.png" alt="projfinder.com" width="960" />
@@ -163,21 +169,21 @@ Figure 5.2: Reproject Layer
 Figure 5.3: projfinder.com
 </p>
 </div>
-<p>Auf der linken Seite seht ihr zwei Eingabefelder und auf der rechten eine Karte mit Fadenkreuz. Angenommen ihr wisst nicht welche Projektion die Kohlmeisendaten haben, könntet ihr in der Tabelle in der Spalte <em>locality</em> weitere Informationen zur Probestelle finden. Einen Ausschnit meiner Tabelle seht ihr in Abbildung <a href="koordinatenbezugssysteme.html#fig:pf2">5.4</a></p>
+<p>Auf der linken Seite seht ihr zwei Eingabefelder und auf der rechten eine Karte mit Fadenkreuz. Angenommen ihr wisst nicht welche Projektion die Kohlmeisendaten haben, könntet ihr in der Spalte <em>locality</em> weitere Informationen zur Probestelle finden. Einen Ausschnit meiner Tabelle seht ihr in Abbildung <a href="koordinatenbezugssysteme.html#fig:pf2">5.4</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:pf2"></span>
 <img src="fig/projfinder2.png" alt="Kohlmeisendaten" width="961" />
 <p class="caption">
 Figure 5.4: Kohlmeisendaten
 </p>
 </div>
-<p>In Reihe elf sehe ich das eine Beobachtung aus Bad Harzburg stammt und die Koordinaten 51.87653 und 10.556916 hat. Nun kann ich auf projfinder.com auf der rechten Karte Bad Harzburg auswählen, links die beiden Koordinante eingeben und dann find <em>find my projection</em> klicken. Dann tauch unter dem <em>find my projection</em> Knopf eine Tabelle auf (Abb. <a href="koordinatenbezugssysteme.html#fig:pf3">5.5</a>)</p>
+<p>In Reihe elf sehe ich das eine Beobachtung aus Bad Harzburg stammt und die Koordinaten 51.87653 und 10.556916 hat. Nun kann ich auf projfinder.com auf der rechten Karte Bad Harzburg auswählen, links die beiden Koordinante eingeben und dann find <em>find my projection</em> klicken. Dann tauch unter dem <em>find my projection</em> Knopf eine Tabelle auf (Abb. <a href="koordinatenbezugssysteme.html#fig:pf3">5.5</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:pf3"></span>
 <img src="fig/projfinder3.png" alt="Auswahl der besten Projektionen" width="570" />
 <p class="caption">
 Figure 5.5: Auswahl der besten Projektionen
 </p>
 </div>
-<p>In der Tabelle sind verschiedene Projektionen aufgeführt und die Distanz die der Punkt mit den angegeben Koordinatne in der jeweiligen Projektion zu dem von uns mit dem Fadenkreuz gewähten Punkt hat. In unserem Fall wissen wir das die Daten mit WGS 84 projeziert sind. Das ist erst auf Stelle 8 aber die Unterschiede bewegen sich im Zentimeterbereich. Falls eure Daten nur eine kleine Fläche bedeken, so wie unsere Maisendaten, ist es egal welche der hier angegebenen Projektionen ihr wählt. Alle passen für diese Region gut. Falls ihr einen größeren Datensatz habt (ganz Deutschland oder Europa) solltet ihr das Verfahren mit mehreren Punkten wiederholen und die Projekten mit der insgesammt kleinsten Projektion wählen. Diese Punkte sollten möglichst weit von einander entfernt liegen.</p>
+<p>In der Tabelle sind verschiedene Projektionen aufgeführt und die Distanz die der Punkt mit den angegeben Koordinatne in der jeweiligen Projektion zu dem von uns mit dem Fadenkreuz gewähten Punkt hat. In unserem Fall wissen wir das die Daten in dem nicht projezierten Koordinatenbezugssystem WGS 84 vorliegen. Das ist erst an Stelle neun, aber die Unterschiede zwischen den zehn aufgeführten KBS bzw. Projektionen bewegen sich im Zentimeterbereich. Falls eure Daten nur eine kleine Fläche bedecken, so wie unsere Maisendaten, ist es egal welche der hier angegebenen Projektionen ihr wählt. Alle passen für diese Region gut. Falls ihr einen größeren Datensatz habt (ganz Deutschland oder Europa) solltet ihr das Verfahren mit mehreren Punkten wiederholen und die Projekten mit der insgesammt kleinsten Abweichung wählen. Die gewählten Punkte sollten möglichst weit von einander entfernt liegen. In diesem Beispiel könnt ihr die Ortbeschreibungen vermutlich gut finden, da es eure eigenen Landkreise sind. Falls ihr mit Ortsnamen in den Daten nichts anfangen könnt, hilft Google Maps.</p>
 
 </div>
 </div>

@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2022-05-13" />
+<meta name="date" content="2022-05-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,6 +56,7 @@
 
 
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -74,9 +75,10 @@
 <li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.1</b> Was sehe ich hier?</a></li>
 <li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.2</b> Wie lade ich Daten?</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#räumliche-datenformate"><i class="fa fa-check"></i><b>2.2.1</b> Räumliche Datenformate</a></li>
-<li class="chapter" data-level="2.2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#nicht-räumliche-datenformate"><i class="fa fa-check"></i><b>2.2.2</b> Nicht räumliche Datenformate</a></li>
+<li class="chapter" data-level="2.2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#der-data-source-manager"><i class="fa fa-check"></i><b>2.2.1</b> Der Data Source Manager</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#sonstiges"><i class="fa fa-check"></i><b>2.3</b> Sonstiges</a></li>
+<li class="chapter" data-level="2.4" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.4</b> Plug-ins</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>3</b> Symbologie</a></li>
 <li class="chapter" data-level="4" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>4</b> Karten speichern</a></li>
@@ -110,7 +112,11 @@
 <li class="chapter" data-level="7.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>7.2.1</b> Minimum bounding geometry</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a></li>
+<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rastercalculator"><i class="fa fa-check"></i><b>8.1</b> Rastercalculator</a></li>
+<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#section"><i class="fa fa-check"></i><b>8.2</b> </a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -142,7 +148,7 @@ Figure 7.1: Hier findet ihr Vektoroperationen
 <p>Das erste Feld bei den Vektoroperationen ist <strong>Geoprocessing</strong>. Hier sind die geläufigen und in der Vorlesung besprochenen Vektoroperationen beheimatet. Es folgt eine kurze Übersicht über die Funktionen. Mehr Details gibt es <a href="https://docs.qgis.org/3.22/en/docs/user_manual/processing_algs/gdal/vectorgeoprocessing.html?highlight=geoprocessing">hier</a>.</p>
 <div id="buffer" class="section level3 hasAnchor" number="7.1.1">
 <h3><span class="header-section-number">7.1.1</span> Buffer<a href="vektoroperationen.html#buffer" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Mit dieser Funktion könnt ihr einen Puffer um Vektorobjekte legen. Im obersten Feld (blau Abb. <a href="vektoroperationen.html#fig:vo2">7.2</a>) wählt ihr den Layer den ihr puffern wollt. Wie ihr seht gibt es hier auch den <img src="inline/selectstring.png" /> Knopf. Ihr könnt also auch neue Daten laden und dirket puffern. Falls eure Daten in einem Koordiantensystem projeziert sind, dass mit Längen- und Breitengrad arbeitet (z.B. EPSG:4326) bekommt ihr eine Warunung (grün Abb. <a href="vektoroperationen.html#fig:vo2">7.2</a>). In der Regel sind Pufferdistanzen leichter in Metern anzugeben als in Längen- bzw. Breitengraden. Je weiter wir vom Äquator entfernt sind, desto größer wird zusätzlich der Unterschied zwischen einem Grad Länge und einem Grad breite. Am Besten transformiert ihr eure Daten also in ein KBS das in Metern misst, wie z.B. UTM 32N (EPSG: 25832). Wie das geht seht ihr <a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten">hier</a></p>
+<p>Mit dieser Funktion könnt ihr einen Puffer um Vektorobjekte legen. Im obersten Feld (blau Abb. <a href="vektoroperationen.html#fig:vo2">7.2</a>) wählt ihr den Layer den ihr puffern wollt. Wie ihr seht gibt es hier auch den <img src="inline/selectstring.png" /> Knopf. Ihr könnt also auch neue Daten laden und dirket puffern. Falls eure Daten in einem Koordiantensystem projeziert sind, dass mit Längen- und Breitengrad arbeitet (z.B. EPSG:4326) bekommt ihr eine Warunung (grün Abb. <a href="vektoroperationen.html#fig:vo2">7.2</a>). In der Regel sind Pufferdistanzen leichter in Metern anzugeben als in Längen- bzw. Breitengraden. Je weiter wir vom Äquator entfernt sind, desto größer wird zusätzlich der Unterschied zwischen einem Grad Länge und einem Grad Breite. Am Besten transformiert ihr eure Daten also in ein KBS das in Metern misst, wie z.B. UTM 32N (EPSG: 25832). Wie das geht seht ihr <a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten">hier</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:vo2"></span>
 <img src="fig/vo2.png" alt="Die Puffer-Funtion" width="372" />
 <p class="caption">
@@ -150,6 +156,14 @@ Figure 7.2: Die Puffer-Funtion
 </p>
 </div>
 <p>Mit den reprojezierten Daten bekommen wir keine Warnung mehr. In Abbilding <a href="vektoroperationen.html#fig:vo3">7.3</a> seht ihr einen zehn Meter Buffer rund um die Flüsse meines Landkreises.</p>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<ol style="list-style-type: decimal">
+<li>Zieht Puffern der Größen 10, 100 und 500 Metern um die Flüsse eures Kreises.<br />
+</li>
+<li>Wie weit muss der Puffer sein, damit das erste von euch digitalisierte Haus im Puffer liegt?</li>
+</ol>
+</div>
 <div class="figure"><span style="display:block;" id="fig:vo3"></span>
 <img src="fig/vo3.png" alt="10 Puffer rund um die Landkreise" width="538" />
 <p class="caption">
@@ -194,6 +208,10 @@ Figure 7.5: Convex Hull um Flüsse
 <p class="caption">
 Figure 7.6: Dissolve von GADM Deutschland anhand der Varable NAME2
 </p>
+</div>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<p>Löst die Grenzen der einezlnen Bereiche in eurem Landkreis auf.</p>
 </div>
 </div>
 <div id="intersection" class="section level3 hasAnchor" number="7.1.6">
