@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2022-05-17" />
+<meta name="date" content="2022-05-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -103,9 +103,7 @@
 <li class="chapter" data-level="7.1.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>7.1.4</b> Difference</a></li>
 <li class="chapter" data-level="7.1.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>7.1.5</b> Dissolve</a></li>
 <li class="chapter" data-level="7.1.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>7.1.6</b> Intersection</a></li>
-<li class="chapter" data-level="7.1.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#symmetrical-difference"><i class="fa fa-check"></i><b>7.1.7</b> Symmetrical Difference</a></li>
-<li class="chapter" data-level="7.1.8" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>7.1.8</b> Union</a></li>
-<li class="chapter" data-level="7.1.9" data-path="vektoroperationen.html"><a href="vektoroperationen.html#eliminate-selected-polygons"><i class="fa fa-check"></i><b>7.1.9</b> Eliminate Selected Polygons</a></li>
+<li class="chapter" data-level="7.1.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>7.1.7</b> Union</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>7.2</b> Misc</a>
 <ul>
@@ -114,8 +112,19 @@
 </ul></li>
 <li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rastercalculator"><i class="fa fa-check"></i><b>8.1</b> Rastercalculator</a></li>
-<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#section"><i class="fa fa-check"></i><b>8.2</b> </a></li>
+<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#einführung"><i class="fa fa-check"></i><b>8.1</b> Einführung</a></li>
+<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#darstellung"><i class="fa fa-check"></i><b>8.2</b> Darstellung</a></li>
+<li class="chapter" data-level="8.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rasteralgebra"><i class="fa fa-check"></i><b>8.3</b> Rasteralgebra</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#lokale-funktionen"><i class="fa fa-check"></i><b>8.3.1</b> Lokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#fokale-funktionen"><i class="fa fa-check"></i><b>8.3.2</b> Fokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#zonale-funktionen"><i class="fa fa-check"></i><b>8.3.3</b> Zonale Funktionen</a></li>
+<li class="chapter" data-level="8.3.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#globale-funktionen"><i class="fa fa-check"></i><b>8.3.4</b> Globale Funktionen</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#terrain-analysis"><i class="fa fa-check"></i><b>8.4</b> Terrain Analysis</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>8.4.1</b> Gewässernetzwerk</a></li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -136,12 +145,186 @@
             <section class="normal" id="section-">
 <div id="rasteroperationen" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">8</span> Rasteroperationen<a href="rasteroperationen.html#rasteroperationen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="rastercalculator" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Rastercalculator<a href="rasteroperationen.html#rastercalculator" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="einführung" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Einführung<a href="rasteroperationen.html#einführung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Als erstes Beispiel nutzen wir hier ein DEM für Deutschland. Die Datei <em>DEM-32N-clip.tif</em> findet ihr in OLAT im Ordner Vorlesung 1. Wir laden die Datei über den <strong>Data Source Manage</strong> (Strg + L). Im Data Source Manager wählt ihr links den Reiter <strong>Raster</strong> und bei **Raster dataset(s) könnt ihr mit einem Klick auf <img src="inline/selectstring.png" /> die gewünschte Datei auf dem Computer auswählen.</p>
+<p>Der Raster erscheint nun in schwarz-weiß (Abb. <a href="rasteroperationen.html#fig:raster1">8.1</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster1"></span>
+<img src="fig/raster1.png" alt="DEM für Deutschland nach dem Laden" width="452" />
+<p class="caption">
+Figure 8.1: DEM für Deutschland nach dem Laden
+</p>
 </div>
-<div id="section" class="section level2" number="8.2">
-<h2><span class="header-section-number">8.2</span> </h2>
+<p>Helle Regionen sind höher und dunklere tiefer. Links im <strong>Layer Panel</strong> wird euch die Farbskala mit Minimal- und Maximalwert angezeigt. Wie bei einem Vektor Layer können wir mit Rechtsklick auf den Layer über <strong>Properties</strong> die meisten wichtigen Informatonen abrufen und einge Eigenschaften anpassen.
+Oben im Properties Fenster seht ihr den <strong>Information</strong> (<img src="inline/metadata.png" />; Abb. <a href="rasteroperationen.html#fig:raster2">8.2</a>) Reiter .</p>
+<div class="figure"><span style="display:block;" id="fig:raster2"></span>
+<img src="fig/raster2.png" alt="Information Reiter in Properties Fenster" width="408" />
+<p class="caption">
+Figure 8.2: Information Reiter in Properties Fenster
+</p>
+</div>
+<p>Unter der Überschift <em>General</em> sehen wir Informationen zum Namen (Name), dem Dateipfad (Path), der Dateigröße (Size), dem Datum an dem die Datei das letzt mal verändert wurde (Last modified) sowie der Software die genutzt wurde um die Datei in QGIS zu laden (Provider).<br />
+Danach kommen nähere Informationen zu den Eigenschaften des Rasters. Das Ausmaß (Extent) also die jeweils größten und kleinsten X- und Y-Koordinaten. Width und Height geben die Anzahl der Spalten und Reihen des Rasters an. Der Data type beschreibt die Art der Variable die inden einzelnen Zellen gespeichert ist. In diesem Fall Float32 also eine Kommazahl (floating point number) bei der für jede Zahl 32 bit (binary digits) freigehalten werden. Mit 64 bit könnte man mehr verschiedene Zahlen darstellen (<span class="math inline">\(2^{64}\)</span> anstelle von <span class="math inline">\(2^{32}\)</span>) aber die Datei wäre größer. Der GDAL Driver gibt an welchen Treiber GDAL (der Provider) benutzt hat um die Datei zu laden. Unter Band1 sehen wir zusammenfassende Informationen zum ersten Band (und in diesem Fall einzigen Band). Was ist der maximale Wert, der minimale, der Mittelwert und die Standardabweichung.</p>
+</div>
+<div id="darstellung" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Darstellung<a href="rasteroperationen.html#darstellung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Unter <strong>Symbology</strong> (<img src="inline/symbology.png" />, Abb. <a href="rasteroperationen.html#fig:raster3">8.3</a>) können wir die Darstellung anpassen.</p>
+<div class="figure"><span style="display:block;" id="fig:raster3"></span>
+<img src="fig/raster3.png" alt="Raster Symbologie" width="404" />
+<p class="caption">
+Figure 8.3: Raster Symbologie
+</p>
+</div>
+<p>Die wichtigste Einstellung hier ist gleich die oberste: <em>Render type</em>. In dem drop-down Menü gibt es die Auswahlmöglichkeiten: <em>Multiband Color</em>, <em>Paletted/ Unique Values</em>, <em>Singleband grey</em>, <em>Singleband pseudocolor</em>, <em>Hillshade</em> und <em>Contours</em>. Standardmäßig ist hier Singleband grey eingestellt. Die <em>Render type</em> Einstellung bestimmt was für Optionen und Fenster im restlichen Menü zu sehen sind.<br />
+Bei <em>Singleband grey</em> können wir unter <em>Color gradient</em> den Gradienten umdrehen (hohe Werte dunkel tiefe Werte hell). Darunter werden der Maximal- und Minimalwert angezeigt und bei <em>contrast enhancement</em> können wir mithilfe dieser Zahlenspanne die Darstellung anpassen. Mit der Einstellung <em>no enhancement</em> habe alle Zellen die gleiche Farbe. Mit <em>Strech to MinMax</em> wird der schwarz-weiß Gradient an die angegebene Minimal- und Maximalwerte angepasst. Diese Werte müssen nicht den tasächlichen Werten des Rasters entsprechen. Ihr könnt auch nur einen Teil davon für den Gradienten nutzen. Alle Werte die über dem Maximum liegen bzw. alle Werte die unter dem Minimum liegen bekommen die gleiche Farbe wie das Maximum bzw. Minimum. Mit <em>Stretch and Clip to MinMax</em> werden Zellen mit Werten außerhalb des angegebenen Zahlenraums entfernt. Bei unserem DEM können wir so die negativen Werte entfernen. <em>Clip to MinMax</em> entfernt Zellen mit Werten außerhalb des angegebenen Zahlenraumes ohne die restlichen Zellen einzufärben.</p>
+<p>Bei <em>Singleband pseudocolor</em> können wir eine anderen Farbgradienten wählen als schwarz-weiß. Den Farbgraident wählt ihr mit dem kleinen Pfeil rechts des Gradienten bei <em>color ramp</em>. Im Fenster darunter seht ihr die Farben, die den jeweiligen Zahlenbereichen zugeordnet sind.
+Unter dem Fenster könnt ihr bei Mode ändern wie die Farben den Zahlenbereichen zugeordnet werden. Mit <em>Equal Interval</em> wählen wir, dass die Gruppen zwischen Minimalwert und Maximalwert alle die gleiche Menge an Höhenmetern abdecken. Mit <em>Classes</em> können wir die Anzahl an Gruppen anpassen.</p>
+<p>Die Einstellung <em>Paletted/ Unique Values</em> ist für Raster geeignet die kategorische Variablen darstellen wie z.B. Landnutzungstyp. Hier bekommt jeder Werte eine eingene Farbe und die Farben liegen nicht auf einem gemeinsamen Farbgraidenten. Die Farben sollten möglichst unterschiedlich sein, damit die Kategorien klar voneinenander unterscheidbar sind. Als Beispiel zeige ich hier die CORINE Land Cover Daten. In Abbildung <a href="rasteroperationen.html#fig:raster4">8.4</a> ist die schwarz-weiß Darstellung und das Symbologiefenster von <em>Paletted/ Unique Values</em>.</p>
+<div class="figure"><span style="display:block;" id="fig:raster4"></span>
+<img src="fig/raster4.png" alt="CORINE Landcover Daten in schwarz-weiß" width="716" />
+<p class="caption">
+Figure 8.4: CORINE Landcover Daten in schwarz-weiß
+</p>
+</div>
+<p>Wenn wir dort auf <em>classify</em> klicken wird jedem Wert des Rasters eine Farbe zugeordnet. Nachdem wir auf <em>Apply</em> klicken. Abbildung <a href="rasteroperationen.html#fig:raster5">8.5</a> zeigt einen Ausschnitt der so erstellten Karte.</p>
+<div class="figure"><span style="display:block;" id="fig:raster5"></span>
+<img src="fig/raster5.png" alt="CORINE Landcover Daten mit Paletted Values" width="454" />
+<p class="caption">
+Figure 8.5: CORINE Landcover Daten mit Paletted Values
+</p>
+</div>
+<p>Die Einstellung <em>Multiband Color</em> ist für Raster mit mehreren Bändern geeignet. Das sind vorallem Satellitenfotos. Ein Beispiel für so eine Datei ist <em>orthophoto.tif</em> im Ordner Vorlesung 5. Ihr könnt die Datei wie jeden anderen Raster auf in QGIS laden. In QGIS werden die drei Bänder der Datei im Layer Panel angezeigt. Jedes Band entählt die Intensität von einer Farbe Band 1 rot, Band 2 Grün und Band 3 Blau. Jedes Band reicht von 0 bis 255, hat also 256 Werte, was sich mit einem 8bit Integer (<span class="math inline">\(2^8 = 256\)</span>) speichern lässt. Auf diese Art und Weise lassen sich Farben mit ihrem RGB (rot, grün, blau) Wert speichern. Die Extremata sind schwarz (0,0,0) und weiß (255,255,255). Für diesen Raster mit drei Bändern hat QGIS automatisch den <em>Render type</em> <em>Multiband Color</em> gewählt.</p>
+<p>Die letzten beiden Typen <em>Hillshade</em> und <em>Contours</em> werden eher selten genutzt. Erstere täuschen einen 3D Effekt vor und letztere erstellen eine Karte mit Isolinien (beim DEM Isohypsen). Hillshades werden wir im Kapitel <a href="rasteroperationen.html#terrain-analysis">Terrain Analysis</a> näher betrachten.</p>
+</div>
+<div id="rasteralgebra" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Rasteralgebra<a href="rasteroperationen.html#rasteralgebra" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Rasteralgebra ist in QGIS im <strong>Raster calculator</strong> verfügbar (Abb. <a href="rasteroperationen.html#fig:raster6">8.6</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster6"></span>
+<img src="fig/raster6.png" alt="Knopf um den Raster calculator zu öffnen" width="328" />
+<p class="caption">
+Figure 8.6: Knopf um den Raster calculator zu öffnen
+</p>
+</div>
+<p>Öffnen wir den <strong>Raster calculator</strong>, öffnet sich folgendes Fenster (Abb. <a href="rasteroperationen.html#fig:raster7">8.7</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster7"></span>
+<img src="fig/raster7.png" alt="Der Raster calculator" width="378" />
+<p class="caption">
+Figure 8.7: Der Raster calculator
+</p>
+</div>
+<p>Alle aktuell geladenen Raster werden im Fenster <em>Raster bands</em> (blau Abb. <a href="rasteroperationen.html#fig:raster7">8.7</a>) aufgeführt. Befehle für Funktionen (unter Operators) werden im Fenster <em>Raster calculator expression</em> eingegeben (grün Abb. <a href="rasteroperationen.html#fig:raster7">8.7</a>). Ausdehnung und Reihen- sowie Spaltenzahl können unter <em>Spatial Extent</em> (gelb Abb. <a href="rasteroperationen.html#fig:raster7">8.7</a>) angepasst werden. Unter <em>Result Layer</em> (orange Abb. <a href="rasteroperationen.html#fig:raster7">8.7</a>) könnt ihr einstellen ob der resultierende Layer gespeichert werden soll oder nach schließen der aktuellen QGIS Sitzung gelöscht werden soll (Option Create on-the-fly raster …). Bevor ihr die Funktion mit einem Klick auf <em>OK</em> ausführen könnt müsst ihr entweder einen Namen für die zu speichernde Date auswählen oder die create-on-the-fly option markiert haben.</p>
+<div id="lokale-funktionen" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Lokale Funktionen<a href="rasteroperationen.html#lokale-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Mathematische Funktionen</strong><br />
+Mathematische Funktionen können einfach wie bei einem Taschenrechner eingegeben werden. Wenn wir den DEM von Deutschland um 40 Meter erhöhen wollen können wir folgenden Befehl ausführen (Abb. <a href="rasteroperationen.html#fig:raster8">8.8</a>). Mit anderen mathematischen Funktionen (-, *, /, exp) funktiert das genauso.</p>
+<div class="figure"><span style="display:block;" id="fig:raster8"></span>
+<img src="fig/raster8.png" alt="Raster calculator: +" width="372" />
+<p class="caption">
+Figure 8.8: Raster calculator: +
+</p>
+</div>
+<p><strong>Logische Funktionen</strong>
+Um logische Funktionen zu demonstrieren erstellen wir eine Version des DEM in dem nur Zellen mit über 400 Meter Höhe üNN enthalten sind.</p>
+<div class="figure"><span style="display:block;" id="fig:raster9"></span>
+<img src="fig/raster9.png" alt="Befehl für Zellen mit Werten größer 400" width="368" />
+<p class="caption">
+Figure 8.9: Befehl für Zellen mit Werten größer 400
+</p>
+</div>
+<p>Das Ergebniss ist ein Raster mit drei verschiedenen Zellwerten: 0 (&lt;=400), 1(&gt;400) und eine sehr große negative Zahl für fehlende Werte (außerhalb von Deutschland). Da wir nun eine kategorische Variable haben ist der Darstellungsstyl <em>Paletted</em> passend (Abb. <a href="rasteroperationen.html#fig:raster10">8.10</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster10"></span>
+<img src="fig/raster10.png" alt="Raster mit zwei Höhenklassen" width="446" />
+<p class="caption">
+Figure 8.10: Raster mit zwei Höhenklassen
+</p>
+</div>
+<p>Wenn wir nun diesen Layer mit dem Originallayer multiplizieren würde wir einen Layer erhalten, in dem alle Zellen mit einer Höhe von über 400m ihren ursprünglichen Höhenwert haben und alle anderen 0.</p>
+<p><strong>Reclassification</strong></p>
+<p>Einfacher geht das allerdings mit dem <em>Reclassification by table</em> Tool, das ihr über die <em>Processing Toolbox</em> öffnen könnt (Abb. <a href="rasteroperationen.html#fig:raster11">8.11</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster11"></span>
+<img src="fig/raster11.png" alt="Reclassification by table" width="446" />
+<p class="caption">
+Figure 8.11: Reclassification by table
+</p>
+</div>
+<p>Unter <em>Reclassification Table</em> könnt ihr mit einem Klick auf <img src="inline/selectstring.png" /> eine Tabelle erstellen um eine kontinuierliche Variable (z.B. Höhe) in Klassen einzuteilen. Meine Beispieltabelle seht ihr in Abbildung <a href="rasteroperationen.html#fig:raster12">8.12</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:raster12"></span>
+<img src="fig/raster12.png" alt="Reclassification table" width="444" />
+<p class="caption">
+Figure 8.12: Reclassification table
+</p>
+</div>
+<p>Ihr müsst auf <em>OK</em> klicken, damit die Tabelle auch gespeichert wird. Wenn ihr jetzt auf <em>Run</em> klickt wird der neue Raster berechnet. Da es im Fall des DEMs für Deutschland Werte &lt; 0 als kleiner als die untere Grenze der untersten Klasse gibt haben wir mehr als die vier Klassen erhalten (Abb. <a href="rasteroperationen.html#fig:raster13">8.13</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster13"></span>
+<img src="fig/raster13.png" alt="Einzelwerte angezeigt bei Paletted" width="606" />
+<p class="caption">
+Figure 8.13: Einzelwerte angezeigt bei Paletted
+</p>
+</div>
+<p>Alle Werte die nicht von uns bestimmten Klassen entsprechen können wir löschen indem wir sie auswählen und auf die rote Minus Taste rechts von <em>classify</em> drücken. Für eine bessere Darstellug klicken wir außerdem auf die Farbleiste und wählen im nun erscheinenden Fenster oben rechts <em>Discrete</em> anstelle von <em>Continuous</em>. Die so erzeugte Karte seht ihr in Abbildug <a href="rasteroperationen.html#fig:raster14">8.14</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:raster14"></span>
+<img src="fig/raster14.png" alt="Deutschland in vier Höhenklassen" width="467" />
+<p class="caption">
+Figure 8.14: Deutschland in vier Höhenklassen
+</p>
+</div>
+<p><strong>Overlay</strong>
+in Planung.</p>
+</div>
+<div id="fokale-funktionen" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Fokale Funktionen<a href="rasteroperationen.html#fokale-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Um fokale Funktionen außerhalb der Terrainanalyse zu berechnen muss QGIS auf GRASS GIS zurückgreifen. Ihr solltet GRASS GIS in der <em>Processing Toolbox</em> sehen (Abb. <a href="rasteroperationen.html#fig:raster15">8.15</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster15"></span>
+<img src="fig/raster15.png" alt="Deutschland in vier Höhenklassen" width="208" />
+<p class="caption">
+Figure 8.15: Deutschland in vier Höhenklassen
+</p>
+</div>
+<p>Falls ihr GRASS GIS dort nicht seht kontrolliert ob die beiden GRASS Plugins aktiviert sind.</p>
+<p>Sucht in der <em>Processing Toolbox</em> nach <em>r.neighbors</em>. In dieser Funktion könnt ihr unter <em>Input Raster Layer</em> den Input Layer wählen, unter <em>Neighborhood operation</em> was für eine Statistik berechnet werden soll und unter <em>Neighborhood Size</em> die Größe des moving window.</p>
+</div>
+<div id="zonale-funktionen" class="section level3 hasAnchor" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Zonale Funktionen<a href="rasteroperationen.html#zonale-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Zonale Statistken können in QGIS dem <strong>Zonal statistic</strong> Tool berechnen. Als Beispiel berechnen wir hier den Mittelwert des DEM für jeden Bezirk in meinem Landkreis. In Abbildung <a href="rasteroperationen.html#fig:raster16">8.16</a> seht ihr das Fenster der <strong>Zonal statistic</strong> Funktion.</p>
+<div class="figure"><span style="display:block;" id="fig:raster16"></span>
+<img src="fig/raster16.png" alt=" Zonal statistic Tool" width="444" />
+<p class="caption">
+Figure 8.16:  Zonal statistic Tool
+</p>
+</div>
+<p>Bei <em>Input</em> wählen wir den Layer mit den Zonen, für die wir die Werte berechnen wollen. Bei <em>Raster Layer</em> den Raster von dem wir die Werte berechnen wollen. Die berechneten Werte werden der Attirbuttabelle des Inputlayers als Spalten hinzugefügt. Bei <em>Output column prefix</em> könnt ihr einen Präfix für die Spaltennamen wählen. Ich wähle hier den Präfix <em>hoehe_</em>. Unter <em>Statistics to calculate</em> könnt ihr die gewünschten Statistiken auswählen. Standardt ist count, sum und mean. Da wir hier nur am Mittelwert interressiert sind wähle ich nur mean. Abbildung <a href="rasteroperationen.html#fig:raster17">8.17</a> zeigt die nach mittlerer Höhe eingefärbten Bezirke.</p>
+<div class="figure"><span style="display:block;" id="fig:raster17"></span>
+<img src="fig/raster17.png" alt="Bezirke im Kreis Goslar mit mittlerer Höhe" width="509" />
+<p class="caption">
+Figure 8.17: Bezirke im Kreis Goslar mit mittlerer Höhe
+</p>
+</div>
+</div>
+<div id="globale-funktionen" class="section level3 hasAnchor" number="8.3.4">
+<h3><span class="header-section-number">8.3.4</span> Globale Funktionen<a href="rasteroperationen.html#globale-funktionen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+</div>
+<div id="terrain-analysis" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Terrain Analysis<a href="rasteroperationen.html#terrain-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die Funktionen der Terrain Analyse findet ihr unter <strong>Raster</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Analysis</strong>.</p>
+<div id="gewässernetzwerk" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> Gewässernetzwerk<a href="rasteroperationen.html#gewässernetzwerk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Hierfür nutzen wir Funktion aus SAGA GIS. Auch hier gilt, falls ihr SAGA GIS nicht in eurer Processing Toolbox seht, üperprüft ob das entsprechende Plugin aktiviert ist. Als erstes füllen wir die Lücken in unserem DEM mit der Funktion <strong>Fill Sinks (Wang &amp; Liu)</strong>. In der Funktion müssen wir nur unser DEM angeben, die anderen Argumente können unverändert bleiben. Die Funktion erstellt drei Outputs: Flow Directions, Watershed Basins und Filled DEM. Den Filled DEM Layer nutzen wir nun als Input für die Funktion <strong>Strahler Oder</strong>. Wieder müssen wir aus dem Input Layer keine Argumente ändern oder eingeben. Das Ergebnis seht ihr auf Abbildug <a href="rasteroperationen.html#fig:raster18">8.18</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:raster18"></span>
+<img src="fig/raster18.png" alt="Gewässernetzerk für Deutschland - ohne Grenzwert" width="304" />
+<p class="caption">
+Figure 8.18: Gewässernetzerk für Deutschland - ohne Grenzwert
+</p>
+</div>
+<p>Um das Netzwerk übersichtlicher zu machen entfernen wir kleinere Gewässer (Stahler Ordnung &lt; 2) mit dem <strong>Raster calculator</strong> und färben die übriggelbiebenen Gewässer als singleband pseudocolor blau ein (Abb. <a href="rasteroperationen.html#fig:raster19">8.19</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster19"></span>
+<img src="fig/raster19.png" alt="Gewässernetzerk für Deutschland" width="274" />
+<p class="caption">
+Figure 8.19: Gewässernetzerk für Deutschland
+</p>
+</div>
 
+</div>
 </div>
 </div>
             </section>
