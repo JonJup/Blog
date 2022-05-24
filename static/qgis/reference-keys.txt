@@ -58,6 +58,8 @@ fig:raster16
 fig:raster17
 fig:raster18
 fig:raster19
+fig:raster20
+fig:raster21
 intro
 erste-schritte
 was-sehe-ich-hier
@@ -95,3 +97,4 @@ zonale-funktionen
 globale-funktionen
 terrain-analysis
 gewässernetzwerk
+ndvi-berechnen

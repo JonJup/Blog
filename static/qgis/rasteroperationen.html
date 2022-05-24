@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2022-05-20" />
+<meta name="date" content="2022-05-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -125,6 +125,7 @@
 <ul>
 <li class="chapter" data-level="8.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>8.4.1</b> Gewässernetzwerk</a></li>
 </ul></li>
+<li class="chapter" data-level="8.5" data-path="rasteroperationen.html"><a href="rasteroperationen.html#ndvi-berechnen"><i class="fa fa-check"></i><b>8.5</b> NDVI berechnen</a></li>
 </ul></li>
 </ul>
 
@@ -323,8 +324,27 @@ Figure 8.18: Gewässernetzerk für Deutschland - ohne Grenzwert
 Figure 8.19: Gewässernetzerk für Deutschland
 </p>
 </div>
-
 </div>
+</div>
+<div id="ndvi-berechnen" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> NDVI berechnen<a href="rasteroperationen.html#ndvi-berechnen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mithilfe des Raster Calculators und der benötigten Daten können wir den NDVI in QGIS berechnen.
+Die notwendingen Satellitendaten könnt ihr entweder aus OLAT runterladen oder selber aus dem <a href="https://earthexplorer.usgs.gov/">EarthExplorer</a> laden. In der ersten Option ist nur das Bild für Landau verfügbar. Um das Bild für euren Kreis runterzuladen müsst ihr einen (kostenlosen) Account bei EarthExplorer anlegen. Für eine Anleitung zum Downloaden von Sattelitenbildern aus dem EarthExplorer seht das entsprechende Video aus zu Vorlesung 6.</p>
+<p><a href="https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/">Hier</a> bekommt ihr einen Überblick über die Bänder von Landsat 8. Das Near Infrared Band ist Band 5 und das Rot Band ist Band 4. Der NDVI <span class="math display">\[\dfrac{NIR - RED}{NIR + RED}\]</span> ist daher <span class="math display">\[\dfrac{Band5 - Band4}{Band5+Band4}\]</span>. Diese Formel können wir in den <strong>Raster Calculator</strong> eingeben (Abb. <a href="rasteroperationen.html#fig:raster20">8.20</a>) und erhalten dann einen NDVI Raster.</p>
+<div class="figure"><span style="display:block;" id="fig:raster20"></span>
+<img src="fig/raster20.png" alt="Eingabe im Raster Calculator um den NDVI zu berechnen" width="380" />
+<p class="caption">
+Figure 8.20: Eingabe im Raster Calculator um den NDVI zu berechnen
+</p>
+</div>
+<p>Nachdem wir diesen mit einer Farbpalette die von braun über weiß zu grün reicht haben wir die folgende Karte (Abb. <a href="rasteroperationen.html#fig:raster21">8.21</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:raster21"></span>
+<img src="fig/raster21.png" alt="NDVI Landau" width="322" />
+<p class="caption">
+Figure 8.21: NDVI Landau
+</p>
+</div>
+
 </div>
 </div>
             </section>
