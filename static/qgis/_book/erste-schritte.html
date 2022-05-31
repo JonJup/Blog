@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Erste Schritte | Einführung in GIS - QGIS</title>
+  <meta name="description" content="2 Erste Schritte | Einführung in GIS - QGIS" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Erste Schritte | Einführung in GIS - QGIS" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Erste Schritte | Einführung in GIS - QGIS" />
+  
+  
+  
+
+<meta name="author" content="Jonathan Jupke" />
+
+
+<meta name="date" content="2022-05-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="symbologie.html"/>
+<script src="book_assets/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="book_assets/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Intro</a></li>
+<li class="chapter" data-level="2" data-path="erste-schritte.html"><a href="erste-schritte.html"><i class="fa fa-check"></i><b>2</b> Erste Schritte</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.1</b> Was sehe ich hier?</a></li>
+<li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.2</b> Wie lade ich Daten?</a></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.3</b> Plug-ins</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>3</b> Symbologie</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="symbologie.html"><a href="symbologie.html#single-symbol"><i class="fa fa-check"></i><b>3.0.1</b> Single Symbol</a></li>
+<li class="chapter" data-level="3.0.2" data-path="symbologie.html"><a href="symbologie.html#categorized"><i class="fa fa-check"></i><b>3.0.2</b> Categorized</a></li>
+<li class="chapter" data-level="3.0.3" data-path="symbologie.html"><a href="symbologie.html#graduated"><i class="fa fa-check"></i><b>3.0.3</b> Graduated</a></li>
+<li class="chapter" data-level="3.0.4" data-path="symbologie.html"><a href="symbologie.html#rule-based"><i class="fa fa-check"></i><b>3.0.4</b> Rule based</a></li>
+<li class="chapter" data-level="3.1" data-path="symbologie.html"><a href="symbologie.html#linien-und-polygone"><i class="fa fa-check"></i><b>3.1</b> Linien und Polygone</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>4</b> Karten speichern</a></li>
+<li class="chapter" data-level="5" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html"><i class="fa fa-check"></i><b>5</b> Koordinatenbezugssysteme</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind"><i class="fa fa-check"></i><b>5.1</b> Wie finde ich heraus wie meine Daten projeziert sind?</a></li>
+<li class="chapter" data-level="5.2" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten"><i class="fa fa-check"></i><b>5.2</b> Wie ändere ich das Koordinatenbezugssystem meiner Daten?</a></li>
+<li class="chapter" data-level="5.3" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus"><i class="fa fa-check"></i><b>5.3</b> Wie finde ich das Koordinatenbezugssystem herraus?</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="digitalisierung.html"><a href="digitalisierung.html"><i class="fa fa-check"></i><b>6</b> Digitalisierung</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="digitalisierung.html"><a href="digitalisierung.html#keycoding"><i class="fa fa-check"></i><b>6.1</b> Keycoding</a></li>
+<li class="chapter" data-level="6.2" data-path="digitalisierung.html"><a href="digitalisierung.html#erstellen-eines-neuen-vektorlayers"><i class="fa fa-check"></i><b>6.2</b> Erstellen eines neuen Vektorlayers</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="vektoroperationen.html"><a href="vektoroperationen.html"><i class="fa fa-check"></i><b>7</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#die-attributtabelle"><i class="fa fa-check"></i><b>7.1</b> Die Attributtabelle</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#filtern"><i class="fa fa-check"></i><b>7.1.1</b> Filtern</a></li>
+<li class="chapter" data-level="7.1.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#eine-neue-spalte-erstellen"><i class="fa fa-check"></i><b>7.1.2</b> Eine neue Spalte erstellen</a></li>
+<li class="chapter" data-level="7.1.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#der-field-calculator"><i class="fa fa-check"></i><b>7.1.3</b> Der Field Calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#vektoroperationen-1"><i class="fa fa-check"></i><b>7.2</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#buffer"><i class="fa fa-check"></i><b>7.2.1</b> Buffer</a></li>
+<li class="chapter" data-level="7.2.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#clip"><i class="fa fa-check"></i><b>7.2.2</b> Clip</a></li>
+<li class="chapter" data-level="7.2.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#convex-hull"><i class="fa fa-check"></i><b>7.2.3</b> Convex hull</a></li>
+<li class="chapter" data-level="7.2.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>7.2.4</b> Difference</a></li>
+<li class="chapter" data-level="7.2.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>7.2.5</b> Dissolve</a></li>
+<li class="chapter" data-level="7.2.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>7.2.6</b> Intersection</a></li>
+<li class="chapter" data-level="7.2.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>7.2.7</b> Union</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>7.3</b> Misc</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>7.3.1</b> Minimum bounding geometry</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#einführung"><i class="fa fa-check"></i><b>8.1</b> Einführung</a></li>
+<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#darstellung"><i class="fa fa-check"></i><b>8.2</b> Darstellung</a></li>
+<li class="chapter" data-level="8.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rasteralgebra"><i class="fa fa-check"></i><b>8.3</b> Rasteralgebra</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#lokale-funktionen"><i class="fa fa-check"></i><b>8.3.1</b> Lokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#fokale-funktionen"><i class="fa fa-check"></i><b>8.3.2</b> Fokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#zonale-funktionen"><i class="fa fa-check"></i><b>8.3.3</b> Zonale Funktionen</a></li>
+<li class="chapter" data-level="8.3.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#globale-funktionen"><i class="fa fa-check"></i><b>8.3.4</b> Globale Funktionen</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#terrain-analysis"><i class="fa fa-check"></i><b>8.4</b> Terrain Analysis</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>8.4.1</b> Gewässernetzwerk</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="rasteroperationen.html"><a href="rasteroperationen.html#ndvi-berechnen"><i class="fa fa-check"></i><b>8.5</b> NDVI berechnen</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="datenbankabfragen.html"><a href="datenbankabfragen.html"><i class="fa fa-check"></i><b>9</b> Datenbankabfragen</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Einführung in GIS - QGIS</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="erste-schritte" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Erste Schritte<a href="erste-schritte.html#erste-schritte" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="was-sehe-ich-hier" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Was sehe ich hier?<a href="erste-schritte.html#was-sehe-ich-hier" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mein QGIS ist auf Englisch eingestellt. Falls dich der Sprachunterschied stört, kannst du die Sprache deines QGIS ändern unter <strong>Settings</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Options</strong> (Abb. <a href="erste-schritte.html#fig:intro1">2.1</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:intro1"></span>
+<img src="fig/intro1.png" alt="Allgmeine Optionen öffnen um die Sprache zu ändern" width="265" />
+<p class="caption">
+Figure 2.1: Allgmeine Optionen öffnen um die Sprache zu ändern
+</p>
+</div>
+<p>Dort links den obersten Eintrag <strong>General</strong> wählen und die Sprache ändern. Allerdings nur im oberen Feld (user interface translation). Das Feld darunter sollte auf <em>Germany</em> eingestellt bleiben.</p>
+<p>Nachdem ihr QGIS das erste Mal geöffnet habt erscheint das folgende Fenster (Abb. <a href="erste-schritte.html#fig:intro4">2.2</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:intro4"></span>
+<img src="fig/intro4.png" alt="QGIS" width="960" />
+<p class="caption">
+Figure 2.2: QGIS
+</p>
+</div>
+<p>Vermutlich siht das Fenster bei euch ein wenig anders aus, ihr werdet z.B. ein paar Schaltflächen und Fenster weniger haben, aber die enscheidenden Bestandteile sind die gleichen.
+Im <strong>Browser Panel</strong> (blau in Abb. <a href="erste-schritte.html#fig:intro4">2.2</a>) seht ihr die Ordner eures PCs. Hier könnt ihr zu Dateien navigieren die ihr öffnen wollt und diese mit einem Doppelklick zu laden. Falls es einen Ordner gibt auf den ihr besonders oft zugreift könnt ihr ihn als Favoriten markieren (Abb. <a href="erste-schritte.html#fig:intro5">2.3</a>). Favorieten werden ganz oben im <strong>Browser Panel</strong> angezeigt, so könnt ihr einfach und schnell zu ihnen navigieren ohne euch durch eure komplette Ordnerstruktur durchklicken zu müssen. Ein neu als Favorit markierter Ordner bekommt seinen Pfad als Namen. Bei mir ist das “C:_bachelor_1_data”. Wir können den Namen ändern indem wir den Favoriten auswählen und dann F2 drücken oder mit Rechtsklick <span class="math inline">\(\rightarrow\)</span> **Rename Favorite…“.</p>
+<div class="figure"><span style="display:block;" id="fig:intro5"></span>
+<img src="fig/intro5.png" alt="Ordner als Favorit markieren" width="200" />
+<p class="caption">
+Figure 2.3: Ordner als Favorit markieren
+</p>
+</div>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<ol style="list-style-type: decimal">
+<li>Ladet die Dateien libellen.zip, fluss_landau.zip und Landschaftseinheiten.zip aus dem Ordner Vorlesung 1 auf OLAT herunter.<br />
+</li>
+<li>Erstellt einen Ordner den ihr für alle Dateien dieser Vorlesung benutzen könnt.<br />
+</li>
+<li>Macht diesen Ordner zu einem Favoriten.<br />
+</li>
+<li>Entzippt die heruntergeladenen Dateien und speichert sie in dem neuen Ordner.<br />
+</li>
+<li>Öffnet die drei Layer in QGIS indem ihr jeweils auf die .shp Dateien doppelklickt.</li>
+</ol>
+</div>
+<p>Falls ihr Hilfe beim entzippen der Datein braucht seht <a href="https://support.microsoft.com/de-de/windows/zippen-und-entzippen-von-dateien-8d28fa72-f2f9-712f-67df-f80cf89fd4e5">hier</a> (Windows) oder <a href="https://support.apple.com/de-de/guide/mac-help/mchlp2528/mac">hier</a>.</p>
+<p>Unter dem <strong>Browser Panel</strong> ist das <strong>Layer Panel</strong> (orange Abb. <a href="erste-schritte.html#fig:intro4">2.2</a>). Hier werden alle Datein angezeigt die ihr aktuell in QGIS geladen habt. Wenn ihr das Programm startet ist der <strong>Layer Panel</strong> dementsprechend noch leer. Nachdem ihr die drei Layer geladen habt sollten diese dort aufgeführt werden (Abb. <a href="erste-schritte.html#fig:intro6">2.4</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:intro6"></span>
+<img src="fig/intro6.png" alt="QGIS mit geladenen Layern" width="960" />
+<p class="caption">
+Figure 2.4: QGIS mit geladenen Layern
+</p>
+</div>
+<p>In der Mitte des Bildschirms (dem <strong>Map View</strong>) werden euch die Daten nun angezeigt. Die Farben werden jedesmal beim Laden zufällig ausgewähl also seht ihr bei euch vermutlich andere Farben. Jeder Layer hat im <strong>Layer Panel</strong> drei Spalten. Erstens ein Box mit Hacken. Wenn ihr diesen Hacken mit einem Linksklick entfernt wird der Layer nicht mehr angezeigt. Zweitens eine farbige gemetrische Form. Diese zeigt die <strong>feature class</strong> (also Punkt, Linie oder Polygon) des Layers sowie seine <a href="symbologie.html#symbologie">Symoblogie</a> (Farbe und Form der Darstellung) an.
+Als drittes seht ihr den Namen des Layers. Dieser kann genau wie bei den Ordnern im <strong>Browser Panel</strong> per Rechtsklick oder F2 geändert werden. Die Reihenfolge der Layer im <strong>Layer Panel</strong> entspricht der Reihenfolge der Layer im <strong>Map View</strong>. Wenn der Polygonlayer Landschaftseinheiten im Layer Panel über dem Punktlayer artenfinder_libellen_rlp liegt so liegt er auch im Map View darüber und wir können die Punkte unter dem Polygon nicht sehen.</p>
+<p>Das letzte wichtige Element der graphischen Oberfläche von QGIS ist die Menüleiste (grün Abb. <a href="erste-schritte.html#fig:intro4">2.2</a>).
+Im Folgenden werde ich die wichtigen Elemente der Menüleisste kurz vorstellen. Einige der Elemente sind für diese Vorlesung nicht relevant und werden hier nicht besprochen, andere kommen in späteren Abschnitten vor.
+Mit <img src="inline/mActionFileNew.png" /> öffnet ihr ein neues QGIS Projekt, das aktuelle wird dabei geschlossen.
+Mit <img src="inline/mActionFileOpen.png" /> öffnet ihr ein existierendes QGIS Projekt. Mehr zu Projekten findet ihr [hier][Projekte].
+Mit <img src="inline/mActionNewLayout.png" /> öffnet ihr den <strong>Print Composer</strong>. Mehr zum Print Composer <a href="karten-speichern.html#karten-speichern">hier</a>.
+Mit <img src="inline/mActionPan.png" /> wählt ihr das Pan (schwenken) Werkzeug aus. Damit könnt ihr die Ansicht im <strong>Map View</strong> ändern, indem ihr die Maus über den <strong>Map View</strong> bringt, die linke Maustaste gedrückt haltet und die Maus bewegt. Mit dem Mausrad könnt ihr rein und raus zoomen.
+Zoomen könnt ihr auch mit <img src="inline/mActionZoomIn.png" /> und <img src="inline/mActionZoomOut.png" />. Dafür das Werkzeug auswählen und dann auf den <strong>Map View</strong> klicken um rein (<img src="inline/mActionZoomIn.png" />) oder raus (<img src="inline/mActionZoomOut.png" />) zuzommen.
+Mit <img src="inline/mActionZoomToLayer.png" /> können wir genau auf den aktuellen Layer zoomen. Mit dieser Funktion stellen wir die Zoomstufe so ein, das wir alle Daten des im <strong>Layer Panel</strong> gewählten Layers sehen können. Mit <img src="inline/mActionZoomLast.png" /> und <img src="inline/mActionZoomNext.png" />.
+Falls euch <strong>Map View</strong> nicht ausreicht könne ihr mit <img src="inline/mActionNewMap.png" /> eine zweiten (dritten, vierten, …) <strong>Map View</strong> erstellen. Dieser erscheint als verschiebares Fenster.
+Mit <img src="inline/mActionIdentify.png" /> können wir einzelne Elemente im <strong>Map View</strong> auswählen und erhalten deren Eintrag aus der Attributtabelle.
+Mit dem <strong>Field Calculator</strong> (<img src="inline/mActionCalculateField.png" />)können wir der Attributtabelle neue Spalten hinzufügen. In betrachten wir <a href="vektoroperationen.html#der-field-calculator">hier</a> näher.
+Mit <img src="inline/processingAlgorithm.png" /> öffnen wir die <strong>Processing Toolbox</strong>.
+MIt <img src="inline/mActionSum.png" /> können wir einige statistische Zusammenfassungen unseres Layers berechnen. Das Fenster öffnet sich unterhalb des <strong>Layer Panels</strong> (Abb. <a href="erste-schritte.html#fig:intro7">2.5</a>). Im obersten Menü (blau in <a href="erste-schritte.html#fig:intro7">2.5</a>) wählen wir den Layer, darunter (orange in <a href="erste-schritte.html#fig:intro7">2.5</a>) die Variable, also die Spalte der Attributtabelle und darunter (grün in <a href="erste-schritte.html#fig:intro7">2.5</a>) werden die Ergebnisse angezeigt.
+Mit <img src="inline/mActionOpenTable.png" /> können wir die Attributtabelle eines Layers öffnen.
+Mit <img src="inline/mActionMeasure.png" /> können wir Distanzen, Flächen, Himmelsrichtungen und Winekl auf der Karte messen.</p>
+<div class="figure"><span style="display:block;" id="fig:intro7"></span>
+<img src="fig/intro7.png" alt="Zusammenfassende Statistiken" width="258" />
+<p class="caption">
+Figure 2.5: Zusammenfassende Statistiken
+</p>
+</div>
+</div>
+<div id="wie-lade-ich-daten" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Wie lade ich Daten?<a href="erste-schritte.html#wie-lade-ich-daten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Wie Daten einfach über das <strong>Browser Panel</strong> geladen werden können haben wir bereits gesehen. Alternativ könnt ihr Dateien auch per Drag-and-Drop aus Browser eures Betriebssystems in QGIS ziehen (Map View oder Layer Panel). Die dritte Möglichkeit stellt der <strong>Data Source Manager</strong> dar. Ihr findet ihn unter <strong>Layer</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Data Source Manager</strong> (Abb. <a href="erste-schritte.html#fig:intro8">2.6</a>) oder mit Strg + L.</p>
+<div class="figure"><span style="display:block;" id="fig:intro8"></span>
+<img src="fig/intro8.png" alt="Pfad zum Data source manager" width="314" />
+<p class="caption">
+Figure 2.6: Pfad zum Data source manager
+</p>
+</div>
+<p>Auf der rechten Seite des <strong>Data Source Manager</strong> seht ihr verschiedene Reiter die für verschiedene Dateitypen stehen (Abb. <a href="erste-schritte.html#fig:intro9">2.7</a>). In dieser Vorlesung interresieren uns Vector, Raster und Delimited Text.</p>
+<div class="figure"><span style="display:block;" id="fig:intro9"></span>
+<img src="fig/intro9.png" alt="Data source manager" width="668" />
+<p class="caption">
+Figure 2.7: Data source manager
+</p>
+</div>
+<p>In Abbildung <a href="erste-schritte.html#fig:intro9">2.7</a> sehen wir das Fenster für Vector. Hier muss nur unter <strong>Source</strong> über den <img src="inline/selectstring.png" /> Knopf die Datei ausgewählt werden. Für Raster sieht das Fenster praktisch genauso aus. Delimited Text steht für Tabellen im .csv (comma separated values) Format. Dort sieht die Eingabemaske etwas anders aus (Abb. <a href="erste-schritte.html#fig:intro10">2.8</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:intro10"></span>
+<img src="fig/intro10.png" alt="Delimited text im Data source manager" width="666" />
+<p class="caption">
+Figure 2.8: Delimited text im Data source manager
+</p>
+</div>
+<p>Bei <em>File Name</em> wählt ihr über den <img src="inline/selectstring.png" /> Knopf die gewünschte .csv Datei (blau in <a href="erste-schritte.html#fig:intro10">2.8</a>). Im Normalfall solltet ihr bei <em>File Format</em> (orange in <a href="erste-schritte.html#fig:intro10">2.8</a>) nichts verändern müssen. Der Haken sollte hier bei <em>CSV (comma separated values)</em> sein. Falls ihr unter <em>sample data</em> (schwarz in <a href="erste-schritte.html#fig:intro10">2.8</a>) eine Tabelle seht wie in Abbildung <a href="erste-schritte.html#fig:intro11">2.9</a></p>
+<div class="figure"><span style="display:block;" id="fig:intro11"></span>
+<img src="fig/intro11.png" alt="Tablle im Delimited text Menü des Data source managers" width="666" />
+<p class="caption">
+Figure 2.9: Tablle im Delimited text Menü des Data source managers
+</p>
+</div>
+<p>Falls dies nicht der Fall ist wählt unter <em>File Format</em> die Option <strong>custom delimiters</strong>. QGIS wählt dann automatisch eine geeignete Option. Unter <strong>Geometry Definition</strong> müsst ihr im Idealfall nichts ändern. Wenn die Spalten der csv Datei in dennen die Koordinaten sind informative Namen haben (z.B. Longitude und Latitude oder Easting und Northing oder X und Y) findet QGIS diese automatisch. Wenn dies nicht der Fall ist müsst ihr sie <em>X field</em> und <em>y filed</em> selber auswählen. Zum Abschluss noch unten auf <strong>add</strong> gehen und die Datei ist hinzugefügt.
+## Projekte</p>
+<p>Wenn ihr die Zusammenstellung der Dateien die ihr zu einem Zeitpunkt in QIGS geladen habt speichern wollt, könnt ihr Projekte dafür benutzen. Eine QGIS Projekt ist die Gesammtheit der gerade geladenen Layer. Ihr könnt es unter <strong>Project</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Save</strong> speichern. Wenn ihr nun eine Projektdatei mit QGIS öffnet, öffnet ihr alle Layer die in dem Projekt gespeichert sind. Die gespeicherte Datei enthält nicht die Dateien für die einzelnen Layer. Sie enthält lediglich Verweise auf die Ordner wo diese Dateien zu finden sind. Wenn ihr also ein Projekt speichert, danach die Dateien für die Layer des Projektes umbennent oder verschiebt, oder wenn ihr Ordner im Pfad der Dateien umbennent, kann das Projekt sie nicht mehr finden und wir eine Fehlermeldung zurückgeben.</p>
+</div>
+<div id="plug-ins" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Plug-ins<a href="erste-schritte.html#plug-ins" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Plugins sind kleine Erweiterungen, die QGIS zusätzliche Funktionalitäten verleihen. In dieser Vorlesung werden wir nur wenige benutzen, aber es ist dennoch gut zu wissen wo wir Plugins installieren und laden können. Das Pluginmenü öffnet ihr mit einem Klick auf den <strong>Plugins</strong> <span class="math inline">\(\rightarrow\)</span> <strong>Manage and install Plugins…</strong> (Abb <a href="erste-schritte.html#fig:intro2">2.10</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:intro2"></span>
+<img src="fig/intro2.png" alt="Öffnen des Pluginmenüs" width="353" />
+<p class="caption">
+Figure 2.10: Öffnen des Pluginmenüs
+</p>
+</div>
+<p>Das Pluginmenü (Abb. <a href="erste-schritte.html#fig:intro3">2.11</a>) enthält auf der linken Seite mehere Reiter.</p>
+<div class="figure"><span style="display:block;" id="fig:intro3"></span>
+<img src="fig/intro3.png" alt="Das Pluginmenüs" width="655" />
+<p class="caption">
+Figure 2.11: Das Pluginmenüs
+</p>
+</div>
+<p>Unter <em>All</em> werden alle Plugins aufgeführt, unter <em>Installed</em> nur diejenigen die ihr installiert habt, unter <em>Not Installed</em> findet ihr alle Plugins die ihr nicht installiert habt und unter <em>Upgradeable</em> werden alle installierten Plugins aufgeführt, für die es inzwischen ein Update gibt. Darunter könnt ihr noch nicht mehr funktionierende Plugins (<em>invalid</em>) sehen. Wir können Plugins einfach aus diesem Menü herraus installieren. Wenn ihr auf <em>Not installed</em> geht und aus der Liste, rechts neben den Reitern, ein Plugin auswählt könnt ihr unten rechts auf <em>install Plugin</em> klicken. Für diese Vorlesung werden wir das OpenLayers Plugin verwenden. Um das zu installieren müsst ihr zuerst im Reiter <em>Settings</em> einen Haken bei <em>Show also experimental plugins</em> setzen. Dann könnt ihr unter <em>All</em> oder <em>Not Installed</em> im Suchfenster OpenLayers Plugin eingeben und das Plugin installieren. Grundätzlich ist es auch möglich Plugins lokal aus zip Dateien zu installieren (<em>Install from ZIP</em>). Das ist am ehesten relevant wenn man selber Plugins programmiert und diese testen möchte. Daher werden wir diese Option in der Vorlesung nicht nutzen.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="symbologie.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

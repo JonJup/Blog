@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Vektoroperationen | Einführung in GIS - QGIS</title>
+  <meta name="description" content="7 Vektoroperationen | Einführung in GIS - QGIS" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Vektoroperationen | Einführung in GIS - QGIS" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Vektoroperationen | Einführung in GIS - QGIS" />
+  
+  
+  
+
+<meta name="author" content="Jonathan Jupke" />
+
+
+<meta name="date" content="2022-05-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="digitalisierung.html"/>
+<link rel="next" href="rasteroperationen.html"/>
+<script src="book_assets/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="book_assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="book_assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="book_assets/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="book_assets/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Intro</a></li>
+<li class="chapter" data-level="2" data-path="erste-schritte.html"><a href="erste-schritte.html"><i class="fa fa-check"></i><b>2</b> Erste Schritte</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.1</b> Was sehe ich hier?</a></li>
+<li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.2</b> Wie lade ich Daten?</a></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.3</b> Plug-ins</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>3</b> Symbologie</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="symbologie.html"><a href="symbologie.html#single-symbol"><i class="fa fa-check"></i><b>3.0.1</b> Single Symbol</a></li>
+<li class="chapter" data-level="3.0.2" data-path="symbologie.html"><a href="symbologie.html#categorized"><i class="fa fa-check"></i><b>3.0.2</b> Categorized</a></li>
+<li class="chapter" data-level="3.0.3" data-path="symbologie.html"><a href="symbologie.html#graduated"><i class="fa fa-check"></i><b>3.0.3</b> Graduated</a></li>
+<li class="chapter" data-level="3.0.4" data-path="symbologie.html"><a href="symbologie.html#rule-based"><i class="fa fa-check"></i><b>3.0.4</b> Rule based</a></li>
+<li class="chapter" data-level="3.1" data-path="symbologie.html"><a href="symbologie.html#linien-und-polygone"><i class="fa fa-check"></i><b>3.1</b> Linien und Polygone</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>4</b> Karten speichern</a></li>
+<li class="chapter" data-level="5" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html"><i class="fa fa-check"></i><b>5</b> Koordinatenbezugssysteme</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind"><i class="fa fa-check"></i><b>5.1</b> Wie finde ich heraus wie meine Daten projeziert sind?</a></li>
+<li class="chapter" data-level="5.2" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten"><i class="fa fa-check"></i><b>5.2</b> Wie ändere ich das Koordinatenbezugssystem meiner Daten?</a></li>
+<li class="chapter" data-level="5.3" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus"><i class="fa fa-check"></i><b>5.3</b> Wie finde ich das Koordinatenbezugssystem herraus?</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="digitalisierung.html"><a href="digitalisierung.html"><i class="fa fa-check"></i><b>6</b> Digitalisierung</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="digitalisierung.html"><a href="digitalisierung.html#keycoding"><i class="fa fa-check"></i><b>6.1</b> Keycoding</a></li>
+<li class="chapter" data-level="6.2" data-path="digitalisierung.html"><a href="digitalisierung.html#erstellen-eines-neuen-vektorlayers"><i class="fa fa-check"></i><b>6.2</b> Erstellen eines neuen Vektorlayers</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="vektoroperationen.html"><a href="vektoroperationen.html"><i class="fa fa-check"></i><b>7</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#die-attributtabelle"><i class="fa fa-check"></i><b>7.1</b> Die Attributtabelle</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#filtern"><i class="fa fa-check"></i><b>7.1.1</b> Filtern</a></li>
+<li class="chapter" data-level="7.1.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#eine-neue-spalte-erstellen"><i class="fa fa-check"></i><b>7.1.2</b> Eine neue Spalte erstellen</a></li>
+<li class="chapter" data-level="7.1.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#der-field-calculator"><i class="fa fa-check"></i><b>7.1.3</b> Der Field Calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#vektoroperationen-1"><i class="fa fa-check"></i><b>7.2</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#buffer"><i class="fa fa-check"></i><b>7.2.1</b> Buffer</a></li>
+<li class="chapter" data-level="7.2.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#clip"><i class="fa fa-check"></i><b>7.2.2</b> Clip</a></li>
+<li class="chapter" data-level="7.2.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#convex-hull"><i class="fa fa-check"></i><b>7.2.3</b> Convex hull</a></li>
+<li class="chapter" data-level="7.2.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>7.2.4</b> Difference</a></li>
+<li class="chapter" data-level="7.2.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>7.2.5</b> Dissolve</a></li>
+<li class="chapter" data-level="7.2.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>7.2.6</b> Intersection</a></li>
+<li class="chapter" data-level="7.2.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>7.2.7</b> Union</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>7.3</b> Misc</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>7.3.1</b> Minimum bounding geometry</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#einführung"><i class="fa fa-check"></i><b>8.1</b> Einführung</a></li>
+<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#darstellung"><i class="fa fa-check"></i><b>8.2</b> Darstellung</a></li>
+<li class="chapter" data-level="8.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rasteralgebra"><i class="fa fa-check"></i><b>8.3</b> Rasteralgebra</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#lokale-funktionen"><i class="fa fa-check"></i><b>8.3.1</b> Lokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#fokale-funktionen"><i class="fa fa-check"></i><b>8.3.2</b> Fokale Funktionen</a></li>
+<li class="chapter" data-level="8.3.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#zonale-funktionen"><i class="fa fa-check"></i><b>8.3.3</b> Zonale Funktionen</a></li>
+<li class="chapter" data-level="8.3.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#globale-funktionen"><i class="fa fa-check"></i><b>8.3.4</b> Globale Funktionen</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#terrain-analysis"><i class="fa fa-check"></i><b>8.4</b> Terrain Analysis</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>8.4.1</b> Gewässernetzwerk</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="rasteroperationen.html"><a href="rasteroperationen.html#ndvi-berechnen"><i class="fa fa-check"></i><b>8.5</b> NDVI berechnen</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="datenbankabfragen.html"><a href="datenbankabfragen.html"><i class="fa fa-check"></i><b>9</b> Datenbankabfragen</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Einführung in GIS - QGIS</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="vektoroperationen" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> Vektoroperationen<a href="vektoroperationen.html#vektoroperationen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="die-attributtabelle" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Die Attributtabelle<a href="vektoroperationen.html#die-attributtabelle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Die Attbributtabelle können wir im <strong>Layer Panel</strong> öffnen über Rechtsklick <span class="math inline">\(\rightarrow\)</span> <strong>Open Attribute Table</strong>, in der Menüleiste oben über den <img src="inline/mActionOpenTable.png" /> Knopf oder über F6. Die geöffnete Tabelle der Kohlmeisendaten für den Landkreis Goslar seht ihr in Abbildung <a href="vektoroperationen.html#fig:vo17">7.1</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:vo17"></span>
+<img src="fig/vo17.png" alt="Attributtabelle der Kohlmeisendaten für den Landkreis Goslar" width="526" />
+<p class="caption">
+Figure 7.1: Attributtabelle der Kohlmeisendaten für den Landkreis Goslar
+</p>
+</div>
+<p>In der Kopfzeile sehen wir gleich einige Informationen: Features total: 406, Filtered: 406, Selected: 0. Die Attributtabelle hat also 406 Reihen, sie enthählt 406 Beobachtungen von Kohlemeisen. Wir habe noch keinen Filter angewandt, also enspricht die Anzahl der gefilterten Reihen der der gesammten Anzahl. Ebenso haben wir keine Reihen ausgewählt, also ist selected aktuell 0. Indem wir auf die Zahl link der ersten Spalte klicken, wählen wir eine Reihe aus. Wenn ihr das macht seht ihr wie sich in der Kopfzeile die Zahl hinter Selected auf 1 erhöht. Mit gedrückter Umschalttaste (⇧) könnt ihr mehrere Reihen auswählen.</p>
+<p>Unten links (blau in <a href="vektoroperationen.html#fig:vo17">7.1</a>) können wir die Tabelle filtern. Die Optionen sind: alle Reihen (standardmäßig gewählt), alle ausgewählten Reihen (Show selected features), alle Reihen deren Objekte im aktuellen <em>Map View</em> zu sehen sind (show features visible on map) oder alle Reihen die eine Bedingung erfüllen (Field filter und Advanced Filter (Expression)). Die letzte Option könnt ihr zum Beispiel nutzen indem ihr bei den Kohlmeisten bei <em>Field Filter</em> year auswählt und in die jetzt erscheinende Eingabeleiste 2014 eingebt. Nun werden nur Reihen angezeigt bei dennen die Spalte <em>year</em> 2014 ist.</p>
+<div id="filtern" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Filtern<a href="vektoroperationen.html#filtern" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="eine-neue-spalte-erstellen" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Eine neue Spalte erstellen<a href="vektoroperationen.html#eine-neue-spalte-erstellen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="der-field-calculator" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Der Field Calculator<a href="vektoroperationen.html#der-field-calculator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+</div>
+<div id="vektoroperationen-1" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Vektoroperationen<a href="vektoroperationen.html#vektoroperationen-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Alle hier beschriebenen Vektoroperationen findet ihr unter dem Reiter <strong>Vektor</strong> (Abb. <a href="vektoroperationen.html#fig:vo1">7.2</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo1"></span>
+<img src="fig/vo1.png" alt="Hier findet ihr Vektoroperationen" width="330" />
+<p class="caption">
+Figure 7.2: Hier findet ihr Vektoroperationen
+</p>
+</div>
+<p>Das erste Feld bei den Vektoroperationen ist <strong>Geoprocessing</strong>. Hier sind die geläufigen und in der Vorlesung besprochenen Vektoroperationen beheimatet. Es folgt eine kurze Übersicht über die Funktionen. Mehr Details gibt es <a href="https://docs.qgis.org/3.22/en/docs/user_manual/processing_algs/gdal/vectorgeoprocessing.html?highlight=geoprocessing">hier</a>.</p>
+<div id="buffer" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Buffer<a href="vektoroperationen.html#buffer" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mit dieser Funktion könnt ihr einen Puffer um Vektorobjekte legen. Im obersten Feld (blau Abb. <a href="vektoroperationen.html#fig:vo2">7.3</a>) wählt ihr den Layer den ihr puffern wollt. Wie ihr seht gibt es hier auch den <img src="inline/selectstring.png" /> Knopf. Ihr könnt also auch neue Daten laden und dirket puffern. Falls eure Daten in einem Koordiantensystem projeziert sind, dass mit Längen- und Breitengrad arbeitet (z.B. EPSG:4326) bekommt ihr eine Warunung (grün Abb. <a href="vektoroperationen.html#fig:vo2">7.3</a>). In der Regel sind Pufferdistanzen leichter in Metern anzugeben als in Längen- bzw. Breitengraden. Je weiter wir vom Äquator entfernt sind, desto größer wird zusätzlich der Unterschied zwischen einem Grad Länge und einem Grad Breite. Am Besten transformiert ihr eure Daten also in ein KBS das in Metern misst, wie z.B. UTM 32N (EPSG: 25832). Wie das geht seht ihr <a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten">hier</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:vo2"></span>
+<img src="fig/vo2.png" alt="Die Puffer-Funtion" width="372" />
+<p class="caption">
+Figure 7.3: Die Puffer-Funtion
+</p>
+</div>
+<p>Mit den reprojezierten Daten bekommen wir keine Warnung mehr. In Abbilding <a href="vektoroperationen.html#fig:vo3">7.4</a> seht ihr einen zehn Meter Buffer rund um die Flüsse meines Landkreises.</p>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<ol style="list-style-type: decimal">
+<li>Zieht Puffern der Größen 10, 100 und 500 Metern um die Flüsse eures Kreises.<br />
+</li>
+<li>Wie weit muss der Puffer sein, damit das erste von euch digitalisierte Haus im Puffer liegt?</li>
+</ol>
+</div>
+<div class="figure"><span style="display:block;" id="fig:vo3"></span>
+<img src="fig/vo3.png" alt="10 Puffer rund um die Landkreise" width="538" />
+<p class="caption">
+Figure 7.4: 10 Puffer rund um die Landkreise
+</p>
+</div>
+</div>
+<div id="clip" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Clip<a href="vektoroperationen.html#clip" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mit <strong>Clip</strong> können wir eine Teilmenge eines Datensatzes erstellen.
+Die Daten aus dem <em>Input Layer</em> werden auf diejenigen Beobachtungen reduziert, die innerhalb des <em>Overlay Layers</em> liegen.
+Also zum Beispiel nur die Flüsse oder Maisenbeobachtugen innerhalb eures Landkreises.</p>
+</div>
+<div id="convex-hull" class="section level3 hasAnchor" number="7.2.3">
+<h3><span class="header-section-number">7.2.3</span> Convex hull<a href="vektoroperationen.html#convex-hull" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Eine <strong>Convex Hull</strong> ist eine Hülle, die um jedes Elemente des <strong>Input Layers</strong> gezogen wird. Es ist nicht die Hülle die man um eine Gruppe von Punkten legen würde. Daher funktioniert dies Funktion eigentlich nur bei Linien oder Polygonen.
+In Abbildung <a href="vektoroperationen.html#fig:vo4">7.5</a> seht ihr die Flüsse in meinem Landkreis, eingefärbt nach ihrer <em>OBJECTID</em> (sieht <a href="symbologie.html#symbologie">hier</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo4"></span>
+<img src="fig/vo4.png" alt="Flüsse im Landkreis nach OBJECTID eingefärbt" width="473" />
+<p class="caption">
+Figure 7.5: Flüsse im Landkreis nach OBJECTID eingefärbt
+</p>
+</div>
+<p>Jede dieser Linien besteht aus mehreren Punkten die in einer bestimmten Reihenfolge miteinander verbunden sind. Mit der Convex Hull Funktion ziehen wir nun eine Hülle um all Punkte einer Linie und das für jede Linie (Abb. <a href="vektoroperationen.html#fig:vo5">7.6</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo5"></span>
+<img src="fig/vo5.png" alt="Convex Hull um Flüsse" width="411" />
+<p class="caption">
+Figure 7.6: Convex Hull um Flüsse
+</p>
+</div>
+<p>Um eine Convex Hull um alle Elemente eines Layers zu ziehen siehe die <a href="vektoroperationen.html#minimum-bounding-geometry">Minimum bounding geometry</a> Funktion.</p>
+</div>
+<div id="difference" class="section level3 hasAnchor" number="7.2.4">
+<h3><span class="header-section-number">7.2.4</span> Difference<a href="vektoroperationen.html#difference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Difference</strong> ist das Gegenteil von <strong>Clip</strong>. Bei dieser Funktion werden alle Elemente behalten, die außerhalb des <em>Overlay Layers</em> liegen.</p>
+</div>
+<div id="dissolve" class="section level3 hasAnchor" number="7.2.5">
+<h3><span class="header-section-number">7.2.5</span> Dissolve<a href="vektoroperationen.html#dissolve" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mit <strong>Dissolve</strong> kann die Anzahl an Features in einem Layer reduziert werden, indem alle Felder mit gleichem <em>dissolve field</em> kombiniert werden. Als Beispiel können wir den ursprünglichen GADM Layer nehmen. Abbildung <a href="vektoroperationen.html#fig:vo6">7.7</a> zeigt links den original Layer und rechts den Layer nachem <strong>Dissolve</strong> mit x als <em>dissolve feature</em> angewandt. wurde. All die Bezirke mit dem Gleichen Landkreis (NAME2) sind nun ein Feature.</p>
+<div class="figure"><span style="display:block;" id="fig:vo6"></span>
+<img src="fig/vo6.png" alt="Dissolve von GADM Deutschland anhand der Varable NAME2" width="942" />
+<p class="caption">
+Figure 7.7: Dissolve von GADM Deutschland anhand der Varable NAME2
+</p>
+</div>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<p>Löst die Grenzen der einezlnen Bereiche in eurem Landkreis auf.</p>
+</div>
+</div>
+<div id="intersection" class="section level3 hasAnchor" number="7.2.6">
+<h3><span class="header-section-number">7.2.6</span> Intersection<a href="vektoroperationen.html#intersection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Bei der Verschneidung oder <strong>Intersection</strong> ist das Ziel, die Attribute eines Objektes mit denen eines anderen zu Kombinieren. Nehmen wir zum Beispiel den GADM Layer von Deutschland. Zustäzlich zu den Informationen die wir bereites zu jeden Feature haben, wollen wir nun wissen in welche Ökoregionen (nach Illies, Daten <a href="https://www.eea.europa.eu/data-and-maps/data/ecoregions-for-rivers-and-lakes">hier</a>) die Landkreise Fallen. Abbildung <a href="vektoroperationen.html#fig:vo7">7.8</a> zeigt beide Layer. Klar ist zu sehen, dass verschiedene Ökoregionen in Deutschland vorkommen. Ihr seht auch, dass ich immernoch den dissolved GADM Layer aus dem vorherigen Abschnitt benutze.</p>
+<div class="figure"><span style="display:block;" id="fig:vo7"></span>
+<img src="fig/vo7.png" alt="Dissolve von GADM Deutschland anhand der Varable NAME2" width="354" />
+<p class="caption">
+Figure 7.8: Dissolve von GADM Deutschland anhand der Varable NAME2
+</p>
+</div>
+<p>In der nächsten Abbilung sehen wir das Ergebnis von einer Verschneidung mit den Ökoregionen als <em>Input Layer</em> und den GADM Layer als <em>Overlay Layer</em>. Die einzelnen Features sind nach der Ökoregion eingefäbt. Wie wir sehen, erhalten wir den Umriss des GADM Layers also des <em>Overlay Layers</em>. Die einzelen Features sind fast alle wieder die ursprünglichen Bezirke vor dem Dissolve. Dort wo einzelne Bezirke mehrere Ökoregionen enthalten, bzw. die Grenze zwischen zwei Regionen durch einen Bezirk verläuft, wurde der Bezirk an dieser Grenze in zwei Feature getrennt. Jedes Feature enthält nun sowol die Informationen aus dem GADM als auch aus dem Ökoregionen Layer.</p>
+<div class="figure"><span style="display:block;" id="fig:vo8"></span>
+<img src="fig/vo8.png" alt="Ergebnis der Verschneidung von Ökoregionen und GADM" width="354" />
+<p class="caption">
+Figure 7.9: Ergebnis der Verschneidung von Ökoregionen und GADM
+</p>
+</div>
+</div>
+<div id="union" class="section level3 hasAnchor" number="7.2.7">
+<h3><span class="header-section-number">7.2.7</span> Union<a href="vektoroperationen.html#union" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mit <strong>Union</strong> kombinieren wir Elemente. Das können Elemente eines Layers sein oder aus verschiedenen. Wenn wir die Elemente eines Layers kombinieren wollen geben wir diesen Layer als <em>Input Layer</em> an und lassen <em>Overlay Layer</em> leer. In Abbildung <a href="vektoroperationen.html#fig:vo9">7.10</a> seht ihr ein Beispiel dafür. Hier sind drei Polygone, jedes überlappt mit jedem anderen und in der Mitte überlappen alle drei.</p>
+<div class="figure"><span style="display:block;" id="fig:vo9"></span>
+<img src="fig/vo9.png" alt="Beispielpolygone bevor Union angewandt wurde" width="347" />
+<p class="caption">
+Figure 7.10: Beispielpolygone bevor Union angewandt wurde
+</p>
+</div>
+<p>Die zugehörige Attributtabelle hat drei Spalten ID, Zahl und Text. Alle drei geben die Nummer des Polygons wieder (Abb. <a href="vektoroperationen.html#fig:vo10">7.11</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo10"></span>
+<img src="fig/vo10.png" alt="Attributtabelle der Beispielpolygone bevor Union angewandt wurde" width="160" />
+<p class="caption">
+Figure 7.11: Attributtabelle der Beispielpolygone bevor Union angewandt wurde
+</p>
+</div>
+<p>Wenden wir <strong>Union</strong> auf diesen Layer an erhalten wir die Layer aus Abbildung <a href="vektoroperationen.html#fig:vo11">7.12</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:vo11"></span>
+<img src="fig/vo11.png" alt="Beispielpolygone nachdem Union angewandt wurde" width="276" />
+<p class="caption">
+Figure 7.12: Beispielpolygone nachdem Union angewandt wurde
+</p>
+</div>
+<p>Die zugehörige Attributtabelle ist in Abbildung <a href="vektoroperationen.html#fig:vo12">7.13</a> ist zu sehen.</p>
+<div class="figure"><span style="display:block;" id="fig:vo12"></span>
+<img src="fig/vo12.png" alt="Attributtabelle der Beispielpolygone nachdem Union angewandt wurde" width="160" />
+<p class="caption">
+Figure 7.13: Attributtabelle der Beispielpolygone nachdem Union angewandt wurde
+</p>
+</div>
+<p>Nun gibt es für jede überlappende Fläche eigene Polygone. Für eine Fläche auf der Polygon eins und zwei überlappen gibt es nun ein Polygon für Polygon eins und eins für zwei. In der Mitte, wo alle drei überlappen, gibt es nach <strong>Union</strong> drei Polygone – eines für jeden Original Layer. Am deutlichsten ist das zu sehen, wenn wir nur die Elemente mit einer ID anzeigen lassen (Abbildung <a href="vektoroperationen.html#fig:vo13">7.14</a>). Hier sehen wir, dass die Form des ursprünglichen Rechtecks erhalten bleibt, wir nun allerdings vier anstelle von einem Polygon haben: einen für die Fläche die nicht überlappt (unten rechts), einen für die Fläche die mit dem linken Polygon überlappt (unten links), einen für die Fläche die mit dem oberen Polygon überlappt (oben rechts) und einen für die Fläche die mit beiden anderen Flächen überlappt (oben links). Die beiden anderen Polygon wurden genauso aufgeteilt.</p>
+<div class="figure"><span style="display:block;" id="fig:vo13"></span>
+<img src="fig/vo13.png" alt="Eines der ursprünglichen Polygone nach Union" width="117" />
+<p class="caption">
+Figure 7.14: Eines der ursprünglichen Polygone nach Union
+</p>
+</div>
+<p>Wie bereits erwähnt können wir Union auch mit zwei verschiedenen Layer nutzen. Dafür habe ich einen zweiten Beispiellayer erstellt (Abb. <a href="vektoroperationen.html#fig:vo14">7.15</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo14"></span>
+<img src="fig/vo14.png" alt="Beide Beispiellayer" width="360" />
+<p class="caption">
+Figure 7.15: Beide Beispiellayer
+</p>
+</div>
+<p>Diesen wähle ich nun als <em>Overlay Layer</em> im <strong>Union</strong> Fenster. Der Ergebnis beinhaltet alle vier ursprünglichen Polygone sowie die Flächen in dennen Polygone aus dem ersten und zweiten Layer überlappen als eigene Polygone (Abb. <a href="vektoroperationen.html#fig:vo15">7.16</a>).</p>
+<div class="figure"><span style="display:block;" id="fig:vo15"></span>
+<img src="fig/vo15.png" alt="Ergebniss von Union mit zwei Layern" width="358" />
+<p class="caption">
+Figure 7.16: Ergebniss von Union mit zwei Layern
+</p>
+</div>
+<p>Flächen in denen Polygone aus dem ersten Layer überlappen sind diesmal keine eigenen Flächen. Ein Blick in die Attributtabelle zeigt, dass alle Elemente des neuen Layers alle Attribute beider ursprünglichen Layer haben (Abb. <a href="vektoroperationen.html#fig:vo16">7.17</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:vo16"></span>
+<img src="fig/vo16.png" alt="Attributtabelle nach Union mit zwei Layern" width="306" />
+<p class="caption">
+Figure 7.17: Attributtabelle nach Union mit zwei Layern
+</p>
+</div>
+</div>
+</div>
+<div id="misc" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Misc<a href="vektoroperationen.html#misc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="minimum-bounding-geometry" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Minimum bounding geometry<a href="vektoroperationen.html#minimum-bounding-geometry" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mit <strong>Minimum bounding geometry</strong> können wir verschiedene Polygone um die Elemente eines Layers ziehen. Die Funktion findet ihr in der Processing Toolbox. Bei <em>Input Layer</em> wählt ihr den Layer um dessen Elemente ihr das Polygon ziehen wollt. Welches Polygon ihr berechnen wollt wählt ihr mit dem <em>Geometry type</em> Argument. <strong>Envelope (Bounding box)</strong> ist das kleinste Rechteck, das alle Elemente enthält, wobei die Seiten parallel zu Meridianen und Parallelen sind. Bei <strong>Minimum Orientet Rectangle</strong> erhalten wir ein das kleinste Rechteck das nicht parallel zu Meridianen und Parallelen sein muss, <strong>Minimum Encolsing Circle</strong> ist der kleinste Kreis, und <strong>Convex Hull</strong> ist die Convex Hull.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="digitalisierung.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rasteroperationen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="book_assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="book_assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

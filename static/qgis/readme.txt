@@ -1,0 +1,1 @@
+The images folder is needed for custom box icons.
