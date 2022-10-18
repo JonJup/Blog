@@ -238,94 +238,49 @@ tm_shape(geometrycollection_sf) +
 Da die Namen der Funktionen in `sf` meist selbsterklärend sind, kann man oft einfach `sf::` eingeben, die dann angezeigt Liste von Funktionen durchscrollen und mit etwas Hintergrundwissen und Fantasie findet man oft was man sucht. Besonders gut funktioniert das, wenn ihr diese Taktik mit der Hilfefunktion (?function_name oder markieren und F1 drücken) kombinert.  Nichtsdestotrotz wollen wir uns zum Abschluss hier noch einige Funktionen als Beispiel ansehen. 
 Dazu benutzen wir wieder den `germany` Datensatz. 
 
-### `st_area`
+## `st_area`
 
-Mit `st_area` können wir die Fläche von Polygonen ermitteln
+Mit `st_area` können wir die Fläche von Polygonen ermitteln.
+
 ```{r}
 germany_area <- st_area(germany)
 class(germany_area)
 ```
-Das Erbgeniss hat die Klasse `units` die das gleichnamig [Package](https://r-quantities.github.io/units/articles/measurement_units_in_R.html) eingeführt hat. 
-Mit `units::drop_units()` können wir das Objekt in einfache Zahlen umwandeln ... 
+Das Erbgeniss ist ein Objekt der Klasse `units` die das gleichnamige [Package](https://r-quantities.github.io/units/articles/measurement_units_in_R.html) eingeführt hat.
+Units sind sinnvoll damit wir nicht Meilen und Kilometer addieren sondern immer gleich mit gleich. 
+Falls verschiedene Einheit kombiniert werden, gibt units eine Fehlermeldung. 
+Das führt allerdings auch dazu, dass manche Funktionen mit units Objekten nicht oder nicht gut funktionieren. 
+Daher kann es praktisch sein units Objekte in einfache Zahlen umzuwandeln. 
+Das geht mit `units::drop_units()`. 
+
 ```{r}
 germany_area <- units::drop_units(germany_area)
 ```
 
-... und die Verwaltungsbezirke ihrer Fläche nach auf einer Karte einfärben. 
+Diese können wir nun `germany` als Variable hinzufügen. 
 
 ```{r}
-germany <-  dplyr::mutate(germany, area = germany_area)  
+# Nutze die mutate Funkton aus dplyr und die assignment pipe aus magrittr um dem Datensatz germany die Fläche hinzuzufügen. 
+library(magrittr)
+germany %<>% dplyr::mutate(germany, area = germany_area)  
 library(mapview)
 mapview(germany, zcol = "area")
 ```
 
 Um diese Karte zu erstellen habe wir das `mapview` Package verwandt. 
-`mapview` ist oft die schnellere und einfachere Lösung um interaktive Karten zu erstellen. 
-`tmap` bietet mehr Optionen und ist die bessere Lösung um Karten für Berichte zu erstellen. 
+`mapview` ist die schnellere und einfachere Lösung um interaktive Karten zu erstellen. 
+`tmap` bietet mehr Optionen und ist die bessere Lösung um Karten für Berichte oder Paper zu erstellen. 
 
-Mit `st_distance` können wir die Distanz zwischen zwei Objekten ermitteln. 
-Als Beispiel könnten wir uns Fragen ob die 10 größten Bezirke näher aneinander liegen als die zehn kleinsten. 
-
-```{r}
-big10 <- germany |> 
-        dplyr::arrange(area) |> 
-        dplyr::slice_tail(n = 10)
-big10 <- st_distance(big10)
-```
-
-### `st_distance()`
-
-Die `st_distance()` kann mit einem oder zwei Datensätzen benutzt werden. In beidem Fällen ist das Ergebniss eine matrix mit units. In unserem Fall, also mit nur einem Datensatz, wird die Distanz von jeden Polygon zu jedem Polygon berechnet. In Zelle 3, Reihe 2 ist die Distanz von Zentroid des dritten Polyongs zum zweiten. Da die Distanz von dritten zum zweiten gleich der vom zweiten zum dritten ist, ist die Matrix symmetrisch. Die Diagoale enthält die Distanzen von Objekten zu sich selbst, also 0.   
-
-```{r}
-big10 <- big10 |> units::drop_units() 
-big10 <- big10[upper.tri(big10)]
-small10 <- 
-        germany |> 
-        dplyr::arrange(area) |> 
-        dplyr::slice_head(n = 10) |> 
-        sf::st_distance() |> 
-        units::drop_units() |> 
-        {\(x) x[upper.tri(x)]}()
-```
-
-Mit `upper.tri()` wähle ich das obere Dreick der Matrix aus (siehe Abbildung ) damit ich nich jeden Wert doppelt habe. Außerdem wird so die Diagonale entfernt. 
-![Das obere Dreick einer Matrix](images/upper-triangular-matrix.png)
-
-
-Für `small10` machen wir das gleiche, aber diesmal mit Pipe-Operatoren. Die einzigen Unterschiede sind hier, dass `slice_tail()` druch `slice_head()` ersetzt wurde und die annonyme Funktion am Ende der Pipe. Annonyme Funktionen sind Funktionen ohne Namen. Sie werden nich als Objekt gespeichert sonder direkt ausgeführt. In R können wir seit der Version 4.1 annonyme Funktionen wie folgt erstellen: 
-
-```{r}
-# Die beiden Funktionen machen das gleiche. 
-plus5 <- function(x) return(x+5)
-plus5(4)
-4 |> {\(x) x + 5}()
-```
-
-Jetzt müssen wir die Ergebnisse noch in einem Datensatz verpacken und sie darstellen. Für zweiteres nutzen wir hier das `ggplot2` Package. Siehe [hier](https://stats.oarc.ucla.edu/stat/data/intro_ggplot2_int/ggplot2_intro_interactive_flat.html) für eine Einführung. 
-
-```{r}
-data <- data.frame(size = rep(c("big", "small"), each = 45), 
-distance = c(big10, small10))
-
-library(ggplot2)
-
-ggplot(data, aes(y = distance, x = size)) + geom_boxplot()
-```
-
-So sehen wir, dass die Median Distanz zwischen den zehn größten Bezirken etwas kleiner ist als die zwischen den zehn kleinsten. 
-
-Wenn wir zwei Datensätze haben wo wir immer nur das erste Element aus Datensatz 1 mit dem ersten Element aus Datensatz 2 vergleichen wollen, setzen wir in der Funktion `st_distance()` das Argument `by_element` auf `TRUE`. 
-
-
-### `st_nearest_feature()`
+## `st_nearest_feature()`
 
 Mit `st_nearest_feature()` finden wir die Elemente in einem Datensatz die dem ausgewählten Element am nächsten sind. 
 
 ```{r}
 # - Wähle den größten Bezirk
 big1 <- germany |> 
-        dplyr::arrange(area) |> 
+        # ordne der Größe nach
+        dplyr::arrange(area) |>
+        # wähle den letzte also größten Bezirk 
         dplyr::slice_tail(n = 1)
 
 # - Welches Element aus germany ist dem größten Bezirk am nächsten? 
@@ -336,20 +291,78 @@ germany[nnid, ]
 mapview(rbind(big1,germany[nnid, ]), zcol = "GID_3")
 ```
 
-### `spatial subsetting`
+## `st_distance()`
 
-In der Einführung in R haben wir bereits gesehen wie wir Tabellen in R subsetten, mit `[`, `select()` und `filter()`. 
-Dabei habe wir die Position der gewünschten Objekte in der Tabelle (bei `[`), ihren Spaltennamen (bei `select()`) oder Werte der verschiedenen Variablen (bei `filter()`) genutzt. 
-Bei räumlichen Daten bietet sich nun auch räumliche Bezihungen an um Daten zu subsetten. 
-Die Syntax folgt dabei folgenden Schema: Lasse `X` den Datensatz sein aus dem wir auswählen wollen und lasse `Y` den Datensatz sein anhand dessen wir auswählen. 
+Mit `st_distance()` können wir die Distanz zwischen Objekten berechnen. 
+Wir könnten die Distanz zwischen den zehn größten Bezirken berechnen. 
+
+```{r}
+# finde die zehn größten Bezirke
+big10 <- 
+        germany |> 
+        # ordne den Datensatz anhand der Variable area ansteigend 
+        dplyr::arrange(area) |> 
+        # schneide die 10 (n) letzten Reihen ab und verwerfe den Rest.
+        dplyr::slice_tail(n = 10)
+
+# was ist die Distanz zwischen den zehn größten Bezirken.
+big10 <- st_distance(big10)
+```
+
+Hier haben wir der `st_distance()` Funktion nur ein einziges Argument gegeben: `big10`. 
+Das Ergebnis ist eine Matrix mit units Objekten. 
+In Spalte 3, Reihe 2 steht die Distanz vom dritten Polyongs zum zweiten. 
+Dabei wird die kürzeste Distanz zwischen Außenkanten gemessen. 
+Die Diagonale enthält die Distanz von Objekten zu sich selbst. 
+Daher sind alle Elemente auf der Diagonalen 0. 
+
+Wir können `st_distance()` auch mit zwei Datensätzen benutzen. 
+Als Beispiel laden wir die einen Satz von Libellen ([hier](https://cloud.uni-landau.de/index.php/s/eKbTpdqAqHx9xGs)) und ein Gewässernetz von Rheinlandpflaz ([hier](https://cloud.uni-landau.de/index.php/s/gEP2cHbngRXm7Le)). 
+Dann suchen wir für jeden Libellenpunkt den nächsten Fluss und messen die Distanz dahin. 
+
+```{r}
+dragonflies <- st_read("Libellen/artenfinder_libellen_rlp.shp")
+rivers      <- st_read("rivers_rlp/Fließgewaesser.shp")
+
+# Der Libellendatensatz ist groß (> 30.000 Reihen). 
+# Wir nutzen nur einen Teil der Daten (100 zufällige Reihen) damit die Rechenzeit kurz bleibt. 
+
+dragonflies <- dragonflies[sample(1:nrow(dragonflies), 100), ]
+
+# Sind beide im gleichen KBS? - Ja 
+st_crs(dragonflies) == st_crs(rivers)
+
+near <- st_nearest_feature(dragonflies, rivers)
+
+# erstellt einen neusortierten Flussdatensatz in dem die erste Reihe der Fluss ist, der dem Objekten aus der ersten Reihe des Libellendatensatzes am nächsten ist und so weiter.  
+rivers_reorder <- rivers[near, ]
+distance_to_river <- st_distance(dragonflies, rivers_reorder, by_element = TRUE)
+
+# Füge Distanz als Variable hinzu
+dragonflies %<>% dplyr::mutate(distance = units::drop_units(distance_to_river))
+
+# Entferne Libellen, die mehr als 10 km vom nächsten Fluss entfernt sind 
+dragonflies %<>% dplyr::filter(distance < 10000)
+
+tm_shape(rivers) + 
+        tm_lines(col = "blue") + 
+        tm_shape(dragonflies) + 
+        tm_dots(col = "distance", n = 7)
+
+```
+
+## `spatial subsetting`
+
+In der Einführung in R haben wir bereits gesehen wie wir Tabellen in R subsetten, mit `[`, `$`,`select()` und `filter()`. 
+Dabei habe wir die Position der gewünschten Objekte in der Tabelle (bei `[`), ihren Spaltennamen (bei `select()` und `$`) oder Werte der verschiedenen Variablen (bei `filter()`) genutzt. 
+Bei räumlichen Daten bietet sich nun auch räumliche Beziehungen an, um Daten zu subsetten. 
+Die Syntax folgt dabei dem folgendem Schema: Lasse `X` den Datensatz sein aus dem wir auswählen wollen und lasse `Y` den Datensatz sein anhand dessen wir auswählen. 
 Ein Beispiel aus der Volresung wäre hier: `X` sind die Kohlmeisenbeobachtungen und `Y` die Landkreise.
 Nun subsetten wir `X` anhand von `Y` durch `X[Y]`. 
 Als Beispiel nutzen wir hier wieder die Kohlmeisendaten ([hier](https://cloud.uni-landau.de/index.php/s/Rbzsf8BR2m2bwDK) Dowload). 
 
 ```{r}
 meisen <- readRDS("meisen2.rds")
-# meisen2 <- meisen |> select(gbifID, locality, occurrenceStatus, individualCount, decimalLatitude, decimalLongitude)
-# saveRDS(meisen2, "meisen2.rds")
 meisen <- meisen[which(!is.na(meisen$decimalLongitude)), ]
 meisen <- st_as_sf(meisen, coords = c("decimalLongitude", "decimalLatitude"), crs = "EPSG:4326")
 meisen_subset <- meisen[1:100, ]
@@ -359,7 +372,6 @@ mapview(meisen_subset)
 Wie ihr in diesem Beispiel gesehen habt ist es auch einfach eine nicht räumliches Objekt (z.b. einen data.frame) in R in ein räumliches Objekt (sf) umzuwandeln.
 Wir nutzen dazu die Funktion `st_as_sf()`. 
 Als Argumente geben wir der Funktion den Datensatz der räumliche werden soll, die Namen der Spalten mit X und Y Koordinaten, bzw. Längen- und Breitengrad sowie das Koordiantenbezgssystem. 
-
 
 Jetzt wollen wir nur die Kohlmeisenbeobachtungen auswählen die in unserem Landkreis liegen. 
 
@@ -371,7 +383,8 @@ mapview(goslar_meisen)
 
 Dabei wird eine *topologische Beziehung* zwischen den Elementen von `meisen` und `goslar` geprüft. 
 Wenn wir, wie in dem Befehl oben, keine topologische Beziehung explizit wählen, wird die Standardbeziehung, Verschneidung (per `st_intersects()`), angewandt. 
-Alternativen sind berühren der Objekte (`st_touch()`), kreuzen der Objekte (`st_cross()`) und Überdecken (`st_covers()`). Siehe die folgende Abbildung für mehr Beispiele. 
+Alternativen sind Berührung (`st_touch()`), Kreuzen (`st_cross()`) und Überdecken (`st_covers()`). 
+Siehe die folgende Abbildung für mehr Beispiele. 
 
 ![Topologische Beziehungen (aus Lovelace et al. 2021)](images/topoloical_relations.png)
 
@@ -386,7 +399,7 @@ big1_neighbour <- germany[big1, op = st_touches]
 mapview(big1_neighbour, zocl = "GID_3")
 ```
 
-### Spatial joins 
+## Spatial joins 
 
 Bei einem Spatial join fügen fügen wir die Variablen eines zweiten Datensatzes dennen eines ersten hinzu. Dabei wird die räumliche Beziehung zwischen den Elementen der Objekten genutzt um zu bestimmen welche Elemente kombiniert werden. 
 Ein Beispiel wäre den Vogeldaten ihren Landkreis als Variable hinzuzufügen. 
@@ -403,7 +416,7 @@ meisen_name2 <- st_join(meisen_subset, germany_name2)
 mapview(meisen_name2, zcol = "NAME_2")
 ```
 
-### Spatial Aggregation 
+## Spatial Aggregation 
 
 Als letztes wollen wir uns ansehen wie wir Daten aggregieren. 
 Die Frage könnte hier lauten: Was ist die mittlere Abundanz von Maisen in den verschiednen Bezirken. 

@@ -1,0 +1,451 @@
+# Interpolation
+
+```{r setup, include=FALSE, warning=FALSE}
+library(sf)
+library(sp)
+library(dplyr)
+library(fields)
+library(gstat)
+library(tmap)
+library(mapview)
+library(magrittr)
+library(ggplot2)
+library(automap)
+```
+
+In this tutorial, you will learn how to use R to apply different interpolation methods to your data sets. 
+We will use couple of R packages that are familiar to us, like `sf` and `mapview` but also some new ones.
+Most notably, we will use `fields` [@DouglasNychka2021] for splines and `gstat` [@Graeler2016] as well as `automap` [@Hiemstra2008] for distance weighting.
+
+```{r eval=F}
+library(automap)
+library(ggplot2)
+library(sf)
+library(sp)
+library(dplyr)
+library(fields)
+library(gstat)
+library(tmap)
+library(mapview)
+```
+
+
+## The data 
+
+We will use the LUCAS soil data. 
+LUCAS is an acronym for Land Use/Land Cover Area Frame Survey. 
+This data base contains approximately 20.000 soil samples from all EU27 countries with the exceptions of Romania and Bulgaria. 
+You can download a subset of the LUCAS data base I created for this course [here](https://cloud.uni-landau.de/index.php/s/sRYHk3RNrZX6T5Y).
+
+Next, we load the LUCAS data. 
+
+```{r}
+lucas <- readRDS("data/lucas_saxony.rds")
+```
+
+As always, we first inspect the new object. 
+
+```{r}
+class(lucas)
+```
+
+The `glimpse()` function from `dlyr` is similar to the `str()` from base R.  
+```{r}
+glimpse(lucas)
+```
+
+We use the `mapview` package to display the data on an interactive map.
+```{r}
+mapview(lucas)
+```
+
+     
+We will need a layer of the the German federal state saxony to prepare maps later on. 
+We get it from the Database of Global Administrative Areas (GADM). 
+We have used the GADM data for Germany before (`gadm36_DEU_3_pk.gpkg`).
+You can download them [here](https://cloud.uni-landau.de/index.php/s/99rjM6XDPkLxzxY). 
+You can always query other countries or resolutions by following [this tutorial](https://jonjup.netlify.app/post/2021-09-17-the-geodata-package/the-geodata-package/). 
+
+```{r}
+saxony <- 
+        st_read("data/gadm36_DEU_3_pk.gpkg") |> 
+        st_as_sf() |> 
+        filter(NAME_1 == "Sachsen")
+```
+
+```{r}
+mapview(saxony)
+```
+
+## Proximity Polygons
+
+We start out with proximity polygons. 
+We can create Voronoi polygons around our points with `st_voronoi()`.
+
+```{r}
+#- st_voroni works better with projected coordinate reference systems 
+voroni <- st_voronoi(lucas)
+```
+
+The warning messages notifies us that it its advisable to use projected coordinates, thus we transform our data from WGS84 to Lamber Azimuthal Eqal Area. 
+
+```{r}
+lucas   %<>% st_transform(3035)
+saxony %<>% st_transform(3035)
+```
+
+With the following code we create Voronoi polygons around the observations in `lucas` and then keep only those areas of the polygons that intersect with the `saxony` polygon. 
+As you can see we need more functions than just `st_voronoi()` to do this. 
+With `st_union()` we combine the single POINT objects in `lucas` to a single MULTIPOINT object. 
+With `st_voronoi()` we can now create the Voronoi polygons which are returned in the GEOMERTRYCOLLECTION. 
+To extract the polygons from this collection, we can use the `st_collection_extract()` function. 
+Its is well worth your time to execute the steps one by one and to check out the intermediate products. 
+
+```{r}
+voroni <- 
+        lucas |> 
+        st_union() |> 
+        st_voronoi() |> 
+        st_collection_extract() |> 
+        st_intersection(y= saxony) |> 
+        st_as_sf()
+```
+
+Next, we add the electrical conductivity (EC, our focal variable for this example) to the respective polygons. 
+We assign a point to each polygon with the `st_nearest_feature()` function. 
+
+```{r}
+id <- st_nearest_feature(voroni, lucas)
+voroni$EC <- lucas$EC[id]
+```
+
+Now we have the final product also shown in the lecture:
+
+```{r}
+mapview(voroni, zcol = "EC") + mapview(lucas, zcol = "EC", legend = F)
+```
+
+## Trend Surface Analysis 
+
+Trend surface analysis (TSA) is a multiple regression in which EC is explained by spatial coordinates. 
+We can use the base R regression function `lm()` for TSA. 
+To prepare the TSA, we need to extract the coordinates from the `geometry` column of `lucas`. 
+For this we use the `st_coordinates()` function. 
+
+```{r}
+coords  <- st_coordinates(lucas)
+x.coord <- coords[,1]
+y.coord <- coords[,2]
+lucas <- mutate(lucas, 
+                x = x.coord, 
+                y = y.coord
+                )
+```
+
+Then we conduct a simple linear regression and also a polynomial regression with polynomial of second degree. 
+
+```{r}
+tsa1 <- lm(EC ~ x+y, data = lucas)
+tsa2 <- lm(EC ~ polym(x, y, degree=2), data = lucas)
+```
+ 
+ 
+To predict the values of unobserved locations with the TSA we need the coordinates of these locations. 
+Here, I show to different approaches: i) randomly distributed point in Saxony and ii) regularly spaced points. 
+
+The randomly distributed points are created with `st_sample()`. 
+The first argument to this function is the bounding box, i.e., the area in which the point can lie.
+The second argument is the number of points. 
+Here, we create 300 new points in Saxony.
+
+```{r}
+random_points <- st_sample(saxony, 300)
+mapview(random_points)
+```
+
+Again, we have to extract the coordinates from the geometry column with `st_coordinates()`. 
+Currently the `random_points` object is still of class `sfc`.
+This means it is only a sf column and not a table to which we can add columns. 
+To create a `sf` table, we first need to use the `st_as_sf()` function. 
+The geometry columns of `sf` objects are typically called `geom` or `geometry`. 
+However, after calling `st_as_sf()` the column is called `"x"`. 
+We rename it with the `rename()` function available in the `dplyr` package. 
+Laslty, we add the coordiantes. 
+
+```{r}
+random_points <- 
+        random_points |> 
+        st_as_sf() |>
+        rename(geom = x) |> 
+        mutate(x = st_coordinates(random_points)[,1], 
+               y = st_coordinates(random_points)[,2])
+```
+
+We predict the EC for these coordinates with `predict()`
+
+```{r}
+random_points$EC_tsa1 <- predict(tsa1, random_points)
+random_points$EC_tsa2 <- predict(tsa2, random_points)
+```
+
+Let's have a look at the results. 
+On the following map circles are true observaions and diamonds are predicted values. 
+ 
+```{r}
+breaks = c(0, 10, 15,20, 25, 30, 35, 40, 170)
+tmap_mode("plot")
+tm_shape(saxony) + 
+        tm_polygons() + 
+        tm_shape(random_points) + 
+        tm_dots(col = "EC_tsa1", shape = 23, size = .5, breaks = breaks) + 
+        tm_shape(lucas) + 
+        tm_dots(col = "EC", shape = 21, size = .5, breaks = breaks) + 
+        tm_layout(legend.outside = TRUE)
+tm_shape(saxony) +
+        tm_polygons() + 
+        tm_shape(random_points) + 
+        tm_dots(col = "EC_tsa2", shape = 23, size = .5, breaks = breaks, midpoint = NA) + 
+        tm_layout(legend.outside = TRUE) + 
+        tm_shape(lucas) + 
+         tm_dots(col = "EC", shape = 21, size = .5, breaks = breaks) 
+```
+
+Now to the regularly spaced points. 
+First we need to get the bounding box of `saxony`. 
+We can get the bounding box with `st_bbox()`. 
+
+```{r}
+saxony_bbox <- st_bbox(saxony)
+saxony_bbox
+```
+
+With `st_as_sfc()` we can create a polygon from the bounding box. 
+```{r}
+saxony_bbox_sfc <- st_as_sfc(saxony_bbox)
+mapview(saxony_bbox_sfc) + mapview(saxony)
+```
+
+With `st_make_grid()` we can create a grid within the bounding box. 
+In addition to the bounding box, we provide the function with the envisioned cell size.
+Our data have a projected coordinate reference system (LAEA), therefore the cell size is given in meters. 
+Here we use square cells with a side length of 10 km. 
+
+```{r}
+saxony_grid <- st_make_grid(
+        x = saxony_bbox_sfc, 
+        cellsize = c(1e4,1e4),
+        what = "polygons"
+) |> 
+        st_as_sf()
+
+mapview(saxony_grid)
+```
+
+Now we need to crop the grid to saxony. 
+
+```{r}
+saxony_grid %<>% st_intersection(st_union(saxony))
+mapview(saxony_grid)
+```
+Now we have several polygons but not points.
+Since predictions are made for a singe pair of x and y coordinates and the squares have four pairs we need to extract points from the polygons. 
+There are two possibilities: the corners of the polygons or their centroids.  
+Both can be created with the `st_make_grid()` function. 
+
+```{r}
+saxony_grid_corner <- 
+        st_make_grid(
+                x = saxony_bbox_sfc, 
+                cellsize = c(1e4,1e4),
+                what = "corners") |> 
+        st_as_sf() |> 
+        st_intersection(saxony)
+map1 <- mapview(saxony_grid) + saxony_grid_corner
+```
+
+```{r}
+saxony_grid_centroid <- 
+        st_make_grid(
+        x = saxony_bbox_sfc, 
+        cellsize = c(1e4,1e4),
+        what = "centers") |> 
+        st_as_sf() |> 
+        st_intersection(saxony)
+map2 <- mapview(saxony_grid) + saxony_grid_centroid
+```
+```{r}
+map1 | map2
+```
+
+We could also have extracted the centroids from the polygons with the following code: 
+```{r}
+saxony_grid_centroid <- 
+        saxony_grid |> 
+        st_centroid() |> 
+        st_as_sf() |> 
+        rename(geom = x)
+```
+
+Now we can make predictions for the centroids and transfer them back to the grid polygons for visualization.
+
+```{r}
+saxony_grid_centroid %<>% 
+        mutate(
+                x = st_coordinates(saxony_grid_centroid)[,1], 
+                y = st_coordinates(saxony_grid_centroid)[,2]
+        )
+
+saxony_grid_centroid$EC_tsa_1 <- predict(tsa1, saxony_grid_centroid)
+saxony_grid_centroid$EC_tsa_2 <- predict(tsa2, saxony_grid_centroid)
+
+saxony_grid$EC_tsa1 <- saxony_grid_centroid$EC_tsa_1
+saxony_grid$EC_tsa2 <- saxony_grid_centroid$EC_tsa_2
+
+mapview(saxony_grid, zcol = "EC_tsa1") + 
+        mapview(lucas, zcol = "EC", legend = F)
+mapview(saxony_grid, zcol = "EC_tsa2") + 
+        mapview(lucas, zcol = "EC", legend = F)
+```
+## Splines 
+
+Next, we have a quick look at interpolation with splines. 
+For this we will need the `fields` package. 
+We use a sort of spline that is called thin plate spline which can be easily called through the `Tps()` function. 
+As arguments we provide the coordinates as a matrix and the independent variable (EC). 
+
+```{r}
+tps_fit <- Tps(x = matrix(c(lucas$x, lucas$y), ncol = 2), Y = lucas$EC)
+```
+
+Again, we can use the `predict()` function to predict the electrical conductivity for unobserved locations.
+The result is a matrix which we transform to a numeric vector with `as.numeric()`.
+
+```{r}
+tps_prediction <- predict(tps_fit, st_drop_geometry(saxony_grid_centroid[, c("x", "y")]))
+saxony_grid$EC_tps <- as.numeric(tps_prediction)
+```
+
+```{r}
+mapview(saxony_grid, zcol = "EC_tps") + 
+        mapview(lucas, zcol = "EC", legend = F)
+```
+
+## Weighted average
+
+In the rest of the script we cover methods that weight the observed values based on their distance to the predicted location. 
+One method we did not discuss in the lecture is k nearest neighbors.
+With this method we consider the k nearest points and build their mean value. 
+These *k* points are all weighted equally. 
+All other points are not considered. 
+For all the weighted average procedures we will use the `gstat` package. 
+With the epinomous function we create a model. 
+As in `lm()` regression models, we start with the formula. 
+`~1` indicates that we do not wish to use any explanatory variables but instead estimate the mean value of the dependent variable. 
+With `locations` we choose the data set that gives the spatial coordinates, `nmax` gives the maximal number of points to use in any one prediction (*k*) and `idp` is the inverse distance parameter. 
+It determines how harshly distanced points are down weighted. 
+Here we choose the five nearest neighbors and no distance weighting, i.e., idp = 0. 
+
+```{r warning = F}
+knn_mod <- gstat(formula=EC~1, locations=lucas, nmax=5, set=list(idp = 0))
+knn_pred <- predict(knn_mod, saxony_grid)
+```
+
+```{r warning=F}
+mapview(knn_pred, zcol = "var1.pred") + mapview(lucas, zcol = "EC", legend = F)
+```
+
+For inverse distance weighting (IDW) the model construction and prediction are packaged into a single function. 
+```{r}
+idw1 <- idw(EC ~ 1, locations = lucas, newdata = saxony_grid_centroid, idp = 2)
+idw2 <- idw(EC ~ 1, locations = lucas, newdata = saxony_grid_centroid, idp = 3)
+
+saxony_grid$EC_idw_1 <- idw1$var1.pred
+saxony_grid$EC_idw_2 <- idw2$var1.pred
+```
+
+```{r}
+mapview(saxony_grid, zcol = "EC_idw_1") + mapview(lucas, zcol = "EC", legend = F)
+```
+```{r}
+mapview(saxony_grid, zcol = "EC_idw_2") + mapview(lucas, zcol = "EC", legend = F)
+```
+
+## Kriging
+
+First we compute the empirical variogram. 
+`gstat` is becoming increasingly compatible with `sf` but it was originally designed for the predecessor `sp`.
+To be on the safe side we will transform all `sf` objects in to `sp` objects. 
+Luckily, this can be done with a single function. 
+
+```{r}
+lucas_sp <- as(lucas, "Spatial")
+```
+
+Now we can plot a variogram cloud and fit the empirical variogram with the `variogram()` function. 
+
+```{r}
+v_emp_cloud <- variogram(EC~1, lucas_sp, cloud = T)
+v_emp <- variogram(EC~1, lucas_sp)
+```
+
+As with the `idw()` function we don't assume that there is a spatial trend and construct a variogram for a constant mean value. 
+
+```{r}
+plot(v_emp_cloud)
+plot(v_emp)
+```
+
+To find the best variogram model we can either fit a selection of models manually ...
+
+```{r}
+# spherical
+v_mod_sph <- fit.variogram(
+        object = v_emp, 
+        model  = vgm("Sph")
+)
+# exponential
+v_mod_exp <- fit.variogram(
+        object = v_emp, 
+        model  = vgm("Exp")
+)
+```
+
+
+```{r}
+plot(v_emp, v_mod_sph)
+plot(v_emp, v_mod_exp)
+```
+
+
+... or we use the `automap` package to automatically fit and compare multiple models. 
+
+```{r}
+autovar <- autofitVariogram(formula = EC ~ 1, 
+                 input_data = lucas_sp)
+```
+
+With this variogram we can use kriging to interpolate the EC values. 
+
+```{r}
+kriging  <- krige(
+  formula = EC~1,                       
+ locations = lucas_sp, 
+ newdata = saxony_grid_centroid,
+  model = autovar$var_model      
+  )
+
+saxony_grid$EC_krige <- kriging$var1.pred
+saxony_grid$EC_krige_variance <- kriging$var1.var
+
+mapview(saxony_grid, zcol = "EC_krige") + 
+        mapview(lucas, zcol = "EC", legend = F)
+```
+
+Lastly, we can look at the kriging variance wish shows our uncertainty for the predicted values. 
+The further we are removed from measured points we larger the uncertainty. 
+
+```{r}
+mapview(saxony_grid, zcol = "EC_krige_variance") + 
+        mapview(lucas)
+```
+
