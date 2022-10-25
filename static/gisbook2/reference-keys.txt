@@ -1,4 +1,4 @@
-fig:unnamed-chunk-61
+fig:unnamed-chunk-64
 fig:queencase
 fig:mlr3
 fig:blockcv
@@ -13,7 +13,6 @@ st_nearest_feature
 spatial-subsetting
 spatial-joins
 spatial-aggregation
-exercises
 point-pattern-analysis
 the-ppp-class
 first-order-processes
@@ -27,7 +26,7 @@ the-data
 proximity-polygons
 trend-surface-analysis
 splines
-weighted-average
+weighted-averaging
 kriging
 machine-learning
 terrain-analysis-with-terra
