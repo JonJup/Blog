@@ -36,14 +36,18 @@ However, when you know raster, you also know how to do most things in terra.
 The easiest way to specify a new raster is by calling `rast()` without any arguments.
 
 ```{r eval= F}
-# loading the package 
+# loading the required packages 
 library(terra)
 library(dplyr)
+library(sf)
+library(tmap)
 ```
 
 ```{r echo = F, results = "hide", message =FALSE}
 library(terra)
 library(dplyr)
+library(sf)
+library(tmap)
 ```
 
 ```{r}
@@ -241,37 +245,37 @@ global(dem1crop, "sum")
 global(dem1crop, "mean")
 ```
 
-We can also expand a raster.
-That means we add rows and/ or columns with NA values.
-The other way around we can also trim them, removing all cells with NAs in the margins.
+We can also expand a raster with the `extend()` function.
+That means we add rows and/ or columns with `NA` values.
+The other way around we can also trim them, removing all cells with `NA`s in the margins.
 
 ```{r}
-dem1.exp = expand(dem1, y = c(100,100))
+dem1.exp = extend(dem1, y = c(100,100))
 plot(dem1.exp)
 ```
 
-Since all the NAs are just white its hard to see what we actually did here.
-Lets give them some random value so we can actually see the cells we added.
+Since all the `NA`s are just white, it's hard to see what we actually did here.
+Let's give them some random value so we can see the cells we added.
 
 ```{r}
 na_cells = which(is.na(values(dem1.exp)))
-values(dem1.exp)[na_cells] = 1
+values(dem1.exp)[na_cells] = 300
 plot(dem1.exp)
 ```
 
-We can now clearly see the added cells in gray.
+We can now clearly see the added cells in brown.
 With `trim()` we can remove them again.
 
 ```{r}
-na_cells = which(values(dem1.exp) == 1)
+na_cells = which(values(dem1.exp) == 300)
 values(dem1.exp)[na_cells] = NA
 dem1.trm = trim(dem1.exp)
 plot(dem1.trm)
 ```
 
 As mentioned before, sometimes you want to combine rasters.
-For example our to dems are both part of a larger DEM that covers all of German federal state of Rhineland-Palatinate.
-We can combine the two with `merge()`
+For example our two DEMs are both part of a larger DEM that covers all of the German federal state Rhineland-Palatinate.
+We can combine the two rasters with `merge()`
 
 ```{r}
 dem_merge = merge(dem1, dem2)
@@ -280,14 +284,14 @@ plot(dem_merge)
 
 Whenever you want to use multiple raster in an operation, it is important that they have the same CRS and cell sizes.
 You can increase cell sizes with `aggregate()` and reduce cell sizes with `disaggregate()`.
-In the first case several cells are combined into one.
-The number of cells is set in the fact argument.
+In the first case, several cells are combined into one.
+The number of cells is set with the `fact` argument.
 When you supply one number it is used for both directions.
 So if you call `aggregate(x, fact = 2)` and raster has the cell size 10m by 10m, the new raster will be 20m by 20m.
-You can also provide fact with a vector that specifies the aggregation factor in each direction.
-The third argument is fun which specifies how to calculate the new cell value.
-If our new cell consists out of four old cells (aggregation factor of 2) we somehow need to combine these four numbers into one.
-Common options here are mean, median, modal, maximum, minimum or sum.
+You can also provide `fact` with a vector that specifies the aggregation factor in each direction.
+The third argument is `fun` which specifies how to calculate the new cell value.
+If our new cell consists of four old cells (i.e., we used an aggregation factor of 2) we somehow need to combine those four numbers into one.
+Common options here are the mean, the median, the modal, the maximum, the minimum, or the sum.
 
 ```{r}
 dem1_agg_2_mean = aggregate(dem1, fact=2, fun = "mean")
@@ -310,32 +314,147 @@ plot(dem1_agg_max,   main = "maximum")
 plot(dem1_agg_sum , main = "sum")
 ```
 
-When we want to go in the other direction we disaggregate raster cells.
+When we want to go in the other direction, we disaggregate raster cells with the `disagg()` function.
 Sadly, we cannot magically determine what values are the field truth for the new, smaller cells.
 Instead each new cell gets the same value as it's parent.
 
 ```{r}
-dem1_disagg = disaggregate(dem1, fact = 2)
+dem1_disagg = disagg(dem1, fact = 2)
 plot(dem1_disagg)
 ```
 
-Both `aggregate()` and `disaggregate()` can only take integer values as (dis)aggregation factors.
-So what do you do if the new cell size you need as not simple multiple of the old one?
-We use `resample()`.
-To highlight how this works we will create a new raster which covers the same area and has a cell size of 15 by 15 meters.
+## Extracting polygon values with rasters.
 
+We often encounter situations where we want to extract the values of a raster that coincide with vector data we have. 
+For example, we might have taken soil samples along a mountain and now we want to now the altitude of the samples or we are interested in the land cover of a river catchment. 
+
+To demonstrate this, we will need some vector data sets. 
+For the point data, we can simulate points within the bounding box of the DEMs we used before. 
 ```{r}
-x = rast(resolution = c(15,15), crs = "+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ",
-         extent = ext(dem1))
-x2 = resample(x = dem1, y = x)
-plot(x2)
+# - extract extend of DEM
+dem.ext <- ext(dem1)
+# - convert extend to bounding box usable by sf
+dem.bb <- st_bbox(dem.ext)
+# - create 10 random points within bounding box
+random_points <- st_sample(x = st_as_sfc(dem.bb), 10)
+random_points <- st_as_sf(random_points, crs = 25832)
+#- interactive map
+tmap_mode("view")
+tm_shape(dem1) + tm_raster() + tm_shape(random_points) + tm_dots(size = 1)
 ```
 
-Changing the CRS, i.e. what we know as transforming for vectors is called wrapping for rasters and can be done with the aptly named function `wrap()`.
+Now we have ten points that are randomly distributed across the map. 
+If your repeat this with you own computer your ten points will be at other positions. 
+Now that we have, we can extract the raster values, i.e., the altitude, at the locations of our points. 
+This extraction is done with `extract()`.
+The first argument to `extract()` is the raster raster from which we want to extract values.
+The second argument is the location of points, at which we want to extract the values. 
+
+```{r}
+ex.points <- extract(dem1, random_points)
+```
+
+We get a non-spatial data.frame back that holds the row number of points and the elevation at these points. 
+We can add the altitude values back to the points like this: 
+
+```{r}
+random_points$altitude <- ex.points$DGM25_2905530
+tm_shape(random_points) + tm_dots(col = "altitude")
+```
+
+Now we want to look at polygons instead of points. 
+First, we need some polygons. 
+Here, we use river catchments from Rhineland-Palatinate. 
+
+```{r}
+catchments <- st_read(here::here("data/catchments.gpkg"))
+```
+Let's have a look at the data. 
+```{r}
+tm_shape(catchments) + 
+        tm_polygons(alpha = .5) + 
+        tm_shape(dem_merge) + 
+        tm_raster()
+```
+
+As we can see, we are missing elevation data for most of the catchments. 
+Thus, we will first remove all catchments for which we are lacking data. 
+
+```{r}
+dem.ext <- ext(dem_merge)
+# - convert extend to bounding box usable by sf
+dem.bb <- st_bbox(dem.ext) |> st_as_sfc() |> st_as_sf(crs = 25832)
+# - transform catchments to same bb as the DEMs
+catchments <- st_transform(catchments, crs = 25832)
+# - subset catchments to only those that are completely within the DEM 
+catchments2  <- catchments[dem.bb, , op = st_within]
+```
+
+Let's have a look at the result. 
+```{r}
+tm_shape(catchments2) + 
+        tm_polygons(alpha = .5) + 
+        tm_shape(dem_merge) + 
+        tm_raster()
+```
+
+Next, we extract the raster values from the cells within the different catchment polygons with the `extract()` function.
+There is a function with the same name in the `raster` package. 
+To make sure that we are using the function from `terra`, we should therefore call the package explicitly by using `terra::` in front of the `extract()` function. 
+
+```{r}
+dem_ext <- terra::extract(dem_merge, catchments2)
+head(dem_ext)
+```
+
+The result is a data.frame with two columns: `ID` and `DGM25_2905530`. 
+The second cell is named after the raster from which we extracted the values. 
+The `ID` column assigns the raster values to the polygons we used for the extraction. 
+```{r}
+unique(dem_ext$ID)
+```
+As we can see, the ID values go from one to seven and we have 
+
+```{r}
+nrow(catchments2)
+```
+
+seven catchment polygons. So all rows in `dem_ext` in which the `ID` variable is `1` contain raster cell values from cells that are within the polygon in the first row on `catchments2`. 
+
+We could now compute the mean elevation within each catchment and assign those values as a variable to `catchments2`. 
+Here, I will show two different ways to summarize one variable by another. In our case, the elevation (`DGM25_2905530`) by the catchment (`ID`). 
+First, we can use `group_by()` and `summarize()` from the `dplyr` package.
+The first function defines the variable that groups the rows and the second computes some function of a variable. 
+```{r}
+dem_ext |> 
+        group_by(ID) |> 
+        summarize(mean_elev = mean(DGM25_2905530))
+```
+
+Alternatively, we can use the `data.table` package. 
+Here, we need to turn `dem_ext` into a data.table object with `setDT()`. 
+`setDT()` is a mutating function. That means we do not need to assign the result to an object but the object within the function is changed (mutated) directly.  
+Data tables can be subset or modified following the basic scheme `dt[i,j,by]`, we `i` is a logical expression subsetting the rows, `j` is an expression subsetting or modifying columns and `by` provides a grouping structure for `j`. 
+
+```{r}
+library(data.table)
+setDT(dem_ext)
+(dem_ext2 <- dem_ext[, mean(DGM25_2905530), by = "ID"])
+```
+
+Either way we get the same results, which we can now add back to the catchments. 
+```{r}
+catchments2$elev_new <- dem_ext2$V1
+tm_shape(catchments2) + tm_polygons(col = "elev_new")
+```
+
+
+
+
 
 ## Masking
 
-Sometimes we might want to fill holes in rasters, i.e. areas that only contain NAs or some other non-informative value, with the values from a second raster.
+Sometimes we might want to fill holes in rasters, i.e., areas that only contain NAs or some other non-informative value, with the values from a second raster.
 This operation is called masking.
 Here we will work through a short example, where there are randomly scatted NAs throughout the raster.
 This might happen if small but thick clouds prevented our satellite to accurately measure conditions on the ground.

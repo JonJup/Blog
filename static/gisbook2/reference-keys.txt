@@ -46,3 +46,13 @@ network-models
 optimal-channel-networks
 sfnetworks
 finding-paths-in-the-network
+rasters-in-r-the-terra-package
+basic-idea
+creating-a-new-raster
+going-beyond-the-hull
+multiple-layers-in-one-spatraster
+raster-algebra
+high-level-functions
+extracting-raster-values-with-vectors
+masking
+cell-level-functions
