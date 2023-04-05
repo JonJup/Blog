@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 Koordinatenbezugssysteme | Einführung in GIS - QGIS</title>
   <meta name="description" content="5 Koordinatenbezugssysteme | Einführung in GIS - QGIS" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 Koordinatenbezugssysteme | Einführung in GIS - QGIS" />
   <meta property="og:type" content="book" />
@@ -23,14 +23,14 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2022-05-31" />
+<meta name="date" content="2023-04-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="karten-speichern.html"/>
+<link rel="prev" href="vektoroperationen.html"/>
 <link rel="next" href="digitalisierung.html"/>
 <script src="book_assets/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -72,22 +72,49 @@
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Intro</a></li>
 <li class="chapter" data-level="2" data-path="erste-schritte.html"><a href="erste-schritte.html"><i class="fa fa-check"></i><b>2</b> Erste Schritte</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.1</b> Was sehe ich hier?</a></li>
-<li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.2</b> Wie lade ich Daten?</a></li>
-<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.3</b> Plug-ins</a></li>
+<li class="chapter" data-level="2.1" data-path="erste-schritte.html"><a href="erste-schritte.html#qgis-installieren"><i class="fa fa-check"></i><b>2.1</b> QGIS installieren</a></li>
+<li class="chapter" data-level="2.2" data-path="erste-schritte.html"><a href="erste-schritte.html#was-sehe-ich-hier"><i class="fa fa-check"></i><b>2.2</b> Was sehe ich hier?</a></li>
+<li class="chapter" data-level="2.3" data-path="erste-schritte.html"><a href="erste-schritte.html#wie-lade-ich-daten"><i class="fa fa-check"></i><b>2.3</b> Wie lade ich Daten?</a></li>
+<li class="chapter" data-level="2.4" data-path="erste-schritte.html"><a href="erste-schritte.html#projekte"><i class="fa fa-check"></i><b>2.4</b> Projekte</a></li>
+<li class="chapter" data-level="2.5" data-path="erste-schritte.html"><a href="erste-schritte.html#plug-ins"><i class="fa fa-check"></i><b>2.5</b> Plug-ins</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="symbologie.html"><a href="symbologie.html"><i class="fa fa-check"></i><b>3</b> Symbologie</a>
 <ul>
-<li class="chapter" data-level="3.0.1" data-path="symbologie.html"><a href="symbologie.html#single-symbol"><i class="fa fa-check"></i><b>3.0.1</b> Single Symbol</a></li>
-<li class="chapter" data-level="3.0.2" data-path="symbologie.html"><a href="symbologie.html#categorized"><i class="fa fa-check"></i><b>3.0.2</b> Categorized</a></li>
-<li class="chapter" data-level="3.0.3" data-path="symbologie.html"><a href="symbologie.html#graduated"><i class="fa fa-check"></i><b>3.0.3</b> Graduated</a></li>
-<li class="chapter" data-level="3.0.4" data-path="symbologie.html"><a href="symbologie.html#rule-based"><i class="fa fa-check"></i><b>3.0.4</b> Rule based</a></li>
-<li class="chapter" data-level="3.1" data-path="symbologie.html"><a href="symbologie.html#linien-und-polygone"><i class="fa fa-check"></i><b>3.1</b> Linien und Polygone</a></li>
+<li class="chapter" data-level="3.1" data-path="symbologie.html"><a href="symbologie.html#punkte"><i class="fa fa-check"></i><b>3.1</b> Punkte</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="symbologie.html"><a href="symbologie.html#single-symbol"><i class="fa fa-check"></i><b>3.1.1</b> Single Symbol</a></li>
+<li class="chapter" data-level="3.1.2" data-path="symbologie.html"><a href="symbologie.html#categorized"><i class="fa fa-check"></i><b>3.1.2</b> Categorized</a></li>
+<li class="chapter" data-level="3.1.3" data-path="symbologie.html"><a href="symbologie.html#graduated"><i class="fa fa-check"></i><b>3.1.3</b> Graduated</a></li>
+<li class="chapter" data-level="3.1.4" data-path="symbologie.html"><a href="symbologie.html#rule-based"><i class="fa fa-check"></i><b>3.1.4</b> Rule-based</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>4</b> Karten speichern</a></li>
+<li class="chapter" data-level="3.2" data-path="symbologie.html"><a href="symbologie.html#linien-und-polygone"><i class="fa fa-check"></i><b>3.2</b> Linien und Polygone</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="vektoroperationen.html"><a href="vektoroperationen.html"><i class="fa fa-check"></i><b>4</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#die-datensätze"><i class="fa fa-check"></i><b>4.1</b> Die Datensätze</a></li>
+<li class="chapter" data-level="4.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#die-attributtabelle"><i class="fa fa-check"></i><b>4.2</b> Die Attributtabelle</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#zeilen-auswählen"><i class="fa fa-check"></i><b>4.2.1</b> Zeilen auswählen</a></li>
+<li class="chapter" data-level="4.2.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#der-field-calculator"><i class="fa fa-check"></i><b>4.2.2</b> Der Field Calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#vektoroperationen-1"><i class="fa fa-check"></i><b>4.3</b> Vektoroperationen</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#clip"><i class="fa fa-check"></i><b>4.3.1</b> Clip</a></li>
+<li class="chapter" data-level="4.3.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#buffer"><i class="fa fa-check"></i><b>4.3.2</b> Buffer</a></li>
+<li class="chapter" data-level="4.3.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#convex-hull"><i class="fa fa-check"></i><b>4.3.3</b> Convex hull</a></li>
+<li class="chapter" data-level="4.3.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>4.3.4</b> Difference</a></li>
+<li class="chapter" data-level="4.3.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>4.3.5</b> Dissolve</a></li>
+<li class="chapter" data-level="4.3.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>4.3.6</b> Intersection</a></li>
+<li class="chapter" data-level="4.3.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>4.3.7</b> Union</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>4.4</b> Misc</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>4.4.1</b> Minimum bounding geometry</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html"><i class="fa fa-check"></i><b>5</b> Koordinatenbezugssysteme</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind"><i class="fa fa-check"></i><b>5.1</b> Wie finde ich heraus wie meine Daten projeziert sind?</a></li>
+<li class="chapter" data-level="5.1" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#welches-koordinatenbezugssystem-haben-meine-daten"><i class="fa fa-check"></i><b>5.1</b> Welches Koordinatenbezugssystem haben meine Daten?</a></li>
 <li class="chapter" data-level="5.2" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten"><i class="fa fa-check"></i><b>5.2</b> Wie ändere ich das Koordinatenbezugssystem meiner Daten?</a></li>
 <li class="chapter" data-level="5.3" data-path="koordinatenbezugssysteme.html"><a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus"><i class="fa fa-check"></i><b>5.3</b> Wie finde ich das Koordinatenbezugssystem herraus?</a></li>
 </ul></li>
@@ -96,47 +123,24 @@
 <li class="chapter" data-level="6.1" data-path="digitalisierung.html"><a href="digitalisierung.html#keycoding"><i class="fa fa-check"></i><b>6.1</b> Keycoding</a></li>
 <li class="chapter" data-level="6.2" data-path="digitalisierung.html"><a href="digitalisierung.html#erstellen-eines-neuen-vektorlayers"><i class="fa fa-check"></i><b>6.2</b> Erstellen eines neuen Vektorlayers</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="vektoroperationen.html"><a href="vektoroperationen.html"><i class="fa fa-check"></i><b>7</b> Vektoroperationen</a>
+<li class="chapter" data-level="7" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>7</b> Rasteroperationen</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#die-attributtabelle"><i class="fa fa-check"></i><b>7.1</b> Die Attributtabelle</a>
+<li class="chapter" data-level="7.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#einführung"><i class="fa fa-check"></i><b>7.1</b> Einführung</a></li>
+<li class="chapter" data-level="7.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#darstellung-von-rastern"><i class="fa fa-check"></i><b>7.2</b> Darstellung von Rastern</a></li>
+<li class="chapter" data-level="7.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rasteralgebra"><i class="fa fa-check"></i><b>7.3</b> Rasteralgebra</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#filtern"><i class="fa fa-check"></i><b>7.1.1</b> Filtern</a></li>
-<li class="chapter" data-level="7.1.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#eine-neue-spalte-erstellen"><i class="fa fa-check"></i><b>7.1.2</b> Eine neue Spalte erstellen</a></li>
-<li class="chapter" data-level="7.1.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#der-field-calculator"><i class="fa fa-check"></i><b>7.1.3</b> Der Field Calculator</a></li>
+<li class="chapter" data-level="7.3.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#lokale-funktionen"><i class="fa fa-check"></i><b>7.3.1</b> Lokale Funktionen</a></li>
+<li class="chapter" data-level="7.3.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#fokale-funktionen"><i class="fa fa-check"></i><b>7.3.2</b> Fokale Funktionen</a></li>
+<li class="chapter" data-level="7.3.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#zonale-funktionen"><i class="fa fa-check"></i><b>7.3.3</b> Zonale Funktionen</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#vektoroperationen-1"><i class="fa fa-check"></i><b>7.2</b> Vektoroperationen</a>
+<li class="chapter" data-level="7.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#terrain-analysis"><i class="fa fa-check"></i><b>7.4</b> Terrain Analysis</a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#buffer"><i class="fa fa-check"></i><b>7.2.1</b> Buffer</a></li>
-<li class="chapter" data-level="7.2.2" data-path="vektoroperationen.html"><a href="vektoroperationen.html#clip"><i class="fa fa-check"></i><b>7.2.2</b> Clip</a></li>
-<li class="chapter" data-level="7.2.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#convex-hull"><i class="fa fa-check"></i><b>7.2.3</b> Convex hull</a></li>
-<li class="chapter" data-level="7.2.4" data-path="vektoroperationen.html"><a href="vektoroperationen.html#difference"><i class="fa fa-check"></i><b>7.2.4</b> Difference</a></li>
-<li class="chapter" data-level="7.2.5" data-path="vektoroperationen.html"><a href="vektoroperationen.html#dissolve"><i class="fa fa-check"></i><b>7.2.5</b> Dissolve</a></li>
-<li class="chapter" data-level="7.2.6" data-path="vektoroperationen.html"><a href="vektoroperationen.html#intersection"><i class="fa fa-check"></i><b>7.2.6</b> Intersection</a></li>
-<li class="chapter" data-level="7.2.7" data-path="vektoroperationen.html"><a href="vektoroperationen.html#union"><i class="fa fa-check"></i><b>7.2.7</b> Union</a></li>
+<li class="chapter" data-level="7.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gefälle-aspekt"><i class="fa fa-check"></i><b>7.4.1</b> Gefälle &amp; Aspekt</a></li>
+<li class="chapter" data-level="7.4.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>7.4.2</b> Gewässernetzwerk</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="vektoroperationen.html"><a href="vektoroperationen.html#misc"><i class="fa fa-check"></i><b>7.3</b> Misc</a>
-<ul>
-<li class="chapter" data-level="7.3.1" data-path="vektoroperationen.html"><a href="vektoroperationen.html#minimum-bounding-geometry"><i class="fa fa-check"></i><b>7.3.1</b> Minimum bounding geometry</a></li>
+<li class="chapter" data-level="7.5" data-path="rasteroperationen.html"><a href="rasteroperationen.html#ndvi-berechnen"><i class="fa fa-check"></i><b>7.5</b> NDVI berechnen</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="rasteroperationen.html"><a href="rasteroperationen.html"><i class="fa fa-check"></i><b>8</b> Rasteroperationen</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#einführung"><i class="fa fa-check"></i><b>8.1</b> Einführung</a></li>
-<li class="chapter" data-level="8.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#darstellung"><i class="fa fa-check"></i><b>8.2</b> Darstellung</a></li>
-<li class="chapter" data-level="8.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#rasteralgebra"><i class="fa fa-check"></i><b>8.3</b> Rasteralgebra</a>
-<ul>
-<li class="chapter" data-level="8.3.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#lokale-funktionen"><i class="fa fa-check"></i><b>8.3.1</b> Lokale Funktionen</a></li>
-<li class="chapter" data-level="8.3.2" data-path="rasteroperationen.html"><a href="rasteroperationen.html#fokale-funktionen"><i class="fa fa-check"></i><b>8.3.2</b> Fokale Funktionen</a></li>
-<li class="chapter" data-level="8.3.3" data-path="rasteroperationen.html"><a href="rasteroperationen.html#zonale-funktionen"><i class="fa fa-check"></i><b>8.3.3</b> Zonale Funktionen</a></li>
-<li class="chapter" data-level="8.3.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#globale-funktionen"><i class="fa fa-check"></i><b>8.3.4</b> Globale Funktionen</a></li>
-</ul></li>
-<li class="chapter" data-level="8.4" data-path="rasteroperationen.html"><a href="rasteroperationen.html#terrain-analysis"><i class="fa fa-check"></i><b>8.4</b> Terrain Analysis</a>
-<ul>
-<li class="chapter" data-level="8.4.1" data-path="rasteroperationen.html"><a href="rasteroperationen.html#gewässernetzwerk"><i class="fa fa-check"></i><b>8.4.1</b> Gewässernetzwerk</a></li>
-</ul></li>
-<li class="chapter" data-level="8.5" data-path="rasteroperationen.html"><a href="rasteroperationen.html#ndvi-berechnen"><i class="fa fa-check"></i><b>8.5</b> NDVI berechnen</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="datenbankabfragen.html"><a href="datenbankabfragen.html"><i class="fa fa-check"></i><b>9</b> Datenbankabfragen</a></li>
+<li class="chapter" data-level="8" data-path="karten-speichern.html"><a href="karten-speichern.html"><i class="fa fa-check"></i><b>8</b> Karten speichern</a></li>
 </ul>
 
       </nav>
@@ -156,32 +160,44 @@
             <section class="normal" id="section-">
 <div id="koordinatenbezugssysteme" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">5</span> Koordinatenbezugssysteme<a href="koordinatenbezugssysteme.html#koordinatenbezugssysteme" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="wie-finde-ich-heraus-wie-meine-daten-projeziert-sind" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Wie finde ich heraus wie meine Daten projeziert sind?<a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Klickt mit der rechten Maustaste auf den Layer von dem ihr die aktuelle Projektion wissen wollt und wählt dann <strong>Properties</strong>, die unterste Option. Klick hier ganz oben auf Information <img src="inline/metadata.png" />. Im dritten Feld von oben (Coordinate Reference System (CRS)) findet ihr die Informationen.</p>
+<div id="welches-koordinatenbezugssystem-haben-meine-daten" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Welches Koordinatenbezugssystem haben meine Daten?<a href="koordinatenbezugssysteme.html#welches-koordinatenbezugssystem-haben-meine-daten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Klickt mit der rechten Maustaste auf den Layer von dem ihr das aktuelle Koordinatenbezugssystem (KBS) wissen wollt und wählt dann <strong>Properties</strong>, die unterste Option. Klick hier ganz oben auf Information <img src="inline/metadata.png" />. Im dritten Feld von oben (Coordinate Reference System (CRS)) findet ihr die Informationen.</p>
+<div class="blackbox work">
+<p><strong>Aufgabe</strong></p>
+<ul>
+<li>Welches KBS haben die Kohlmeisendaten?</li>
+</ul>
+</div>
 </div>
 <div id="wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Wie ändere ich das Koordinatenbezugssystem meiner Daten?<a href="koordinatenbezugssysteme.html#wie-ändere-ich-das-koordinatenbezugssystem-meiner-daten" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Hier gibt es zwei Möglichkeiten. Eure Daten haben CRS X aber wurden, fälschlicherweise, in CRS Y geladen. In diesem Szenario wollt ihr die Daten nicht reprojezieren sondern nur eine Einstellung ändern. Das könnt ihr mit im <strong>Properties</strong> (siehe <a href="koordinatenbezugssysteme.html#wie-finde-ich-heraus-wie-meine-daten-projeziert-sind">hier</a>) im Reiter <strong>Source</strong> <img src="inline/system.png" />. Das Fenster seht ihr in Abbilding <a href="koordinatenbezugssysteme.html#fig:proj1">5.1</a></p>
+<p>Hier gibt es zwei Szenarien:<br />
+1. Ihr habt eure Daten im falschen KBS geladen und wollt dies nun ändern.<br />
+2. Die Daten liegen im richtigen KBS vor, aber ihr möchtet es ändern.</p>
+<p>Im ersten Szenario wollt ihr also die Koordinaten an sich nich verändern.
+Ihr wollt nur ändern wie QGIS diese Koordinaten der Erde zuweist.
+Im zweiten Szenario wollt ihr die Koordinanten an sich ändern.</p>
+<p>Für das ersten Szenario, geht im Fenster <strong>Properties</strong> das wir bereits im letzten Teilabschnitt geöffnet haben in den Reiter <strong>Source</strong> <img src="inline/system.png" /> (Abbilding <a href="koordinatenbezugssysteme.html#fig:proj1">5.1</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:proj1"></span>
 <img src="fig/proj1.png" alt="Source Fenters " width="410" />
 <p class="caption">
 Figure 5.1: Source Fenters
 </p>
 </div>
-<p>Im obersten Fenster wählt ihr den Layer den ihr anpassen wollt. Darunter könnt auf die aktuelle Auswahl klicken um eine Liste mit kürzlich verwendeten oder geläufigen Alternativen angezeigt zu bekommen. Falls das gesuchte CRS nicht dabei ist könnt ihr mit einem Klick auf den <img src="inline/mActionCustomProjection.png" /> Knopf ein Fenster öffnen in dem ihr mithilfe des EPSG Codes jedes CRS finden könnt, das QGIS kennt.</p>
-<p>Falls ihr die Daten reprojezieren wollt, sie also in CRS X geladen sind und auch in diesem Format vorliegen, aber ihr sie in CRS Y haben wollt, geht das über das <strong>reproject layer</strong> Tool (Abb. <a href="koordinatenbezugssysteme.html#fig:proj2">5.2</a>).</p>
+<p>Im obersten Fenster wählt ihr den Layer den ihr anpassen wollt. Darunter könnt auf die aktuelle Auswahl klicken um eine Liste mit kürzlich verwendeten oder geläufigen Alternativen angezeigt zu bekommen. Falls das gesuchte KBS nicht dabei ist könnt ihr mit einem Klick auf den <img src="inline/mActionCustomProjection.png" /> Knopf ein Fenster öffnen in dem ihr mithilfe des EPSG Codes jedes KBS finden könnt, das QGIS kennt.</p>
+<p>Für das zweite Szenario nutzen wir das <strong>reproject layer</strong> Tool (Abb. <a href="koordinatenbezugssysteme.html#fig:proj2">5.2</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:proj2"></span>
 <img src="fig/proj2.png" alt="Reproject Layer" width="434" />
 <p class="caption">
 Figure 5.2: Reproject Layer
 </p>
 </div>
-<p>Im erscheinenden Fenster einfach den Layer auswählen den ihr reprojezieren wollt (<em>Input Layer</em>) und unter <em>Target CRS</em> das Ziel CRS auswählen. Dann auf <strong>Run</strong> klicken.</p>
+<p>Im erscheinenden Fenster einfach den Layer auswählen den ihr reprojezieren wollt (<em>Input Layer</em>), unter <em>Target CRS</em> das Ziel KBS auswählen und auf <strong>Run</strong> klicken.</p>
 </div>
 <div id="wie-finde-ich-das-koordinatenbezugssystem-herraus" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> Wie finde ich das Koordinatenbezugssystem herraus?<a href="koordinatenbezugssysteme.html#wie-finde-ich-das-koordinatenbezugssystem-herraus" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Folgendes Szenario: Ihr habt einen Datensatz erhalten mit räumlichen Koordinaten und Namen der Orte. Ihr wisst aber nicht in welchem Koordinatenbezgssystem (KBS) und in welcher Projektion die Daten vorliegen. Dabei kann euch die Website <a href="http://projfinder.com/" class="uri">http://projfinder.com/</a> weiterhelfen.</p>
+<p>Folgendes Szenario: Ihr habt einen Datensatz erhalten mit räumlichen Koordinaten und Namen der Orte. Ihr wisst aber nicht in welchem KBS und in welcher Projektion die Daten vorliegen. Dabei kann euch die Website <a href="http://projfinder.com/" class="uri">http://projfinder.com/</a> weiterhelfen.</p>
 <p>Die Seite ist zweigeteilt (Abb. <a href="koordinatenbezugssysteme.html#fig:pf1">5.3</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:pf1"></span>
 <img src="fig/projfinder1.png" alt="projfinder.com" width="960" />
@@ -189,25 +205,25 @@ Figure 5.2: Reproject Layer
 Figure 5.3: projfinder.com
 </p>
 </div>
-<p>Auf der linken Seite seht ihr zwei Eingabefelder und auf der rechten eine Karte mit Fadenkreuz. Angenommen ihr wisst nicht welche Projektion die Kohlmeisendaten haben, könntet ihr in der Spalte <em>locality</em> weitere Informationen zur Probestelle finden. Einen Ausschnit meiner Tabelle seht ihr in Abbildung <a href="koordinatenbezugssysteme.html#fig:pf2">5.4</a>.</p>
+<p>Auf der linken Seite seht ihr zwei Eingabefelder und auf der rechten eine Karte mit Fadenkreuz. Angenommen ihr wisst nicht welche Projektion die Kohlmeisendaten haben, aber durchdie Spalte <em>locality</em> haben weitere Informationen zur Probestelle. Einen Ausschnit meiner Tabelle seht ihr in Abbildung <a href="koordinatenbezugssysteme.html#fig:pf2">5.4</a>.</p>
 <div class="figure"><span style="display:block;" id="fig:pf2"></span>
 <img src="fig/projfinder2.png" alt="Kohlmeisendaten" width="961" />
 <p class="caption">
 Figure 5.4: Kohlmeisendaten
 </p>
 </div>
-<p>In Reihe elf sehe ich das eine Beobachtung aus Bad Harzburg stammt und die Koordinaten 51.87653 und 10.556916 hat. Nun kann ich auf projfinder.com auf der rechten Karte Bad Harzburg auswählen, links die beiden Koordinante eingeben und dann find <em>find my projection</em> klicken. Dann tauch unter dem <em>find my projection</em> Knopf eine Tabelle auf (Abb. <a href="koordinatenbezugssysteme.html#fig:pf3">5.5</a>).</p>
+<p>In Reihe elf sehe ich das eine Beobachtung aus Bad Harzburg stammt und die Koordinaten 51.87653 und 10.556916 hat. Nun kann ich auf projfinder.com auf der rechten Karte Bad Harzburg auswählen, links die beiden Koordinanten eingeben und dann find auf <em>find my projection</em> klicken. Dann tauch unter dem <em>find my projection</em> Knopf eine Tabelle auf (Abb. <a href="koordinatenbezugssysteme.html#fig:pf3">5.5</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:pf3"></span>
 <img src="fig/projfinder3.png" alt="Auswahl der besten Projektionen" width="570" />
 <p class="caption">
 Figure 5.5: Auswahl der besten Projektionen
 </p>
 </div>
-<p>In der Tabelle sind verschiedene Projektionen aufgeführt und die Distanz die der Punkt mit den angegeben Koordinatne in der jeweiligen Projektion zu dem von uns mit dem Fadenkreuz gewähten Punkt hat. In unserem Fall wissen wir das die Daten in dem nicht projezierten Koordinatenbezugssystem WGS 84 vorliegen. Das ist erst an Stelle neun, aber die Unterschiede zwischen den zehn aufgeführten KBS bzw. Projektionen bewegen sich im Zentimeterbereich. Falls eure Daten nur eine kleine Fläche bedecken, so wie unsere Maisendaten, ist es egal welche der hier angegebenen Projektionen ihr wählt. Alle passen für diese Region gut. Falls ihr einen größeren Datensatz habt (ganz Deutschland oder Europa) solltet ihr das Verfahren mit mehreren Punkten wiederholen und die Projekten mit der insgesammt kleinsten Abweichung wählen. Die gewählten Punkte sollten möglichst weit von einander entfernt liegen. In diesem Beispiel könnt ihr die Ortbeschreibungen vermutlich gut finden, da es eure eigenen Landkreise sind. Falls ihr mit Ortsnamen in den Daten nichts anfangen könnt, hilft Google Maps.</p>
+<p>In der Tabelle sind verschiedene Projektionen aufgeführt und die Distanz die der Punkt mit den angegeben Koordinatne in der jeweiligen Projektion zu dem von uns mit dem Fadenkreuz gewähten Punkt hat. In unserem Fall wissen wir das die Daten in dem geographischen KBS WGS 84 vorliegen. Das ist erst an Stelle neun, aber die Unterschiede zwischen den zehn aufgeführten KBS bzw. Projektionen bewegen sich im Zentimeterbereich. Falls eure Daten nur eine kleine Fläche bedecken, so wie unsere Maisendaten, ist es egal welche der hier angegebenen Projektionen ihr wählt. Alle passen für diese Region gut. Falls ihr einen größeren Datensatz habt (ganz Deutschland oder Europa) solltet ihr das Verfahren mit mehreren Punkten wiederholen und die Projekten mit der insgesammt kleinsten Abweichung wählen. Die dafür gewählten Punkte sollten möglichst weit von einander entfernt liegen. In diesem Beispiel könnt ihr die Ortbeschreibungen vermutlich gut finden, da es eure eigenen Landkreise sind. Falls ihr mit Ortsnamen in den Daten nichts anfangen könnt, hilft Google Maps.</p>
 <div class="blackbox work">
 <p><strong>Aufgabe</strong></p>
 <ol style="list-style-type: decimal">
-<li>Ladet die Datensätze <em>astast_test_01.csv</em> und <em>astast_test_02.csv</em> aus Olat herunter (Ordner Vorlesung 4)<br />
+<li>Ladet die Datensätze <em>astast_test_01.csv</em> und <em>astast_test_02.csv</em> aus dem <a href="https://seafile.rlp.net/d/9c5ce464775a429386eb/">Datenordner</a><br />
 </li>
 <li>Nutzt projfinder.com um herauszufinden in welchen Projektionen diese beiden Datensätze vorliegen.</li>
 </ol>
@@ -220,7 +236,7 @@ Figure 5.5: Auswahl der besten Projektionen
           </div>
         </div>
       </div>
-<a href="karten-speichern.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vektoroperationen.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="digitalisierung.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -281,7 +297,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
