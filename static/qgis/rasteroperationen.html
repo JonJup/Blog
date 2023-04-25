@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2023-04-18" />
+<meta name="date" content="2023-04-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,7 +162,7 @@
 <h1><span class="header-section-number">7</span> Rasteroperationen<a href="rasteroperationen.html#rasteroperationen" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="einführung" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Einführung<a href="rasteroperationen.html#einführung" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Als erstes Beispiel nutzen wir hier ein digitales Höhenmodell (digital elevation model, DEM) für Deutschland. Die Datei <em>DEM_deutschland.tif</em> findet ihr in <a href="https://seafile.rlp.net/d/9c5ce464775a429386eb/">Datenordner</a>. Wir laden die Datei über den <em>Data Source Manage</em> (Strg + L). Im Data Source Manager wählt ihr links den Reiter <em>Raster</em> und bei <em>Raster dataset(s)</em> könnt ihr mit einem Klick auf <img src="inline/selectstring.png" /> die gewünschte Datei auf dem Computer auswählen.</p>
+<p>Als erstes Beispiel nutzen wir hier ein digitales Höhenmodell (digital elevation model, DEM) für Deutschland. Die Datei <em>DEM_deutschland.tif</em> findet ihr in <a href="https://seafile.rlp.net/d/c757bff20f1f49f99cb2/">Datenordner</a>. Wir laden die Datei über den <em>Data Source Manage</em> (Strg + L). Im Data Source Manager wählt ihr links den Reiter <em>Raster</em> und bei <em>Raster dataset(s)</em> könnt ihr mit einem Klick auf <img src="inline/selectstring.png" /> die gewünschte Datei auf dem Computer auswählen.</p>
 <p>Der Raster erscheint nun in schwarz-weiß (Abb. <a href="rasteroperationen.html#fig:raster1">7.1</a>).</p>
 <div class="figure"><span style="display:block;" id="fig:raster1"></span>
 <img src="fig/raster1.png" alt="DEM für Deutschland nach dem Laden" width="452" />
@@ -344,7 +344,7 @@ Figure 7.19: Gewässernetzerk für Deutschland
 <div id="ndvi-berechnen" class="section level2 hasAnchor" number="7.5">
 <h2><span class="header-section-number">7.5</span> NDVI berechnen<a href="rasteroperationen.html#ndvi-berechnen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Mithilfe des <em>Raster Calculators</em> und der benötigten Daten können wir den NDVI in QGIS berechnen.
-Die notwendingen Satellitendaten könnt ihr entweder aus <a href="https://seafile.rlp.net/d/9c5ce464775a429386eb/">Datenordner</a> oder selber aus dem <a href="https://earthexplorer.usgs.gov/">EarthExplorer</a> laden. In der ersten Option ist nur das Bild für Landau verfügbar. Um das Bild für euren Kreis runterzuladen müsst ihr einen (kostenlosen) Account bei EarthExplorer anlegen. Eine ausführlche Anleitung zum Downloaden von Sattelitenbildern aus dem EarthExplorer gibt es <a href="https://gisgeography.com/usgs-earth-explorer-download-free-landsat-imagery/">hier</a>.</p>
+Die notwendingen Satellitendaten könnt ihr entweder aus <a href="https://seafile.rlp.net/d/c757bff20f1f49f99cb2/">Datenordner</a> oder selber aus dem <a href="https://earthexplorer.usgs.gov/">EarthExplorer</a> laden. In der ersten Option ist nur das Bild für Landau verfügbar. Um das Bild für euren Kreis runterzuladen müsst ihr einen (kostenlosen) Account bei EarthExplorer anlegen. Eine ausführlche Anleitung zum Downloaden von Sattelitenbildern aus dem EarthExplorer gibt es <a href="https://gisgeography.com/usgs-earth-explorer-download-free-landsat-imagery/">hier</a>.</p>
 <p><a href="https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/">Hier</a> bekommt ihr einen Überblick über die Bänder von Landsat 8. Das Near Infrared Band ist Band 5 und das Rot Band ist Band 4. Der NDVI <span class="math display">\[\dfrac{NIR - RED}{NIR + RED}\]</span> ist daher <span class="math display">\[\dfrac{Band5 - Band4}{Band5+Band4}\]</span>. Diese Formel können wir in den <strong>Raster Calculator</strong> eingeben (Abb. <a href="rasteroperationen.html#fig:raster20">7.20</a>) und erhalten dann einen NDVI Raster.</p>
 <div class="figure"><span style="display:block;" id="fig:raster20"></span>
 <img src="fig/raster20.png" alt="Eingabe im Raster Calculator um den NDVI zu berechnen" width="380" />
