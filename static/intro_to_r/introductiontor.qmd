@@ -1,0 +1,1688 @@
+---
+title: "Introduction to R"
+author: "Jonathan Jupke"
+format: 
+        revealjs:
+                chalkboard: true
+editor: visual
+---
+
+<!-- install_version("knitr", version = "1.42", repos = "http://cran.us.r-project.org")-->
+
+##  {background-color="black" background-image="RStudio.png" background-size="cover"}
+
+## Warum R? {auto-animate="true"}
+
+::: incremental
+-   Datenanalyse
+-   Visualisierung
+-   R kann beides
+-   R ist kostenlos
+-   R kann noch viel mehr!
+:::
+
+## Warum R? {auto-animate="true"}
+
+::: {style="color: red;"}
+-   Datenanalyse
+:::
+
+-   Visualisierung
+-   R kann beides
+-   R ist kostenlos
+-   R kann noch viel mehr!
+
+## Warum R? {auto-animate="true"}
+
+-   Datenanalyse
+
+::: {style="color: red;"}
+-   Visualisierung
+:::
+
+-   R kann beides
+-   R ist kostenlos
+-   R kann noch viel mehr!
+
+## 
+
+![](r_base_plot.png){fig-align="center"}
+
+## 
+
+![](plot_ridge.png){.absolute top="60" left="0" width="500" height="700"}
+
+![](plot_rader.png){.absolute top="60" right="0" width="650" height="750"}
+
+## 
+
+![](art.png){fig-align="center"}
+
+## 
+
+```{r, fig.align='center'}
+# Data: volcano is provided by plotly
+library(plotly)
+# Plot
+p <- plot_ly(z = volcano, type = "surface")
+p 
+```
+
+## 
+
+![](map1.png){fig-align="center"}
+
+## 
+
+```{r, fig.align='center'}
+# Load the library
+library(leaflet)
+
+
+ 
+# Background 2: World Imagery
+m <- leaflet() %>% 
+   addTiles() %>% 
+   setView( lng = 2.34, lat = 48.85, zoom = 3 ) %>% 
+   addProviderTiles("Esri.WorldImagery")
+m
+```
+
+## 
+
+![](rayshader.gif){fig-align="center"}
+
+## Warum R? {auto-animate="true"}
+
+-   Datenanalyse\
+-   Visualisierung
+-   R kann beides
+-   R ist kostenlos
+-   R kann noch viel mehr!
+
+## Warum R? {auto-animate="true"}
+
+-   Datenanalyse\
+-   Visualisierung
+-   R kann beides
+-   R ist kostenlos
+
+::: {style="color: red;"}
+-   R kann noch viel mehr!
+:::
+
+## Literate programming --- R Markdown
+
+![](example_markdown.gif){fig-align="center"}
+
+## RBookdown
+
+![](einführungGIS.png){fig-align="center"}
+
+## R als Taschenrechner {auto-animate="true"}
+
+```{r echo = T}
+1+1 
+```
+
+## R als Taschenrechner {auto-animate="true"}
+
+```{r echo = T}
+1+1 
+1-1 
+```
+
+## R als Taschenrechner {auto-animate="true"}
+
+```{r echo = T}
+1+1 
+1-1
+log(17) / exp(4) * 10^4
+```
+
+## Funktionen
+
+::: incremental
+-   `log()` und `exp()` sind Funktionen.
+-   Jede Funkion besteht aus ihrem Namen (log, exp) und den [Argumenten]{style="color:blue;"} in `()`
+-   Kennt ihr weitere Beispiele für Funktionen in R?
+:::
+
+## Variablen {auto-animate="true"}
+
+-   Wir können alles was wir tun als Variable speichern
+
+::: fragment
+```{r echo = T, eval = F}
+x <- 1 
+x
+```
+:::
+
+## Variablen {auto-animate="true"}
+
+-   Wir können alles was wir tun als Variable speichern
+
+```{r echo = T, eval = T}
+x <- 1 
+x
+```
+
+::: fragment
+-   `=` macht das Gleiche
+
+```{r echo = T, eval = F}
+x = 1 
+```
+:::
+
+## Variablen {auto-animate="true"}
+
+```{r echo = T, eval = F}
+x <- 4 
+y <- 6
+z <- x + y
+z
+```
+
+## Variablen {auto-animate="true"}
+
+```{r echo = T}
+x <- 4 
+y <- 6
+z <- x + y
+z
+```
+
+::: fragment
+```{r, echo = T, eval = F}
+x <- 14 
+z
+```
+:::
+
+## Variablen {auto-animate="true"}
+
+```{r echo = T}
+x <- 4 
+y <- 6
+z <- x + y
+z
+```
+
+```{r, echo = T, eval = T}
+x <- 14 
+z
+```
+
+## Variablen, Objekte, Symbole
+
+::: incremental
+-   In R ist [alles]{style="color:blue;"} ein Objekt
+-   R ist eine [objektorientierte]{style="color:blue;"} Sprache
+-   Die Namen der Objekte sind [Symbole]{style="color:blue;"}
+-   Eine [Umwelt]{style="color:blue;"} ist die Verbindet Symbole mit Objekten
+-   Innerhalb einer R Session könnt ihr mehrere Umwelten haben
+:::
+
+## Jedes Objekt hat eine Klasse {auto-animate="true"}
+
+::: fragment
+```{r echo = T}
+class(1)
+```
+:::
+
+::: fragment
+```{r echo = T}
+class("a")
+```
+:::
+
+::: fragment
+```{r echo = T}
+class(TRUE)
+```
+:::
+
+::: fragment
+```{r echo = T, eval = F}
+a <- 4
+b <- 3
+x <- b > a
+x
+```
+:::
+
+## Jedes Objekt hat eine Klasse {auto-animate="true"}
+
+```{r echo = T}
+class(1)
+```
+
+```{r echo = T}
+class("a")
+```
+
+```{r echo = T}
+class(TRUE)
+```
+
+```{r echo = T, eval = T}
+a <- 4
+b <- 3
+x <- b > a
+x
+```
+
+## Logische Operatoren {auto-animate="true"}
+
+```{r echo=T }
+t = c(1,2,3,4,5)
+```
+
+## Logische Operatoren {auto-animate="true"}
+
+```{r echo =T }
+t = c(1,2,3,4,5)
+t == 1
+```
+
+## Logische Operatoren {auto-animate="true"}
+
+```{r echo =T }
+t = c(1,2,3,4,5)
+t != 1
+```
+
+## Logische Operatoren {auto-animate="true"}
+
+```{r echo =T }
+t = c(1,2,3,4,5)
+t %in% c(1,2,3)
+```
+
+## Logische Operatoren {auto-animate="true"}
+
+```{r echo =T }
+t = c(1,2,3,4,5)
+c(1,2,3) %in% t
+```
+
+## Objekte kombinieren {auto-animate="true"}
+
+::: incremental
+-   Vektoren werden mit `c()` gebildet
+-   c steht für *concatenate* - verketten
+:::
+
+::: fragment
+```{r echo = T}
+c(1,2,3,4,5,6)
+```
+:::
+
+::: fragment
+```{r echo = T}
+x <- c(1:6)
+```
+
+```{r echo = F}
+x
+```
+:::
+
+::: fragment
+```{r echo = T, eval = F }
+(x <- c(1, "a"))
+```
+:::
+
+## Objekte kombinieren {auto-animate="true"}
+
+-   Vektoren werden mit `c()` gebildet
+-   c steht für *concatenate* - verketten
+
+```{r echo = T}
+c(1,2,3,4,5,6)
+```
+
+```{r echo = T}
+x <- c(1:6)
+```
+
+```{r echo = F}
+x
+```
+
+```{r echo = T, eval = T}
+(x <- c(1, "a"))
+```
+
+::: fragment
+```{r echo = T}
+x <- c(1:6)
+x + 1
+```
+:::
+
+::: fragment
+```{r echo = T}
+x * 3
+```
+:::
+
+## Vektoren subsetten
+
+-   *subsetten* ist die Auswahl einer Teilmenge, eines *Subsets*
+
+::: fragment
+Wähle das erste Element
+
+```{r echo = T}
+x[1]
+```
+:::
+
+::: fragment
+Logische Werte nutzen
+
+```{r echo = T}
+y <- x > 4
+```
+
+```{r echo = F}
+y
+```
+:::
+
+::: fragment
+```{r echo = T }
+x[y]
+```
+:::
+
+::: fragment
+```{r echo = T }
+x[x %% 3 == 0]
+```
+:::
+
+## Aufgabe 1: Subsetten von Vektoren
+
+-   Erstelle einen Vektor mit den Zahlen von 1 bis 100
+-   Wähle alle Werte die kleiner sind als 80
+-   Wähle alle Werte deren Rest nach der Teilung durch 8 größer als 4 ist.
+
+## Einfach Sequenzen erstellen
+
+::: fragment
+```{r echo = T, eval = F}
+seq(from = 1, to = 2, by = .2)
+```
+:::
+
+## Einfach Sequenzen erstellen
+
+```{r echo = T }
+seq(from = 1, to = 2, by = .2)
+```
+
+::: fragment
+```{r echo = T, eval = F}
+seq(from = 1, to = 2, length.out = 30)
+```
+:::
+
+## Einfach Sequenzen erstellen
+
+```{r echo = T}
+seq(from = 1, to = 2, by = .2)
+```
+
+```{r echo = T}
+seq(from = 1, to = 2, length.out = 30)
+```
+
+::: fragment
+```{r echo = T, eval = F}
+rep(c(1,2,3), each = 3)
+rep(c(1,2,3), times = 3)
+```
+:::
+
+## Einfach Sequenzen erstellen
+
+```{r echo = T}
+seq(from = 1, to = 2, by = .2)
+```
+
+```{r echo = T}
+seq(from = 1, to = 2, length.out = 30)
+```
+
+```{r echo = T, eval = T}
+rep(c(1,2,3), each = 3)
+rep(c(1,2,3), times = 3)
+```
+
+## Matrizen
+
+::: incremental
+-   Matrizen haben [Reihen]{style="color:blue;"} und [Spalten]{style="color:blue;"}
+-   Alle Elemente einer Matrix müssen die [gleiche Klasse]{style="color:blue;"} haben
+:::
+
+::: fragment
+```{r, echo = T}
+x <- matrix(1:9, ncol = 3, nrow = 3)
+```
+:::
+
+## Matrizen
+
+-   Matrizen haben [Reihen]{style="color:blue;"} und [Spalten]{style="color:blue;"}
+-   Alle Elemente einer Matrix müssen die [gleiche Klasse]{style="color:blue;"} haben
+
+```{r, echo = T}
+x <- matrix(1:9, ncol = 3, nrow = 3)
+```
+
+```{r}
+x
+```
+
+::: fragment
+```{r, echo = T}
+x + 1
+```
+:::
+
+## Subsetting von Matrizen
+
+-   Wir subsetten mit `[Reihe, Spalte]`
+
+::: fragment
+```{r echo = T }
+# Erste Reihe, zweite Spalte
+x[1,2]
+```
+:::
+
+::: fragment
+```{r echo = T}
+# Erste Reihe, alle Spalten
+x[1,]
+```
+:::
+
+::: fragment
+```{r echo = T}
+# Alle Reihen, dritte Spalte
+x[,3]
+```
+:::
+
+## Übungen - Subsetten von Matrizen
+
+-   Führt den folgenden Code aus
+
+```{r echo=T, eval =F}
+mat <- matrix(c(1:10, 10:1, 11:20), ncol = 3)
+```
+
+-   Wähle die dritte Reihe, zweite Spalte
+-   Wähle die zweite Spalte, zehnte Reihe
+-   Alle Reihen in dennen der Wert der ersten Spalte größer als 5 ist
+-   Alle Spalten in dennen der Wert der zweiten Reihe größer 6 ist, und die Reihen 1 bis 6
+
+## Tabellen
+
+::: incremental
+-   Datensätze wie wir sie meistens nutzen werden in *base R* als `data.frame()` repräsentiert.
+-   Jede Spalte ist eine Variable, jede Reihe eine Beobachtung
+-   Alle Beobachtung einer Variable haben die gleiche Klasse, aber verschiedene Variablen können verschiedene Klassen haben
+:::
+
+## Tabellen
+
+```{r echo = T, eval = F}
+a <- sample(1:100, 10)
+b <- letters[sample(1:length(letters),10)]
+c <- data.frame(number = a, character = b)
+c
+```
+
+## Tabellen
+
+```{r echo = T}
+a <- sample(1:100, 10)
+b <- letters[sample(1:length(letters),10)]
+c <- data.frame(number = a, character = b)
+c
+```
+
+## Subsetten von `data.frames`
+
+::: fragment
+Genau wie Matrizen
+
+```{r echo = T}
+c[1,1]
+```
+:::
+
+::: fragment
+Einzelne Spalten auch per `$`
+
+```{r echo = T}
+c$number
+```
+:::
+
+::: fragment
+```{r echo = T}
+c[c$number > 60, "character"]
+```
+:::
+
+## Übung - Subsetten von `data.frames`
+
+-   Führe den folgenden Code aus
+
+```{r echo=T, eval =F}
+df <- data.frame(a = 1:22, 
+                 b = sample(letters, 22), 
+                 c = rpois(22, 5))
+```
+
+-   Wähle die erste Reihe aus
+-   Wähle die Spalte `c`
+-   Wähle die alle Reihen in Spalte `c` in denen der Buchstabe in `b` a,b,c,d,e oder f ist.
+-   Wähle alle Reihen in `b` in denen die Summe von `a` und `c` größer 20 ist
+
+## Listen
+
+::: incremental
+-   Technisch betrachtet sind `data.frames` Listen von Vektoren
+-   Listen sind wie Vektoren (1 Dimension)
+-   Elemente können alle R Objekte sein
+:::
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval = F}
+list(1,2,3,4,5,6)
+```
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval = T}
+list(1,2,3,4,5,6)
+```
+
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval = F}
+list(1,"2",3,4,5,6)
+```
+
+::: fragment
+```{r}
+list(1,"2",3,4,5,6)
+```
+:::
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval = F}
+list(1,"2",c(1,2,3),4,5,6)
+```
+
+::: fragment
+```{r echo = F, eval = T}
+list(1,"2",c(1,2,3),4,5,6)
+```
+:::
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval =F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),5,6)
+```
+
+::: fragment
+```{r echo = F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),5,6)
+```
+:::
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval = F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),data.frame(var1 = a, var2 = b),6)
+```
+
+::: fragment
+```{r echo = F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),data.frame(var1 = a, var2 = b),6)
+```
+:::
+
+## Listen {auto-animate="true"}
+
+```{r echo = T, eval =F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),data.frame(var1 = a, var2 = b),list(1,2,3))
+```
+
+```{r echo = F, eval =T}
+d <- list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),data.frame(var1 = a, var2 = b),list(1,2,3))
+```
+
+::: fragment
+```{r echo = F}
+list(1,"2",c(1,2,3),matrix(1:9, nrow = 3),data.frame(var1 = a, var2 = b),list(1,2,3))
+```
+:::
+
+## Listen subsetten {auto-animate="true"}
+
+```{r echo = T, eval = F}
+d[[1]]
+```
+
+## Listen subsetten {auto-animate="true"}
+
+```{r echo = T, eval = T}
+d[[1]]
+```
+
+::: fragment
+```{r echo=T, eval=F}
+d[[3]][3]
+```
+:::
+
+## Listen subsetten {auto-animate="true"}
+
+```{r echo = T, eval = T}
+d[[1]]
+```
+
+
+```{r echo=T}
+d[[3]][3]
+```
+
+::: fragment
+```{r echo=T, eval=F}
+d[[5]]$var2
+```
+:::
+
+## Listen subsetten {auto-animate="true"}
+
+```{r echo = T, eval = T}
+d[[1]]
+```
+
+
+```{r echo=T}
+d[[3]][3]
+```
+
+```{r echo=T, eval=T}
+d[[5]]$var2
+```
+
+## Übungen 4: Listen
+
+-   Erstelle eine Liste die eine Zahl, einen Buchstaben, eine Liste, einen data.frame und eine Matrix enhält
+-   Wähle das zweite Element der Liste
+-   Wähle die zweite Spalte der Matrix in der Liste
+-   Wähle das dritte Element der Liste in der Liste
+-   Nutze den `$` Operator um eine Spalte des data.frames in der Liste zu wählen
+
+## R packages
+
+-   enthalten neue Funktionen und Datein
+
+::: fragment
+```{r eval = F, echo = T}
+# Nur einmal
+install.packages("dplyr")
+```
+:::
+
+::: fragment
+```{r eval = F, echo = T}
+# Jedes mal. Alternativ require()
+library(dplyr)
+```
+:::
+
+::: incremental
+-   zu viele geladene Packages machen R langsam
+-   verschiedene Packages beinhalten Funktionen mit den gleichen Namen
+-   *conflicted* Package
+:::
+
+::: fragment
+```{r eval = F, echo = T}
+dplyr::filter()
+```
+:::
+
+## Daten laden - csv {auto-animate="true"}
+
+-   CSV Dateien können mit *base R* gelesen werden
+
+::: fragment
+```{r echo = T, eval=FALSE}
+pm_rlp <- read.csv(file = "Rheinland-Pfalz.csv")
+```
+:::
+
+## Daten laden - csv {auto-animate="true"}
+
+-   CSV Dateien können mit *base R* gelesen werden
+
+```{r echo = T, eval=TRUE}
+pm_rlp <- read.csv(file = "Rheinland-Pfalz.csv")
+class(pm_rlp)
+```
+
+## Daten laden - csv {auto-animate="true"}
+
+-   CSV Dateien können mit *base R* gelesen werden
+
+```{r echo = T, eval=3}
+pm_rlp <- read.csv(file = "Rheinland-Pfalz.csv")
+class(pm_rlp)
+head(pm_rlp)
+```
+
+## Das Working directory
+
+::: fragment
+::: incremental
+-   Im `file` Argument müsst ihr den Pfad vom aktuellen WD bis zur Datei angeben
+-   Wo ist das aktuelle WD?
+:::
+:::
+
+::: fragment
+```{r echo = T}
+getwd()
+```
+:::
+
+::: fragment
+```{r echo = T, eval = F}
+setwd("../../placeholder")
+```
+:::
+
+## Projekte
+
+-   Innerhalb von Projekten ist das WD automatisch im Projektordner
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(readr)
+```
+
+::: fragment
+![](readr.png){.absolute top="300" left="0" width="300" height="300"}
+:::
+
+::: fragment
+![](tidyverse.png){.absolute top="300" left="300" width="300" height="300"}
+:::
+
+::: fragment
+![](wickham.jpg){.absolute top="300" left="600" width="300" height="300"}
+:::
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(readr)
+pm_rlp <- read_csv(file = "Rheinland-Pfalz.csv")
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(readr)
+pm_rlp <- read_csv(file = "Rheinland-Pfalz.csv")
+class(pm_rlp)
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(readr)
+pm_rlp <- read_csv(file = "Rheinland-Pfalz.csv")
+class(pm_rlp)
+head(pm_rlp)
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(data.table)
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(data.table)
+pm_rlp <- fread("Rheinland-Pfalz.csv")
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(data.table)
+pm_rlp <- fread("Rheinland-Pfalz.csv")
+class(pm_rlp)
+```
+
+## csv - Alternativen {auto-animate="true"}
+
+```{r echo = T}
+library(data.table)
+pm_rlp <- fread("Rheinland-Pfalz.csv")
+pm_rlp
+```
+
+## Aufgaben 5: CSV laden
+
+-   Nutzt jedes der drei Packete um einmal eine csv Datei in R zu laden. 
+```{r echo = T, eval=F}
+read.csv()
+readr::read_csv()
+data.table::fread()
+```
+
+
+## Daten laden - Excel
+
+::: incremental
+-   In *base R* gibt es keine Funktionen um Exceldateien (xls, xlsx) zu laden
+-   Verschiedene Packages vefügbar
+:::
+
+::: fragment
+```{r, echo = T, eval = F}
+xlsx::read.xlsx()
+readxl::read_excel()
+```
+:::
+
+## Gründe gegen Excelformate
+
+- Excel ist proprietär 
+
+::: fragment
+![](avoid_excel1.png)
+:::
+::: fragment
+![](avoid_excel2.png){.absolute top="300"}
+:::
+::: fragment
+![](avoid_excel3.png){.absolute top="400"}
+:::
+
+
+## RDS
+
+::: incremental
+-   Format das nur von R gelesen werden kann
+-   Kleine Dateien
+-   wird schnell geladen
+-   keine Lesefehler
+:::
+
+```{r eval = F, eco = T}
+saveRDS(object = mp_rlp, file = "rlp.rds")
+mp_rlp <- readRDS("rlp.rds")
+```
+
+# Nützliche Funktionen
+
+## `length()` {auto-animate="true"}
+
+Wie viele Elemente hat ein Objekt
+
+```{r}
+x <- c(1:10)
+```
+
+## `length()` {auto-animate="true"}
+
+Wie viele Elemente hat ein Objekt
+
+```{r echo = T}
+x <- c(1:10)
+length(x)
+```
+
+::: fragment
+-   Was zählt `length()` bei Matrizen, data.frames, und Listen?
+:::
+
+## `append()` {auto-animate="true"}
+
+Fügt Vektoren Elemente hinzu
+
+```{r, echo = T, eval=F}
+append(x = x, values = 1)
+```
+
+## `append()` {auto-animate="true"}
+
+Fügt Vektoren Elemente hinzu
+
+```{r, echo = T, eval=T}
+append(x = x, values = 1)
+```
+
+## `str()` {auto-animate="true"}
+
+[Str]{style="color:blue;"}uktur von Objekten
+
+```{r echo = T}
+str(x)
+```
+
+## `str()` {auto-animate="true"}
+
+[Str]{style="color:blue;"}uktur von Objekten
+
+```{r echo = T, eval = F}
+str(x)
+library(dplyr)
+str(mtcars)
+```
+
+## `str()` {auto-animate="true"}
+
+[Str]{style="color:blue;"}uktur von Objekten
+
+```{r echo = T, eval =T}
+str(x)
+library(dplyr)
+str(mtcars)
+```
+
+## `str()` {auto-animate="true"}
+
+[Str]{style="color:blue;"}uktur von Objekten
+
+```{r echo = T}
+str(x)
+library(dplyr)
+glimpse(mtcars)
+```
+
+## `summary()`{auto-animate="true"}
+
+Fasse Spalten eines Datensatzes zusammen
+
+```{r echo = T, eval=F}
+summary(mtcars)
+```
+
+## `summary()`{auto-animate="true"}
+
+Fasse Spalten eines Datensatzes zusammen
+
+```{r echo = T}
+summary(mtcars)
+```
+
+## `ls()`{auto-animate="true"}
+
+Liste alle Objekte in der akutellen Umwelt auf
+
+```{r echo =T, eval=F }
+ls()
+```
+
+## `ls()`{auto-animate="true"}
+
+Liste alle Objekte in der akutellen Umwelt auf
+
+```{r echo =T }
+ls()
+```
+
+
+## `rm()`{auto-animate="true"}
+
+Entferne Objekte aus der Umwelt
+
+```{r echo = T, eval = F}
+rm()
+```
+
+## `rnom()` & `plot()` {auto-animate="true"}
+
+::: incremental
+-   `rnorm()`: Simuliere Daten aus einer Normalverteilung
+-   `plot()`: Einfachste Funktion um Daten darzustellen
+:::
+
+::: fragment
+```{r echo = T, eval = F}
+a <- c(1:100)
+b <- rnorm(n = 100,  mean = 4, sd = 1)
+plot(a ~ b)
+```
+:::
+
+## `rnom()` & `plot()` {auto-animate="true"}
+
+-   `rnorm()`: Simuliere Daten aus einer Normalverteilung
+-   `plot()`: Einfachste Funktion um Daten darzustellen
+
+```{r echo = T, eval = T}
+a <- c(1:100)
+b <- rnorm(n = 100, mean = 4, sd = 1)
+plot(a ~ b)
+```
+
+## Formula notation
+
+::: incremental
+-   Beziehungen werden in R oft mit der Formulanotation angegeben
+-   `x ~ y` $\rightarrow$ `x` wird durch `y` erklärt
+-   Bei Grafiken beudeted das `x` ist die y-Achse
+:::
+
+# Programmieren
+
+## If-clause {auto-animate="true"}
+
+-   Der Code innerhalb eines if-clauses wird nur ausgeführt, wenn der Bedingung war ist.
+
+::: fragment
+```{r echo = TRUE, eval = FALSE}
+if (condition){
+        do if condition is true
+}
+```
+:::
+
+## If-clause {auto-animate="true"}
+
+-   Der Code innerhalb eines if-clauses wird nur ausgeführt, wenn die Bedingung wahr ist.
+
+```{r echo = TRUE, eval = FALSE}
+# Beispielcode! Würde so nicht laufen.
+if (condition 1){
+        do if condition 1 is true
+} else {
+        do if condition 1 is false
+}
+```
+
+## If-clause {auto-animate="true"}
+
+-   Der Code innerhalb eines if-clauses wird nur ausgeführt, wenn der Bedingung war ist.
+
+```{r echo = TRUE, eval = FALSE}
+# Beispielcode! Würde so nicht laufen.
+if (condition 1){
+        do if condition 1 is true
+} else if (condition 2){
+        do if condition 2 is true
+}
+```
+
+## If-clause {auto-animate="true"}
+
+-   Der Code innerhalb eines if-clauses wird nur ausgeführt, wenn der Bedingung war ist.
+
+```{r echo = TRUE}
+x = sample(1:10, 1)
+x
+if (x > 5){
+        print("big")
+} else {
+        print("small")
+}
+```
+
+## Übung 6: If-clause
+
+-   Schreibe einen If-clause der Tested ob eine Variable gerade ist. Falls die Variable gerade ist schreibt der Test "gerade", falls die Variable ungerade ist schreibt er "ungerade".
+
+-   Schreibe einen If-clause der testet ob ein Objekt eine Matrix ist.
+
+-   Schreibe einen If-clause der die Länge eines Vektors evaluiert. Falls die Länge größer ist als 5 wird schreibt der If-clause "lang". Falls die länge kürzer als oder gleich fünf ist fügt der If-clause so viele elemente hinzu wie notwendig damit die Länge größer fünf ist.
+
+## Loops
+
+::: incremental
+- In *base R* gibt es drei Arten von Loops: `repeat`, `while`, `for`
+- For-Loops am nützlichsten
+:::
+
+## For-loops
+
+![](allison_horst_for_loop.png)
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = F}
+for (i in 1:10){
+        print(i)
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = T}
+for (i in 1:10){
+        print(i)
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = F}
+for (i in 1:10){
+        if (i %% 2 == 0) print(paste("gerade", i)
+        if (i %% 2 != 0) print(paste("ungerade", i)
+        
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = T}
+for (i in 1:10){
+        if (i %% 2 == 0) print(paste("gerade", i))
+        if (i %% 2 != 0) print(paste("ungerade", i))
+        
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = F}
+for (i in 1:10){
+        if (i %% 2 == 0) print(paste("gerade", i))
+        if (i %% 2 != 0) print(paste("ungerade", i))
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = T}
+for (i in 1:10){
+        if (i %% 2 == 0) print(paste("gerade", i))
+        if (i %% 2 != 0) print(paste("ungerade", i))
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r echo = T, eval = T}
+for (i in 1:nrow(mtcars)){
+        mpg.i <- mtcars[i, "mpg"]
+        gear.i <- mtcars[i, "gear"]
+        if (mpg.i > 20 & gear.i > 4){
+                out.i <- "yy"
+        } else if (mpg.i <= 20 & gear.i > 4) {
+                out.i <- "ny"
+        } else if (mpg.i > 20 & gear.i <= 4) {
+                out.i <- "yn"
+        } else {
+                out.i <- "nn"
+        }
+        mtcars$loop[i] <- out.i
+}
+```
+
+## for-loop {auto-animate="true"}
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(x = mpg, y = gear, col = loop)) + 
+        geom_point()
+```
+
+## Nesting {auto-animate="true"}
+
+```{r  echo =T, eval =F}
+for (i in 1:3) {
+        for (j in c("a", "b")){
+                print(paste(j,i))
+        }
+}
+```
+
+## Nesting {auto-animate="true"}
+
+```{r  echo =T, eval =F}
+for (i in 1:3) {
+        for (j in c("a", "b")){
+                print(paste(j,i))
+        }
+}
+```
+
+## Nesting {auto-animate="true"}
+
+```{r  echo =T, eval =T}
+for (i in 1:3) {
+        for (j in c("a", "b")){
+                print(paste(j,i))
+        }
+}
+```
+
+## Nesting {auto-animate="true"}
+
+```{r echo =T, eval =T}
+for (i in 1:3) {
+        for (j in c("a", "b", "c")){
+                if (j == "b") next()
+                print(paste(j,i))
+        }
+}
+```
+
+## For-loops und Geschwindigkeit
+
+::: incremental
+-   for-loops sind langsamer als Alternativen aus dem funktionalen Programmieren.
+-   Sind leichter zu verstehen
+-   Erlauben Fortschrittszähler
+-   Lassen sich unterbrechen und weiter ausführen
+:::
+
+## Übungen for-loop
+
+-   Schreiben Sie einen for-Loop, die die Zahlen 1 bis 7 durchläuft und den Kubus jeder Zahl mit `print()` ausgibt.
+
+-   Schreibe einen for-loop der von 10 zu 1 runterzählt. In jeder Iteration wird eine Zahl aus einer Normalverteilung simuliert. Ist die Zahl größer 0 wird sie von i abgezogen, ist sie keliner 0 wird sie addiert. das Ergenbnis wird zur Konsole gedruckt
+
+-   Verwende einen *nested* for-Loop , die die folgende Matrix erzeugt.
+
+```{r}
+fill = matrix(0, nrow = 5, ncol = 5)
+for (i in 1:5){
+        for (j in 1:5){
+                fill[i,j] = abs(j-i)
+        }
+}
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x){
+        x <- x + 2
+        return(x)
+}
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x){
+        x <- x + 2
+        return(x)
+}
+my_function(5)
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x,y){
+        x <- x + y
+        return(x)
+}
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x,y){
+        x <- x + y
+        return(x)
+}
+my_function(4,2)
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x,y=2){
+        x <- x + y
+        return(x)
+}
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T}
+my_function <- function(x,y=2){
+        x <- x + y
+        return(x)
+}
+my_function(4)
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T, eval =F}
+my_summary <- function(x){
+        names_x <- names(x)
+        names_x <- append(names_x, "parameter", after = 0)
+        out <- matrix(NA, ncol = length(names_x), nrow = 3)
+        out <- data.frame(out)
+        names(out) <- names_x
+        out$parameter <- c("mean", "median", "sd")
+        for (i in 1:ncol(x)){
+                out[,i+1] <- c(mean(x[,i]), median(x[,i]), sd(x[,i]))
+        }
+        return(out)
+
+}
+my_summary(mtcars[,-12])
+```
+
+## Eigene Funktionen schreiben {auto-animate="true"}
+
+```{r echo = T, eval = T}
+my_summary <- function(x){
+        names_x <- names(x)
+        names_x <- append(names_x, "parameter", after = 0)
+        out <- matrix(NA, ncol = length(names_x), nrow = 3)
+        out <- data.frame(out)
+        names(out) <- names_x
+        out$parameter <- c("mean", "median", "sd")
+        for (i in 1:ncol(x)){
+                out[,i+1] <- c(mean(x[,i]), median(x[,i]), sd(x[,i]))
+        }
+        return(out)
+
+}
+my_summary(mtcars[,-12])
+```
+
+## Aufgaben Eigene Funktion schreiben
+
+-   Schreibe eine Funktion, die einen numerischen Vektor als Argument nimmer und den Mittelwert zurück gibt.
+
+-   Schreibe eine Funktion, die eine Liste als Argument nimmt und testet ob die Elmente `data.frames` sind. Das Ergebnis ist eine Liste die nur aus den Elementen bestehen, die keine `data.frames` sind.
+
+-   
+
+## Vektorisieren
+
+::: incremental
+-   Viele Funktionen in R können direkt auf Vektoren angewandt werden - `sum()`, `mean()`, `sd()`, ...
+-   speziell `apply()`, `sapply()`, und `lapply()` sind meist schneller als For-Loops
+:::
+
+::: fragment
+```{r echo = T, eval =F}
+apply(mtcars[1:10,-12], 1, sum)
+```
+:::
+
+## Vektorisieren
+
+-   Viele Funktionen in R können direkt auf Vektoren angewandt werden - `sum()`, `mean()`, `sd()`, ...
+-   speziell `apply()`, `sapply()`, und `lapply()` sind meist schneller als For-Loops
+
+```{r echo = T}
+apply(mtcars[1:10,-12], 1, sum)
+```
+
+## Vektorisieren
+
+-   Viele Funktionen in R können direkt auf Vektoren angewandt werden - `sum()`, `mean()`, `sd()`, ...
+-   speziell `apply()`, `sapply()`, und `lapply()` sind meist schneller als For-Loops
+
+```{r echo = T, eval = F}
+apply(mtcars[1:10,-12], 2, sum)
+```
+
+## Vektorisieren
+
+-   Viele Funktionen in R können direkt auf Vektoren angewandt werden - `sum()`, `mean()`, `sd()`, ...
+-   speziell `apply()`, `sapply()`, und `lapply()` sind meist schneller als For-Loops
+
+```{r echo = T, eval = T}
+apply(mtcars[1:10,-12], 2, sum)
+```
+
+## Annonyme Funktionen {auto-animate="true"}
+
+```{r echo = T, eval =F}
+apply(mtcars[,-12], 2, function(x) {sum(x^2)})
+```
+
+## Annonyme Funktionen {auto-animate="true"}
+
+```{r echo = T, eval =T}
+apply(mtcars[,-12], 2, function(x) {sum(x^2)})
+```
+
+## `lapply()`
+
+-   `lapply()` wendet Funktionen auf jedes Element einer Liste an
+
+```{r echo = T}
+a<-c("a","b","c","d") 
+b<-c(1,2,3,4,4,3,2,1) 
+c<-c(T,T,F)
+list.object<-list(a,b,c)
+```
+
+::: fragment
+```{r echo=T}
+lapply(list.object,length)
+```
+:::
+
+# Tidyverse
+
+## dplyr
+
+> dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges:
+
+![](dplyr.png)
+
+## set of verbs
+
+```{r echo = T, eval = F}
+select()
+filter()
+mutate()
+arrange()
+summarise()
+```
+
+## `select()`
+
+Wähle ein Subset aus Spalten
+
+::: fragment
+```{r echo =T}
+library(dplyr)
+data("starwars")
+head(starwars)
+```
+:::
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, name)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, name)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, !name)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, !name)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, name, height, mass)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, name, height, mass)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, name:mass)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, name:mass)
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, starts_with("s"))
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, starts_with("s"))
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, ends_with("color"))
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, ends_with("color"))
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = F}
+select(starwars, where(is.numeric))
+```
+
+## `select()` {auto-animate="true"}
+
+```{r echo =T, eval = T}
+select(starwars, where(is.numeric))
+```
+
+## `filter()`
+
+![](allison_horst_filter.png)
+
+## `filter()` {auto-animate="true"}
+
+```{r, echo = T , eval = F}
+filter(starwars, eye_color == "blue")
+```
+
+## `filter()` {auto-animate="true"}
+
+```{r, echo = T , eval = T}
+filter(starwars, eye_color == "blue")
+```
+
+## `filter()` {auto-animate="true"}
+
+```{r, echo = T , eval = F}
+filter(starwars, 
+       eye_color == "blue" & skin_color %in% c("gold", "light")
+       )
+```
+
+## `filter()` {auto-animate="true"}
+
+```{r, echo = T , eval = T}
+filter(starwars, 
+       eye_color == "blue" & skin_color %in% c("gold", "light")
+       )
+```
+
+## `mutate()`
+
+![](allison_horst_mutate.png)
+
+## `mutate()` {auto-animate="true"}
+
+```{r echo = T, eval = F}
+sw <- mutate(starwars, hm = height + mass)
+```
+
+## `mutate()` {auto-animate="true"}
+
+```{r echo = F}
+sw <- mutate(starwars, hm = height + mass)
+select(sw, hm)
+```
+
+## `mutate()`{auto-animate="true"}
+
+```{r echo = T}
+sw <- mutate(starwars, hm = height + mass)
+select(sw, hm)
+```
+
+## The pipe operator
+
+![](pipe-logo.png)
+
+## The pipe operator
+
+## tidyr
+
+## ggplot2
+
+# data.table
+
+## Getting help
+
+```{r eval=F}
+help(lm)
+?lm
+# Press F1 while selecting lm
+```
