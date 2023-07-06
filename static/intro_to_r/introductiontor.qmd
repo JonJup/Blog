@@ -621,7 +621,6 @@ list(1,2,3,4,5,6)
 list(1,2,3,4,5,6)
 ```
 
-
 ## Listen {auto-animate="true"}
 
 ```{r echo = T, eval = F}
@@ -710,7 +709,6 @@ d[[3]][3]
 d[[1]]
 ```
 
-
 ```{r echo=T}
 d[[3]][3]
 ```
@@ -726,7 +724,6 @@ d[[5]]$var2
 ```{r echo = T, eval = T}
 d[[1]]
 ```
-
 
 ```{r echo=T}
 d[[3]][3]
@@ -901,13 +898,13 @@ pm_rlp
 
 ## Aufgaben 5: CSV laden
 
--   Nutzt jedes der drei Packete um einmal eine csv Datei in R zu laden. 
+-   Nutzt jedes der drei Packete um einmal eine csv Datei in R zu laden.
+
 ```{r echo = T, eval=F}
 read.csv()
 readr::read_csv()
 data.table::fread()
 ```
-
 
 ## Daten laden - Excel
 
@@ -925,18 +922,19 @@ readxl::read_excel()
 
 ## Gründe gegen Excelformate
 
-- Excel ist proprietär 
+-   Excel ist proprietär
 
 ::: fragment
 ![](avoid_excel1.png)
 :::
+
 ::: fragment
 ![](avoid_excel2.png){.absolute top="300"}
 :::
+
 ::: fragment
 ![](avoid_excel3.png){.absolute top="400"}
 :::
-
 
 ## RDS
 
@@ -989,6 +987,31 @@ Fügt Vektoren Elemente hinzu
 
 ```{r, echo = T, eval=T}
 append(x = x, values = 1)
+```
+
+## `unique()` {auto-animate="true"}
+
+Einzigartige Elemnte eines Vektors 
+
+```{r echo=T, eval=F}
+(uni <- rep(1:3, each = 3))
+```
+
+## `unique()` {auto-animate="true"}
+
+Einzigartige Elemente eines Vektors 
+
+```{r echo=T, eval=T}
+(uni <- rep(1:3, each = 3))
+```
+
+## `unique()` {auto-animate="true"}
+
+Einzigartige Elemente eines Vektors 
+
+```{r echo=T, eval=T}
+(uni <- rep(1:3, each = 3))
+unique(uni)
 ```
 
 ## `str()` {auto-animate="true"}
@@ -1061,7 +1084,6 @@ Liste alle Objekte in der akutellen Umwelt auf
 ls()
 ```
 
-
 ## `rm()`{auto-animate="true"}
 
 Entferne Objekte aus der Umwelt
@@ -1096,7 +1118,7 @@ b <- rnorm(n = 100, mean = 4, sd = 1)
 plot(a ~ b)
 ```
 
-## Formula notation
+## Formulanotation
 
 ::: incremental
 -   Beziehungen werden in R oft mit der Formulanotation angegeben
@@ -1158,7 +1180,7 @@ if (x > 5){
 }
 ```
 
-## Übung 6: If-clause
+## Übung If-clause
 
 -   Schreibe einen If-clause der Tested ob eine Variable gerade ist. Falls die Variable gerade ist schreibt der Test "gerade", falls die Variable ungerade ist schreibt er "ungerade".
 
@@ -1169,8 +1191,8 @@ if (x > 5){
 ## Loops
 
 ::: incremental
-- In *base R* gibt es drei Arten von Loops: `repeat`, `while`, `for`
-- For-Loops am nützlichsten
+-   In *base R* gibt es drei Arten von Loops: `repeat`, `while`, `for`
+-   For-Loops am nützlichsten
 :::
 
 ## For-loops
@@ -1420,13 +1442,11 @@ my_summary <- function(x){
 my_summary(mtcars[,-12])
 ```
 
-## Aufgaben Eigene Funktion schreiben
+## Übung: Eigene Funktion schreiben
 
 -   Schreibe eine Funktion, die einen numerischen Vektor als Argument nimmer und den Mittelwert zurück gibt.
 
 -   Schreibe eine Funktion, die eine Liste als Argument nimmt und testet ob die Elmente `data.frames` sind. Das Ergebnis ist eine Liste die nur aus den Elementen bestehen, die keine `data.frames` sind.
-
--   
 
 ## Vektorisieren
 
@@ -1655,7 +1675,7 @@ sw <- mutate(starwars, hm = height + mass)
 
 ## `mutate()` {auto-animate="true"}
 
-```{r echo = F}
+```{r echo = T, eval = F}
 sw <- mutate(starwars, hm = height + mass)
 select(sw, hm)
 ```
@@ -1667,22 +1687,356 @@ sw <- mutate(starwars, hm = height + mass)
 select(sw, hm)
 ```
 
-## The pipe operator
+## Die Pipe 
 
 ![](pipe-logo.png)
 
-## The pipe operator
+## Die Pipe 
 
+![](mario.webp)
+
+## Die Pipe {auto-animate="true"}
+
+```{r eval = F, echo=T}
+mtcars %>% 
+        select(mpg:hp)
+```
+
+## Die Pipe {auto-animate="true"}
+
+```{r eval = T, echo=T}
+mtcars %>% 
+        select(mpg:hp)
+```
+
+## Die Pipe {auto-animate="true"}
+
+```{r eval = F, echo=T}
+mtcars %>% 
+        select(mpg:hp) %>%
+        filter(mpg > 20)
+```
+
+## Die Pipe {auto-animate="true"}
+
+```{r eval = T, echo=T}
+mtcars %>% 
+        select(mpg:hp) %>%
+        filter(mpg > 20)
+```
+
+## Weitere Pipies 
+
+::: incremental
+- Die `%>%` Pipe kommt ursprünglich aus dem `magrittr` Package
+- Wird aber auch mit `dplyr` geladen
+- Seit R 4.0 gibt es auch eine *native* Pipe `|>`
+- `%<>%` assignment pipe (nur in `magrittr`)
+:::
+
+
+## Assignment Pipe {auto-animate="true"}
+
+- Ergbniss wird nicht gespeichert 
+
+```{r eval = F, echo=T}
+mtcars %>% 
+        select(mpg:hp) %>%
+        filter(mpg > 20)
+```
+
+## Assignment Pipe {auto-animate="true"}
+
+- Ergbnis wird in `mtcars2` gespeichert 
+
+```{r eval = F, echo=T}
+mtcars %>% 
+        select(mpg:hp) %>%
+        filter(mpg > 20) -> mtcars2
+```
+
+::: fragment
+- Ergbnis wird in `mtcars` gespeichert 
+
+```{r eval = F, echo=T}
+mtcars %<>% 
+        select(mpg:hp) %>%
+        filter(mpg > 20)
+```
+:::
+
+## Übung: `dplyr`
+
+aus `mtcars` wähle:  
+    
+- alle Spalten mit a im Namen
+- alle Spalten die numerisch sind und Reihen in dennen `mpg` > 20
+
+- erstelle eine neue Spalte `mpgcyl` die das Produkt von `mpg` und `cyl` ist und wähle dann die Reihen mit einem mpgcyl Wert von 126
+ 
 ## tidyr
+
+> The goal of tidyr is to help you create tidy data. Tidy data is data where:    
+    1. Every column is variable.    
+    2. Every row is an observation.    
+    3. Every cell is a single value.    
+
+
+![](tidyr.png)
+
+## pivoting 
+
+![](widelong.png)
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=F}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4)
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=T}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4)
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=F}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4) %>%
+        tidyr::pivot_longer(cols = !model)
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=T}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4) %>%
+        tidyr::pivot_longer(cols = !model)
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=T}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4) %>%
+        tidyr::pivot_longer(cols = !model, names_to = "parameter", values_to = "result")
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=T}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4) %>%
+        tidyr::pivot_longer(cols = !model, names_to = "parameter", values_to = "result") -> mtcats2 
+```
+
+## `pivot_long` {auto-animate="true"}
+
+```{r echo=T, eval=T}
+mtcars %>% 
+        tibble::rownames_to_column(var = "model") %>%
+        select(1:4) %>%
+        tidyr::pivot_longer(cols = !model, names_to = "parameter", values_to = "result") -> mtcars2 
+
+mtcars2 %>%
+        tidyr::pivot_wider(id_cols = model, names_from = "parameter", values_from = "result")
+```
+
 
 ## ggplot2
 
-# data.table
+> ggplot2 is a system for declaratively creating graphics, based on The Grammar of Graphics. You provide the data, tell ggplot2 how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+
+![](ggplot.png)
+
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r}
+library(ggplot2)
+```
+
+```{r echo=T, eval=F}
+ggplot(data = mtcars, aes(mpg, disp)) 
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) 
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point()
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(size = 4)
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(size = 4, col = "blue")
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl), col = "blue")
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear))
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear)) + 
+        geom_line()
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear)) + 
+        geom_smooth()
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear)) + 
+        geom_smooth(method = "lm")
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear)) + 
+        geom_smooth(method = "lm") + 
+        theme_bw()
+```
+
+## ggplot2 Beispiel {auto-animate="true"}
+
+```{r echo=T, eval=T}
+ggplot(data = mtcars, aes(mpg, disp)) +
+        geom_point(aes(size = cyl, col = gear)) + 
+        geom_smooth(method = "lm") + 
+        theme(axis.title.x = element_blank(), 
+              panel.background = element_rect(fill = "pink"), 
+              panel.grid.major.x = element_line(linewidth = 3))
+```
+
+## data.table
+
+> data.table provides a high-performance version of base R's data.frame with syntax and feature enhancements for ease of use, convenience and programming speed.
+
+![](datatable.png)
+
+## `data.table`
+
+![](ijby.png)
+
+## `data.table` {auto-animate="true"}
+
+```{r}
+library(data.table)
+```
+
+```{r echo=T}
+setDT(mtcars2)
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+setDT(mtcars2)
+class(mtcars2)
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[parameter == "mpg"]
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[parameter == "mpg", new_parameter := "mpg2"]
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[parameter == "mpg", new_parameter := "mpg2"]
+mtcars2
+```
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[, new_parameter2 := "notNA"]
+mtcars2
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[, new_parameter2 := sum(result), by = "parameter"]
+mtcars2
+```
+
+## `data.table` {auto-animate="true"}
+
+```{r echo=T}
+mtcars2[, new_parameter2 := sum(result), by = "parameter"]
+unique(mtcars2, by = "new_parameter2")
+```
 
 ## Getting help
 
-```{r eval=F}
+```{r eval=F, echo=T}
 help(lm)
 ?lm
 # Press F1 while selecting lm
 ```
+
+## {background-color="black" background-image="stackexchange.png" background-size="cover"}
+## {background-color="black" background-image="chatgpt.png" background-size="cover"}
+
+
+
