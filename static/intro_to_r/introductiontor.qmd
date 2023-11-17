@@ -1322,12 +1322,11 @@ for (i in vektor){
 }
 ```
 
-Schreibe einen for-Loop, der 
+Schreibe einen for-Loop, der
 
-::: incremental 
-
-- die Zahlen 1 bis 7 durchläuft und das Quadrat jeder Zahl mit ausgibt.
-- von 10 bis 1 runterzählt. In jeder Iteration wird eine Zahl aus einer Normalverteilung simuliert (`rnorm()`). Ist die Zahl größer 0 wird sie von `i` abgezogen, ist sie kleiner 0 wird sie addiert. Das Ergenbnis wird zur Konsole gedruckt.
+::: incremental
+-   die Zahlen 1 bis 7 durchläuft und das Quadrat jeder Zahl mit ausgibt.
+-   von 10 bis 1 runterzählt. In jeder Iteration wird eine Zahl aus einer Normalverteilung simuliert (`rnorm()`). Ist die Zahl größer 0 wird sie von `i` abgezogen, ist sie kleiner 0 wird sie addiert. Das Ergenbnis wird zur Konsole gedruckt.
 :::
 
 ## Übungen for-Loop {auto-animate="true"}
@@ -1338,9 +1337,9 @@ for (i in vektor){
 }
 ```
 
-Schreibe einen for-Loop, der 
+Schreibe einen for-Loop, der
 
-- die die folgende Matrix erzeugt
+-   die die folgende Matrix erzeugt
 
 ```{r echo=T}
 fill = matrix(0, nrow = 5, ncol = 5)
@@ -1455,13 +1454,12 @@ my_fun <- function(argumente){
 my_fun(x)
 ```
 
-Schreibe eine Funktion, die 
+Schreibe eine Funktion, die
 
 ::: incremental
-- "Hello World" in die Konsole schreibt
-- einen numerischen Vektor als Argument nimmt und den Mittelwert des Vektors zurück gibt.
-- drei Argumente (`a`,`b`,`c`) hat, `a` und `b` sind Zahlen. `c` gibt an die Funktion testen soll ob `a` größer als `b` ist oder kleiner. Das Ergebnis der Funktion ist ein logisches Objekt. 
-
+-   "Hello World" in die Konsole schreibt
+-   einen numerischen Vektor als Argument nimmt und den Mittelwert des Vektors zurück gibt.
+-   drei Argumente (`a`,`b`,`c`) hat, `a` und `b` sind Zahlen. `c` gibt an die Funktion testen soll ob `a` größer als `b` ist oder kleiner. Das Ergebnis der Funktion ist ein logisches Objekt.
 :::
 
 ## Übung: Eigene Funktionen schreiben {auto-animate="true"}
@@ -1473,11 +1471,9 @@ my_fun <- function(argumente){
 my_fun(x)
 ```
 
-Schreibe eine Funktion, die 
-
+Schreibe eine Funktion, die
 
 -   eine Liste als Argument nimmt und testet ob die Elemente `data.frames` sind. Das Ergebnis ist eine Liste die nur aus den Elementen bestehen, die keine `data.frames` sind.
-
 
 ## Vektorisieren
 
@@ -1799,8 +1795,7 @@ mtcars %<>%
 
 aus `mtcars` wähle:
 
-::: incremental 
-
+::: incremental
 -   die Spalte `mpg`
 
 -   alle Spalten mit `a` im Namen
@@ -1809,7 +1804,6 @@ aus `mtcars` wähle:
 
 -   erstelle eine neue Spalte `mpgcyl` die das Produkt von `mpg` und `cyl` ist und wähle dann die Reihen mit einem `mpgcyl` Wert von 126
 :::
-
 
 ## tidyr
 
@@ -1892,9 +1886,9 @@ mtcars2 %>%
 
 aus `mtcars` erstelle:
 
-- mache die Reihennamen (das Autmodel) zur Spalte mit `tibble::rownames_to_column(mtcars)`
+-   mache die Reihennamen (das Autmodel) zur Spalte mit `tibble::rownames_to_column(mtcars)`
 
-- eine `wide` Tabelle die für jedes Modell eine Reihe hat, die Spalten sind nach `vs` bennant und die Werte sind `disp`. 
+-   eine `wide` Tabelle die für jedes Modell eine Reihe hat, die Spalten sind nach `vs` bennant und die Werte sind `disp`.
 
 ## ggplot2
 
@@ -1999,14 +1993,13 @@ ggplot(data = mtcars, aes(mpg, disp)) +
 
 ## Übung: `ggplot2`
 
-Erstelle einen Plot von `mtcars` in dem 
+Erstelle einen Plot von `mtcars` in dem
 
 ::: incremental
-- `wt` gegen `qsec` als Punkte aufgetragen ist
-- `wt` gegen `qsec` als Punkte aufgetragen ist und die Punkte nach `carb` eingefärbt sind
-- `mpg` als Boxplot für jeden Wert in `am` gezeigt wird. (`am` muss dafür Faktor sein)
+-   `wt` gegen `qsec` als Punkte aufgetragen ist
+-   `wt` gegen `qsec` als Punkte aufgetragen ist und die Punkte nach `carb` eingefärbt sind
+-   `mpg` als Boxplot für jeden Wert in `am` gezeigt wird. (`am` muss dafür Faktor sein)
 :::
-
 
 ## data.table
 
