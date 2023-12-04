@@ -26,3 +26,6 @@ pre code {
 .center {
   text-align: center;
 }
+body {
+  text-align: justify;
+}
