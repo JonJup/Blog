@@ -1,4 +1,7 @@
 fig:unnamed-chunk-64
+fig:queencase
+fig:mlr3
+fig:blockcv
 introduction-to-the-sf-package
 loading-spatial-data-into-r
 creating-spatial-data-yourself
@@ -25,6 +28,15 @@ trend-surface-analysis
 splines
 weighted-averaging
 kriging
+machine-learning
+terrain-analysis-with-terra
+ploting-the-data
+logistic-regression
+mlr3
+creating-a-task
+the-learner
+hyperparameter-tuning
+predictions
 graph-analysis
 the-igraph-package
 from-data-to-graph
