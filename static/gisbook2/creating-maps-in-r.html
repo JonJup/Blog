@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2024-06-05" />
+<meta name="date" content="2024-06-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -423,8 +423,8 @@ Since the electrical conductivity is a numerical variable, <code>tmap</code> aut
 If we transform EC into a factor variable or a character, <code>tmap</code> would use a categorical color scale.</p>
 <div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb495-1"><a href="creating-maps-in-r.html#cb495-1" tabindex="-1"></a>lucas <span class="ot">&lt;-</span> <span class="fu">mutate</span>(lucas, <span class="at">EC_char =</span> <span class="fu">as.character</span>(EC))</span>
 <span id="cb495-2"><a href="creating-maps-in-r.html#cb495-2" tabindex="-1"></a><span class="fu">tm_shape</span>(lucas) <span class="sc">+</span> <span class="fu">tm_bubbles</span>(<span class="at">col =</span> <span class="st">&quot;EC_char&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: Number of levels of the variable &quot;EC_char&quot; is 75, which is larger than max.categories (which is 30), so levels are
-## combined. Set tmap_options(max.categories = 75) in the layer function to show all levels.</code></pre>
+<pre><code>## Warning: Number of levels of the variable &quot;EC_char&quot; is 75, which is larger than max.categories (which is 30),
+## so levels are combined. Set tmap_options(max.categories = 75) in the layer function to show all levels.</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
 <p>For point data we generally have the arguments: size, color, transparency (alpha), border color, line width, and transparency.</p>
 <div class="sourceCode" id="cb497"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb497-1"><a href="creating-maps-in-r.html#cb497-1" tabindex="-1"></a><span class="fu">tm_shape</span>(lucas) <span class="sc">+</span> </span>

@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2024-06-05" />
+<meta name="date" content="2024-06-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -417,17 +417,28 @@ With the last line of the code below, we turn it back into a bolean.</p>
 ## Bounding box:  xmin: 712197.7 ymin: 9556947 xmax: 715737.7 ymax: 9560807
 ## Projected CRS: WGS 84 / UTM zone 17S
 ## First 10 features:
-##    lslpts slope...2        cplan        cprof     elev log10_carea ID slope...9    aspect        TPI                 geometry
-## 1   FALSE  33.75185  0.023180449  0.003193061 2422.810    2.784319  1  34.29864 238.95861  0.2219849 POINT (713887.7 9558537)
-## 2   FALSE  39.40821 -0.038638908 -0.017187813 2051.771    4.146013  2  38.21037  33.21008 -2.3615265 POINT (712787.7 9558917)
-## 3   FALSE  37.45409 -0.013329108  0.009671087 1957.832    3.643556  3  37.70793 312.93348  0.1600342 POINT (713407.7 9560307)
-## 4   FALSE  31.49607  0.040931452  0.005888638 1968.621    2.268703  4  30.82579  12.59296  1.4586945 POINT (714887.7 9560237)
-## 5   FALSE  44.07456  0.009686948  0.005149810 3007.774    3.003426  5  43.54292 295.99650  0.2507935 POINT (715247.7 9557117)
-## 6   FALSE  29.85981 -0.009047707 -0.005738329 1736.887    3.174073  6  31.43264  39.48969 -0.9816742 POINT (714927.7 9560777)
-## 7   FALSE  31.57465  0.055624146  0.021838507 2583.551    2.251919  7  32.18023 231.95105  2.2877808 POINT (714287.7 9558367)
-## 8   FALSE  53.42223  0.005728012  0.001018965 2522.235    2.583303  8  53.35639 285.90275  0.6058044 POINT (714147.7 9558467)
-## 9   FALSE  32.60400  0.024040293 -0.016939975 1929.097    2.836454  9  33.26295 355.05564 -0.5811005 POINT (713717.7 9560657)
-## 10  FALSE  37.45409 -0.013329108  0.009671087 1957.832    3.643556 10  37.70793 312.93348  0.1600342 POINT (713407.7 9560307)</code></pre>
+##    lslpts slope...2        cplan        cprof     elev log10_carea ID slope...9    aspect        TPI
+## 1   FALSE  33.75185  0.023180449  0.003193061 2422.810    2.784319  1  34.29864 238.95861  0.2219849
+## 2   FALSE  39.40821 -0.038638908 -0.017187813 2051.771    4.146013  2  38.21037  33.21008 -2.3615265
+## 3   FALSE  37.45409 -0.013329108  0.009671087 1957.832    3.643556  3  37.70793 312.93348  0.1600342
+## 4   FALSE  31.49607  0.040931452  0.005888638 1968.621    2.268703  4  30.82579  12.59296  1.4586945
+## 5   FALSE  44.07456  0.009686948  0.005149810 3007.774    3.003426  5  43.54292 295.99650  0.2507935
+## 6   FALSE  29.85981 -0.009047707 -0.005738329 1736.887    3.174073  6  31.43264  39.48969 -0.9816742
+## 7   FALSE  31.57465  0.055624146  0.021838507 2583.551    2.251919  7  32.18023 231.95105  2.2877808
+## 8   FALSE  53.42223  0.005728012  0.001018965 2522.235    2.583303  8  53.35639 285.90275  0.6058044
+## 9   FALSE  32.60400  0.024040293 -0.016939975 1929.097    2.836454  9  33.26295 355.05564 -0.5811005
+## 10  FALSE  37.45409 -0.013329108  0.009671087 1957.832    3.643556 10  37.70793 312.93348  0.1600342
+##                    geometry
+## 1  POINT (713887.7 9558537)
+## 2  POINT (712787.7 9558917)
+## 3  POINT (713407.7 9560307)
+## 4  POINT (714887.7 9560237)
+## 5  POINT (715247.7 9557117)
+## 6  POINT (714927.7 9560777)
+## 7  POINT (714287.7 9558367)
+## 8  POINT (714147.7 9558467)
+## 9  POINT (713717.7 9560657)
+## 10 POINT (713407.7 9560307)</code></pre>
 <p>We can now remove the data as we will continue our work with the origina ones.</p>
 </div>
 <div id="ploting-the-data" class="section level2 hasAnchor" number="4.2">
@@ -534,11 +545,11 @@ We can check the Moran’s I of the residuals.</p>
 ## data:  quantile_residuals  
 ## weights: listw    
 ## 
-## Moran I statistic standard deviate = 2.7701, p-value = 0.002802
+## Moran I statistic standard deviate = 0.29571, p-value = 0.3837
 ## alternative hypothesis: greater
 ## sample estimates:
 ## Moran I statistic       Expectation          Variance 
-##       0.187158198      -0.002865330       0.004705576</code></pre>
+##       0.017438628      -0.002865330       0.004714543</code></pre>
 <p>Indeed, there seems to be a weak but statistically significant autocorrelation in our residuals.
 At this point we will not address possible fixes for this problem as they extend beyond the scope of this lecture.</p>
 <p>With <code>summary()</code> we get a quick overview of the results.</p>
@@ -867,10 +878,10 @@ The combination with the highest AUC is marked with a red dot.</p>
 ## [1] 1
 ## 
 ## $max.depth
-## [1] 52
+## [1] 32
 ## 
 ## $min.node.size
-## [1] 80</code></pre>
+## [1] 83</code></pre>
 <p>and set the parameters accordingly.</p>
 <div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="machine-learning.html#cb251-1" tabindex="-1"></a>lrnr_rf<span class="sc">$</span>param_set<span class="sc">$</span>values<span class="sc">$</span>max.depth <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb251-2"><a href="machine-learning.html#cb251-2" tabindex="-1"></a>lrnr_rf<span class="sc">$</span>param_set<span class="sc">$</span>values<span class="sc">$</span>min.node.size <span class="ot">&lt;-</span> <span class="dv">32</span></span></code></pre></div>
@@ -893,7 +904,7 @@ The best hyperparameters are set as parameters for a final model which is fit to
 <span id="cb253-2"><a href="machine-learning.html#cb253-2" tabindex="-1"></a>rr <span class="ot">=</span> mlr3<span class="sc">::</span><span class="fu">resample</span>(task, at, outer_resampling, <span class="at">store_models =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The aggregated performance over all nested instances can be determined with:</p>
 <div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="machine-learning.html#cb254-1" tabindex="-1"></a><span class="fu">mean</span>(rr<span class="sc">$</span><span class="fu">score</span>(<span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">&quot;classif.auc&quot;</span>))<span class="sc">$</span>classif.auc)</span></code></pre></div>
-<pre><code>## [1] 0.7978815</code></pre>
+<pre><code>## [1] 0.7961248</code></pre>
 </div>
 <div id="predictions" class="section level3 hasAnchor" number="4.4.4">
 <h3><span class="header-section-number">4.4.4</span> Predictions<a href="machine-learning.html#predictions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -905,7 +916,7 @@ The best hyperparameters are set as parameters for a final model which is fit to
 <pre><code>## $learner
 ## &lt;LearnerClassifRanger:classif.ranger&gt;: Random Forest
 ## * Model: ranger
-## * Parameters: num.threads=1, max.depth=1, min.node.size=78
+## * Parameters: num.threads=1, max.depth=78, min.node.size=100
 ## * Packages: mlr3, mlr3learners, ranger
 ## * Predict Types:  response, [prob]
 ## * Feature Types: logical, integer, numeric, character, factor, ordered
@@ -924,15 +935,15 @@ The best hyperparameters are set as parameters for a final model which is fit to
 ## * Result:
 ##    max.depth min.node.size classif.auc
 ##        &lt;int&gt;         &lt;int&gt;       &lt;num&gt;
-## 1:         1            78   0.7729881
+## 1:        78           100   0.7665477
 ## * Archive:
 ##    max.depth min.node.size classif.auc
 ##        &lt;int&gt;         &lt;int&gt;       &lt;num&gt;
-## 1:        67             1   0.7501281
-## 2:         1            78   0.7729881
-## 3:       100            23   0.7645118
-## 4:        45            45   0.7676532
-## 5:        67            45   0.7560787</code></pre>
+## 1:        78            23   0.7570487
+## 2:        78           100   0.7665477
+## 3:        67            34   0.7562337
+## 4:        45            67   0.7539634
+## 5:        89            89   0.7627918</code></pre>
 <div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="machine-learning.html#cb260-1" tabindex="-1"></a>lrnr_rf<span class="sc">$</span>model</span></code></pre></div>
 <pre><code>## Ranger result
 ## 
@@ -947,7 +958,7 @@ The best hyperparameters are set as parameters for a final model which is fit to
 ## Target node size:                 32 
 ## Variable importance mode:         none 
 ## Splitrule:                        gini 
-## OOB prediction error (Brier s.):  0.2117377</code></pre>
+## OOB prediction error (Brier s.):  0.2114375</code></pre>
 <p>We can use the predict landslide probability for the whole region.</p>
 <div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="machine-learning.html#cb262-1" tabindex="-1"></a>ta2 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">slope =</span> <span class="fu">values</span>(dem<span class="sc">$</span>slope)[,<span class="dv">1</span>], </span>
 <span id="cb262-2"><a href="machine-learning.html#cb262-2" tabindex="-1"></a>                  <span class="at">cplan =</span> <span class="fu">values</span>(dem<span class="sc">$</span>cplan)[,<span class="dv">1</span>], </span>
