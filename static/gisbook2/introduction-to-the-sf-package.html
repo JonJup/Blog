@@ -23,7 +23,7 @@
 <meta name="author" content="Jonathan Jupke" />
 
 
-<meta name="date" content="2024-10-28" />
+<meta name="date" content="2024-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -322,7 +322,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Spatial Data Science in R</h1>
 <p class="author"><em>Jonathan Jupke</em></p>
-<p class="date"><em>2024-10-28</em></p>
+<p class="date"><em>2024-11-18</em></p>
 </div>
 <div id="introduction-to-the-sf-package" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction to the sf package<a href="introduction-to-the-sf-package.html#introduction-to-the-sf-package" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -381,8 +381,7 @@ Therefore, to use the path <code>file.choose()</code> provided you need to remov
 <p>With the command <code>st_read()</code>, we read the geopackage file <code>gadm36_DEU_3_pk.gpkg</code> (download <a href="https://seafile.rlp.net/f/28b46dd2c13a43958a6d/?dl=1">here</a>).
 The function starts, like all functions in <code>sf</code>, with <code>st_</code>, short for <em>spatiotemporal</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="introduction-to-the-sf-package.html#cb5-1" tabindex="-1"></a>germany <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/gadm36_DEU_3_pk.gpkg&quot;</span>)</span></code></pre></div>
-<pre><code>## Reading layer `gadm36_DEU_3_pk&#39; from data source 
-##   `C:\Users\jonat\Documents\001_Uni\002_teaching\online books\book_spatial_data_science_in_R\data\gadm36_DEU_3_pk.gpkg&#39; using driver `GPKG&#39;
+<pre><code>## Reading layer `gadm36_DEU_3_pk&#39; from data source `C:\Users\jonat\Documents\001_Uni\002_teaching\online books\book_spatial_data_science_in_R\data\gadm36_DEU_3_pk.gpkg&#39; using driver `GPKG&#39;
 ## Simple feature collection with 4680 features and 16 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -400,28 +399,28 @@ The function starts, like all functions in <code>sf</code>, with <code>st_</code
 ## Bounding box:  xmin: 5.866251 ymin: 47.27012 xmax: 15.04181 ymax: 55.05653
 ## Geodetic CRS:  WGS 84
 ## First 10 features:
-##    GID_0  NAME_0   GID_1            NAME_1 NL_NAME_1     GID_2          NAME_2 NL_NAME_2        GID_3                NAME_3 VARNAME_3 NL_NAME_3
-## 1    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.1_1          Allmendingen      &lt;NA&gt;      &lt;NA&gt;
-## 2    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.2_1            Blaubeuren      &lt;NA&gt;      &lt;NA&gt;
-## 3    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.3_1             Blaustein      &lt;NA&gt;      &lt;NA&gt;
-## 4    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.4_1            Dietenheim      &lt;NA&gt;      &lt;NA&gt;
-## 5    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.5_1             Dornstadt      &lt;NA&gt;      &lt;NA&gt;
-## 6    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.6_1       Ehingen (Donau)      &lt;NA&gt;      &lt;NA&gt;
-## 7    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.7_1                Erbach      &lt;NA&gt;      &lt;NA&gt;
-## 8    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.8_1 Kirchberg-Weihungstal      &lt;NA&gt;      &lt;NA&gt;
-## 9    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.9_1        Laichinger Alb      &lt;NA&gt;      &lt;NA&gt;
-## 10   DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt; DEU.1.1.10_1              Langenau      &lt;NA&gt;      &lt;NA&gt;
-##                     TYPE_3    ENGTYPE_3      CC_3 HASC_3                           geom
-## 1  Verwaltungsgemeinschaft Municipality 084255001   &lt;NA&gt; MULTIPOLYGON (((9.777709 48...
-## 2  Verwaltungsgemeinschaft Municipality 084255002   &lt;NA&gt; MULTIPOLYGON (((9.775818 48...
-## 3         Einheitsgemeinde Municipality 084250141   &lt;NA&gt; MULTIPOLYGON (((9.827528 48...
-## 4       Verwaltungsverband Municipality 084255003   &lt;NA&gt; MULTIPOLYGON (((10.00971 48...
-## 5  Verwaltungsgemeinschaft Municipality 084255004   &lt;NA&gt; MULTIPOLYGON (((9.972806 48...
-## 6  Verwaltungsgemeinschaft Municipality 084255005   &lt;NA&gt; MULTIPOLYGON (((9.803958 48...
-## 7         Einheitsgemeinde Municipality 084250039   &lt;NA&gt; MULTIPOLYGON (((9.837822 48...
-## 8       Verwaltungsverband Municipality 084255006   &lt;NA&gt; MULTIPOLYGON (((10.02729 48...
-## 9       Verwaltungsverband Municipality 084255007   &lt;NA&gt; MULTIPOLYGON (((9.708008 48...
-## 10      Verwaltungsverband Municipality 084255008   &lt;NA&gt; MULTIPOLYGON (((9.946911 48...</code></pre>
+##    GID_0  NAME_0   GID_1            NAME_1 NL_NAME_1     GID_2          NAME_2 NL_NAME_2        GID_3                NAME_3 VARNAME_3 NL_NAME_3                  TYPE_3    ENGTYPE_3
+## 1    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.1_1          Allmendingen      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft Municipality
+## 2    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.2_1            Blaubeuren      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft Municipality
+## 3    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.3_1             Blaustein      &lt;NA&gt;      &lt;NA&gt;        Einheitsgemeinde Municipality
+## 4    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.4_1            Dietenheim      &lt;NA&gt;      &lt;NA&gt;      Verwaltungsverband Municipality
+## 5    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.5_1             Dornstadt      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft Municipality
+## 6    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.6_1       Ehingen (Donau)      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft Municipality
+## 7    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.7_1                Erbach      &lt;NA&gt;      &lt;NA&gt;        Einheitsgemeinde Municipality
+## 8    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.8_1 Kirchberg-Weihungstal      &lt;NA&gt;      &lt;NA&gt;      Verwaltungsverband Municipality
+## 9    DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt;  DEU.1.1.9_1        Laichinger Alb      &lt;NA&gt;      &lt;NA&gt;      Verwaltungsverband Municipality
+## 10   DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt; DEU.1.1.10_1              Langenau      &lt;NA&gt;      &lt;NA&gt;      Verwaltungsverband Municipality
+##         CC_3 HASC_3                           geom
+## 1  084255001   &lt;NA&gt; MULTIPOLYGON (((9.777709 48...
+## 2  084255002   &lt;NA&gt; MULTIPOLYGON (((9.775818 48...
+## 3  084250141   &lt;NA&gt; MULTIPOLYGON (((9.827528 48...
+## 4  084255003   &lt;NA&gt; MULTIPOLYGON (((10.00971 48...
+## 5  084255004   &lt;NA&gt; MULTIPOLYGON (((9.972806 48...
+## 6  084255005   &lt;NA&gt; MULTIPOLYGON (((9.803958 48...
+## 7  084250039   &lt;NA&gt; MULTIPOLYGON (((9.837822 48...
+## 8  084255006   &lt;NA&gt; MULTIPOLYGON (((10.02729 48...
+## 9  084255007   &lt;NA&gt; MULTIPOLYGON (((9.708008 48...
+## 10 084255008   &lt;NA&gt; MULTIPOLYGON (((9.946911 48...</code></pre>
 <p><br/></p>
 <p>The header is similar to what we have already seen when reading the file. Below are the first ten rows and all columns.
 The object has the classes:</p>
@@ -453,10 +452,10 @@ We can use the <code>[</code> subsetting operations.</p>
 ## Dimension:     XY
 ## Bounding box:  xmin: 9.61846 ymin: 48.29861 xmax: 9.822202 ymax: 48.36533
 ## Geodetic CRS:  WGS 84
-##   GID_0  NAME_0   GID_1            NAME_1 NL_NAME_1     GID_2          NAME_2 NL_NAME_2       GID_3       NAME_3 VARNAME_3 NL_NAME_3                  TYPE_3
-## 1   DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt; DEU.1.1.1_1 Allmendingen      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft
-##      ENGTYPE_3      CC_3 HASC_3                           geom
-## 1 Municipality 084255001   &lt;NA&gt; MULTIPOLYGON (((9.777709 48...</code></pre>
+##   GID_0  NAME_0   GID_1            NAME_1 NL_NAME_1     GID_2          NAME_2 NL_NAME_2       GID_3       NAME_3 VARNAME_3 NL_NAME_3                  TYPE_3    ENGTYPE_3      CC_3
+## 1   DEU Germany DEU.1_1 Baden-Württemberg      &lt;NA&gt; DEU.1.1_1 Alb-Donau-Kreis      &lt;NA&gt; DEU.1.1.1_1 Allmendingen      &lt;NA&gt;      &lt;NA&gt; Verwaltungsgemeinschaft Municipality 084255001
+##   HASC_3                           geom
+## 1   &lt;NA&gt; MULTIPOLYGON (((9.777709 48...</code></pre>
 <p><br/></p>
 <div class="blackbox">
 <div class="center">
@@ -681,8 +680,8 @@ To create interactive maps you have to change the <code>tm_mode</code> from <cod
 <span id="cb39-2"><a href="introduction-to-the-sf-package.html#cb39-2" tabindex="-1"></a>        <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
 <span id="cb39-3"><a href="introduction-to-the-sf-package.html#cb39-3" tabindex="-1"></a>        <span class="fu">tm_lines</span>() <span class="sc">+</span> </span>
 <span id="cb39-4"><a href="introduction-to-the-sf-package.html#cb39-4" tabindex="-1"></a>        <span class="fu">tm_polygons</span>()</span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-b409dbc7fbdbd3739d6a" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-b409dbc7fbdbd3739d6a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"createMapPane","args":["tmap402",402]},{"method":"createMapPane","args":["tmap403",403]},{"method":"createMapPane","args":["tmap404",404]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addCircleMarkers","args":[[0.5,1.5],[0.5,1.5],[20,20],[null,null],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000"],"fillOpacity":[1,1]},null,null,null,null,[null,null],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolygons","args":[[[[{"lng":[0,0,1,1,0],"lat":[0,1,1,0,0]}]],[[{"lng":[2,2,1,1,2],"lat":[1,2,2,1,1]}]]],["X1","X1.1"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap402","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":["#D9D9D9","#D9D9D9"],"fillOpacity":[1,1],"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[2.5,0],[1,3.5],[20,20],[null,"X1.1"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap403","stroke":true,"color":"#666666","weight":1,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000"],"fillOpacity":[1,1]},null,null,null,null,[null,null],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolylines","args":[[[[{"lng":[1,1,1,1],"lat":[1,2,3,4]}]],[[{"lng":[2,3,4,4],"lat":[0,0,0,1]}]]],["X1.2","X1.3"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap404","stroke":true,"color":["#000000","#000000"],"weight":[1,1],"opacity":[1,1],"fill":false,"fillColor":["#000000","#000000"],"fillOpacity":0.2,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"geometrycollection_sf",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[0,4],"lng":[0,4]},"fitBounds":[0,0,4,4,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-32741c8768f14cdf5db5" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-32741c8768f14cdf5db5">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"createMapPane","args":["tmap402",402]},{"method":"createMapPane","args":["tmap403",403]},{"method":"createMapPane","args":["tmap404",404]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addCircleMarkers","args":[[0.5,1.5],[0.5,1.5],[20,20],[null,null],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000"],"fillOpacity":[1,1]},null,null,null,null,[null,null],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolygons","args":[[[[{"lng":[0,0,1,1,0],"lat":[0,1,1,0,0]}]],[[{"lng":[2,2,1,1,2],"lat":[1,2,2,1,1]}]]],["X1","X1.1"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap402","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":["#D9D9D9","#D9D9D9"],"fillOpacity":[1,1],"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[2.5,0],[1,3.5],[20,20],[null,"X1.1"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap403","stroke":true,"color":"#666666","weight":1,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000"],"fillOpacity":[1,1]},null,null,null,null,[null,null],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPolylines","args":[[[[{"lng":[1,1,1,1],"lat":[1,2,3,4]}]],[[{"lng":[2,3,4,4],"lat":[0,0,0,1]}]]],["X1.2","X1.3"],"geometrycollection_sf",{"interactive":true,"className":"","pane":"tmap404","stroke":true,"color":["#000000","#000000"],"weight":[1,1],"opacity":[1,1],"fill":false,"fillColor":["#000000","#000000"],"fillOpacity":0.2,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"geometrycollection_sf",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[0,4],"lng":[0,4]},"fitBounds":[0,0,4,4,[]]},"evals":[],"jsHooks":[]}</script>
 <p><br/></p>
 <div class="blackbox">
 <div class="center">
@@ -869,8 +868,7 @@ All we need is the object, the names of the columns that contain the X and Y coo
 <p><img src="images/binary_operation.png" width="500" /></p>
 <p>Basically, all of these functions take two arguments (<code>x</code> and <code>y</code>) — two simple feature geometries (i.e., sf objects), which are combined in some way. We will use the <a href="https://www.bmuv.de/themen/naturschutz/gebietsschutz-und-vernetzung/natura-2000/schutzgebietsnetz-natura-2000">natura2000</a> area in Germany as a demonstration. You can download the data <a href="https://seafile.rlp.net/d/a3fe7fd7835e43cbaccc/">here</a>. <code>st_intersection()</code> checks whether <code>x</code> and <code>y</code> intersect.</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="introduction-to-the-sf-package.html#cb71-1" tabindex="-1"></a>natura2000 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/natura 2000/natura2000_deutschland.gpkg&quot;</span>)</span></code></pre></div>
-<pre><code>## Reading layer `intersection&#39; from data source 
-##   `C:\Users\jonat\Documents\001_Uni\002_teaching\online books\book_spatial_data_science_in_R\data\natura 2000\natura2000_deutschland.gpkg&#39; using driver `GPKG&#39;
+<pre><code>## Reading layer `intersection&#39; from data source `C:\Users\jonat\Documents\001_Uni\002_teaching\online books\book_spatial_data_science_in_R\data\natura 2000\natura2000_deutschland.gpkg&#39; using driver `GPKG&#39;
 ## Simple feature collection with 5274 features and 100 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -1064,10 +1062,10 @@ A question we might ask with this tool is are the ten largest districts closer t
 ## Dimension:     XY
 ## Bounding box:  xmin: 13.15783 ymin: 52.39318 xmax: 13.24984 ymax: 52.4208
 ## Geodetic CRS:  WGS 84
-##      GID_0  NAME_0   GID_1      NAME_1 NL_NAME_1      GID_2             NAME_2 NL_NAME_2        GID_3       NAME_3 VARNAME_3 NL_NAME_3             TYPE_3
-## 2167   DEU Germany DEU.4_1 Brandenburg      &lt;NA&gt; DEU.4.13_1 Potsdam-Mittelmark      &lt;NA&gt; DEU.4.13.6_1 Kleinmachnow      &lt;NA&gt;      &lt;NA&gt; Amtsfreie Gemeinde
-##         ENGTYPE_3      CC_3 HASC_3                           geom     area
-## 2167 Municipality 120690304   &lt;NA&gt; MULTIPOLYGON (((13.23662 52... 11759803</code></pre>
+##      GID_0  NAME_0   GID_1      NAME_1 NL_NAME_1      GID_2             NAME_2 NL_NAME_2        GID_3       NAME_3 VARNAME_3 NL_NAME_3             TYPE_3    ENGTYPE_3      CC_3 HASC_3
+## 2167   DEU Germany DEU.4_1 Brandenburg      &lt;NA&gt; DEU.4.13_1 Potsdam-Mittelmark      &lt;NA&gt; DEU.4.13.6_1 Kleinmachnow      &lt;NA&gt;      &lt;NA&gt; Amtsfreie Gemeinde Municipality 120690304   &lt;NA&gt;
+##                                geom     area
+## 2167 MULTIPOLYGON (((13.23662 52... 11759803</code></pre>
 <div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="introduction-to-the-sf-package.html#cb111-1" tabindex="-1"></a><span class="fu">tm_shape</span>(<span class="fu">rbind</span>(big1,germany[nnid, ]), <span class="at">zcol =</span> <span class="st">&quot;GID_3&quot;</span>) <span class="sc">+</span> <span class="fu">tm_polygons</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
 <p><br/></p>
@@ -1146,8 +1144,8 @@ An example would be to add the county to the bird data as a variable.</p>
 <span id="cb115-7"><a href="introduction-to-the-sf-package.html#cb115-7" tabindex="-1"></a><span class="co"># - spatial join </span></span>
 <span id="cb115-8"><a href="introduction-to-the-sf-package.html#cb115-8" tabindex="-1"></a>birds_name2 <span class="ot">&lt;-</span> <span class="fu">st_join</span>(birds_subset, germany_name2)</span>
 <span id="cb115-9"><a href="introduction-to-the-sf-package.html#cb115-9" tabindex="-1"></a><span class="fu">tm_shape</span>(birds_name2) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;NAME_2&quot;</span>, <span class="at">legend.show =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## Warning: Number of levels of the variable &quot;NAME_2&quot; is 185, which is larger than max.categories (which is 30), so levels are combined. Set
-## tmap_options(max.categories = 185) in the layer function to show all levels.</code></pre>
+<pre><code>## Warning: Number of levels of the variable &quot;NAME_2&quot; is 198, which is larger than max.categories (which is 30), so levels are combined. Set tmap_options(max.categories = 198) in the
+## layer function to show all levels.</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p><br/></p>
 <div class="blackbox">
